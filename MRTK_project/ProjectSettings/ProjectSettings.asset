@@ -47,7 +47,7 @@ PlayerSettings:
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_StereoRenderingPath: 2
-  m_ActiveColorSpace: 0
+  m_ActiveColorSpace: 1
   m_MTRendering: 1
   mipStripping: 0
   numberOfMipsStripped: 0
@@ -130,13 +130,27 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 0}
-  - {fileID: -5824504502795528198, guid: 3d55d626c18abba41a203011cfac3cbc, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 9004015369070483507, guid: 2502e9b40adc2394cab6db2c642c3c64, type: 2}
-  - {fileID: 4768518655585643419, guid: ae919fa0c22e4634099abd8838715605, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 1134354535040996476, guid: 3d55d626c18abba41a203011cfac3cbc, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -615,7 +629,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 80e22d4e9a14da01
+  metroCertificateNotAfter: 00b3192605a9da01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: MRTK Test
