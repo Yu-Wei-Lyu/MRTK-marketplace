@@ -7,7 +7,7 @@ namespace MRTK.Tutorials.GettingStarted
         private void OnBecameInvisible()
         {
             // Triggered when 'DirectionalIndicator' component disables the Mesh Renderer
-            gameObject.SetActive(false);
+            gameObject.SetActive(true);
         }
     }
 }
