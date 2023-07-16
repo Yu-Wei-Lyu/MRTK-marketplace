@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemMenuManager : MonoBehaviour
+public class ItemDetailManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,11 +14,5 @@ public class ItemMenuManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    // Switch obejct active to on/off
-    public void ToggleActive()
-    {
-        gameObject.SetActive(!gameObject.activeSelf);
     }
 }
