@@ -22,7 +22,7 @@ CREATE TABLE Furniture (
 ALTER TABLE Furniture
 ADD ImagePath VARCHAR(255);
 
-ALTER TABLE Furniture MODIFY ImagePath VARCHAR(255) NULL;
+ALTER TABLE History MODIFY HistoryID INT AUTO_INCREMENT;
 
 ALTER TABLE Furniture MODIFY ID INT AUTO_INCREMENT PRIMARY KEY;
 
@@ -56,6 +56,26 @@ CREATE TABLE History (
   FOREIGN KEY (UserID) REFERENCES users(id)
 );
 
+CREATE TABLE Orders (
+  OrderID INT PRIMARY KEY AUTO_INCREMENT,
+  CustomerID INT NOT NULL,
+  OrderDate DATE NOT NULL,
+  DeliveryDate DATE,
+  OrderStatus VARCHAR(50) NOT NULL,
+  FOREIGN KEY (CustomerID) REFERENCES users(id)
+);
+
+CREATE TABLE Order_Items (
+  ItemID INT PRIMARY KEY AUTO_INCREMENT,
+  OrderID INT NOT NULL,
+  FurnitureID INT NOT NULL,
+  Quantity INT NOT NULL,
+  Price DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+  FOREIGN KEY (FurnitureID) REFERENCES Furniture(id)
+);
+
+
 DELIMITER //
 CREATE TRIGGER limit_history
 AFTER INSERT ON History
@@ -83,6 +103,13 @@ DELIMITER ;
 INSERT INTO users (username, password, role)
 VALUES  ('109590037', '109590037', 'admin'),
 		('109590004', '109590004', 'admin'),
-		('109590003', '109590003', 'admin');
+		('109590003', '109590003', 'admin'),
+        ('JohnDoe', 'password1', 'member'),
+		('JaneSmith', 'password2', 'member'),
+		('MikeJohnson', 'password3', 'member'),
+		('EmilyBrown', 'password4', 'member'),
+		('DavidLee', 'password5', 'member');
 
 Select * from Furniture;
+Select * from history;
+Select * from users;
