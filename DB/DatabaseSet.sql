@@ -48,10 +48,41 @@ CREATE TABLE users (
   role VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE History (
+  HistoryID INT PRIMARY KEY,
+  UserID INT,
+  Event VARCHAR(100),
+  -- 其他歷史紀錄相關欄位...
+  FOREIGN KEY (UserID) REFERENCES users(id)
+);
+
+DELIMITER //
+CREATE TRIGGER limit_history
+AFTER INSERT ON History
+FOR EACH ROW
+BEGIN
+  DECLARE history_count INT;
+  DECLARE history_id_to_delete INT;
+  
+  -- 計算特定UserID的歷史紀錄數量
+  SELECT COUNT(*) INTO history_count FROM History WHERE UserID = NEW.UserID;
+  
+  -- 如果歷史紀錄數量超過五筆，則找到最早的 HistoryID
+  IF history_count > 5 THEN
+    SELECT MIN(HistoryID) INTO history_id_to_delete
+    FROM History WHERE UserID = NEW.UserID
+    ORDER BY HistoryID;
+    
+    -- 刪除最早的歷史紀錄
+    DELETE FROM History WHERE HistoryID = history_id_to_delete;
+  END IF;
+END //
+DELIMITER ;
+
 -- 插入帳號
 INSERT INTO users (username, password, role)
-VALUES ('john', 'password123', 'admin');
-
-
+VALUES  ('109590037', '109590037', 'admin'),
+		('109590004', '109590004', 'admin'),
+		('109590003', '109590003', 'admin');
 
 Select * from Furniture;
