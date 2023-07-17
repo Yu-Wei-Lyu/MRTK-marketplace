@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>會員註冊</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!--宣告 CSS-->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <!--宣告 JS-->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">網頁管理程式</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">首頁</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="position-absolute top-50 start-50 translate-middle">
+      <div class="d-flex justify-content-center">
+        <div class="container-fluid" style="width: 450px; height: auto">
+          <form action="">
+            <h3>會員註冊</h3>
+            <input
+              id="account"
+              type="text"
+              class="form-control"
+              placeholder="帳號"
+              aria-describedby="sizing-addon1"
+              name="account"
+            />
+            <input
+              id="password"
+              type="password"
+              class="form-control"
+              placeholder="密碼"
+              aria-describedby="sizing-addon1"
+              name="password"
+            />
+            <input
+              id="name"
+              type="text"
+              class="form-control"
+              placeholder="Name"
+              aria-describedby="sizing-addon1"
+              name="name"
+            />
+            <input
+              id="username"
+              type="text"
+              class="form-control"
+              placeholder="User-name"
+              aria-describedby="sizing-addon1"
+              name="username"
+            />
+            <input
+              id="email"
+              type="text"
+              class="form-control"
+              placeholder="Email"
+              aria-describedby="sizing-addon1"
+              name="email"
+            />
+            <input
+              id="address"
+              type="text"
+              class="form-control"
+              placeholder="Address"
+              aria-describedby="sizing-addon1"
+              name="address"
+            />
+            <input
+              id="phone"
+              type="text"
+              class="form-control"
+              placeholder="Phone"
+              aria-describedby="sizing-addon1"
+              name="phone"
+            />
+            <input
+              id="country"
+              type="text"
+              class="form-control"
+              placeholder="Country"
+              aria-describedby="sizing-addon1"
+              name="country"
+            />
+            <input
+              id="date"
+              type="text"
+              class="form-control"
+              placeholder="Date"
+              aria-describedby="sizing-addon1"
+              name="date"
+            />
+            <button
+              id="register"
+              type="button"
+              class="btn btn-success btn-block"
+            >
+              註冊
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="static/register.js"></script>
+  </body>
+</html>

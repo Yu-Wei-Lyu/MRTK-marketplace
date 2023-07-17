@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品編輯頁面</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!--宣告 CSS-->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <!--宣告 JS-->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">網頁管理程式</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/admin"
+                >首頁</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                帳號
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="/edit_account">會員帳號管理</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="/add_product">上架商品</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              歡迎登入
+            </a>
+            <button
+              class="btn btn-outline-success"
+              onclick="myFunction()"
+              type="button"
+            >
+              登出
+            </button>
+            <script>
+              function myFunction() {
+                var text = "確定要登出?";
+                if (confirm(text) == true) {
+                  window.location.href = "/";
+                }
+              }
+            </script>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="position-absolute top-50 start-50 translate-middle">
+      <div class="d-flex justify-content-center">
+        <div class="container-fluid" style="width: auto; height: auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">名稱</th>
+                <th scope="col">編號</th>
+                <th scope="col">售價</th>
+                <th scope="col">圖片</th>
+                <th scope="col">大小</th>
+                <th scope="col">描述</th>
+                <th scope="col">材質</th>
+              </tr>
+            </thead>
+            <tbody id="product_field"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="container-fluid" style="width: 450px; height: auto">
+          <form action="">
+            <h3>商品編輯</h3>
+            <input
+              id="title"
+              type="text"
+              class="form-control"
+              placeholder="名稱"
+              aria-describedby="sizing-addon1"
+              name="productTitle"
+            />
+            <input
+              id="number"
+              type="text"
+              class="form-control"
+              placeholder="編號"
+              aria-describedby="sizing-addon1"
+              name="productNumber"
+            />
+            <input
+              id="price"
+              type="text"
+              class="form-control"
+              placeholder="售價"
+              aria-describedby="sizing-addon1"
+              name="productPrice"
+            />
+            <input
+              id="picture"
+              type="file"
+              class="form-control"
+              placeholder="圖片"
+              aria-describedby="sizing-addon1"
+              name="productPicture"
+            />
+            <input
+              id="size"
+              type="text"
+              class="form-control"
+              placeholder="大小"
+              aria-describedby="sizing-addon1"
+              name="productSize"
+            />
+            <input
+              id="description"
+              type="text"
+              class="form-control"
+              placeholder="描述"
+              aria-describedby="sizing-addon1"
+              name="productDescription"
+            />
+            <input
+              id="quality"
+              type="text"
+              class="form-control"
+              placeholder="材質"
+              aria-describedby="sizing-addon1"
+              name="productQuality"
+            />
+            <button id="save" type="button" class="btn btn-success btn-block">
+              儲存
+            </button>
+            <button id="remove" type="button" class="btn btn-success btn-block">
+              下架
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="static/edit_product.js"></script>
+  </body>
+</html>
