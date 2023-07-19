@@ -574,6 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &165585587
@@ -590,6 +591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!114 &165585588
 MonoBehaviour:
@@ -3053,6 +3055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   scaleMinimum: 0.3
   scaleMaximum: 5
   relativeToInitialState: 1
@@ -3225,7 +3228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -3245,6 +3248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 1584077553}
   interactableObject: {fileID: 0}
+  buttonBehavior: 0
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
@@ -3259,7 +3263,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262243935}
   m_LocalRotation: {x: 0, y: 0.15384822, z: 0, w: 0.9880945}
-  m_LocalPosition: {x: 0.122, y: -0.1, z: 1.07}
+  m_LocalPosition: {x: 0.617, y: -0.131, z: 0.45}
   m_LocalScale: {x: 0.56764, y: 0.56764, z: 0.56764}
   m_Children:
   - {fileID: 1752164584}
@@ -3570,7 +3574,7 @@ GameObject:
   - component: {fileID: 1508993215}
   - component: {fileID: 1508993214}
   m_Layer: 0
-  m_Name: Pressable Button (2)
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5103,6 +5107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!114 &1752164575
 MonoBehaviour:
@@ -5118,6 +5123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &1752164576
@@ -5172,6 +5178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &1752164580
@@ -5188,6 +5195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!114 &1752164581
 MonoBehaviour:
@@ -5980,7 +5988,7 @@ GameObject:
   - component: {fileID: 1797360628}
   - component: {fileID: 1797360627}
   m_Layer: 0
-  m_Name: Pressable Button (1)
+  m_Name: FollowMeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7459,6 +7467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!4 &262133208351494858
@@ -8182,6 +8191,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: 
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5972206229035748852}
+        m_TargetAssemblyTypeName: ToggleGrayCubeButton, Assembly-CSharp
+        m_MethodName: ToggleDisplay
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15985,7 +16006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 6
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0.03}
@@ -20121,6 +20142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 0}
   interactableObject: {fileID: 0}
+  buttonBehavior: 0
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
@@ -20577,6 +20599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!4 &6754402343545615684
@@ -21506,6 +21529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!1 &7675361979814314446
 GameObject:
@@ -22035,7 +22059,7 @@ GameObject:
   - component: {fileID: 8632194532521692940}
   - component: {fileID: 127430430307843485}
   m_Layer: 0
-  m_Name: Pressable Button (1)
+  m_Name: FollowMeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22360,6 +22384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 3168860996197630257}
   interactableObject: {fileID: 0}
+  buttonBehavior: 0
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
@@ -22446,7 +22471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -22943,7 +22968,7 @@ GameObject:
   - component: {fileID: 8632194533344840699}
   - component: {fileID: 127430431497927018}
   m_Layer: 0
-  m_Name: Pressable Button (2)
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23710,6 +23735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   scaleMinimum: 0.3
   scaleMaximum: 5
   relativeToInitialState: 1
@@ -24125,7 +24151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
