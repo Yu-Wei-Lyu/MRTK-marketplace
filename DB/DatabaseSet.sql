@@ -2,6 +2,8 @@ show databases;
 CREATE DATABASE IF NOT EXISTS mydatabase;
 
 USE mydatabase;
+USE mysql;
+Drop database mysql;
 
 Drop Table furniture;
 Drop Table Order_items;
@@ -24,9 +26,20 @@ CREATE TABLE Furniture (
 ALTER TABLE Furniture
 ADD ImagePath VARCHAR(255);
 
+SELECT User, Host FROM mydatabase.user;
+
+GRANT ALL PRIVILEGES ON mydatabase.* TO '109590037'@'118.150.125.153';
+
+ALTER USER '109590037'@'118.150.125.153' IDENTIFIED WITH mysql_native_password BY '109590037';
+
+CREATE USER 'project'@'118.150.125.153' IDENTIFIED BY 'project';
+
 ALTER TABLE users
 ADD COLUMN manufacturers VARCHAR(100) NULL;
 
+ALTER USER '109590037'@'118.150.125.153' IDENTIFIED WITH mysql_native_password BY '109590037';
+
+SELECT user, host, plugin FROM mysql.user WHERE user = '109590037';
 
 ALTER TABLE History MODIFY HistoryID INT AUTO_INCREMENT;
 

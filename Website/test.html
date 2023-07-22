@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MySQL Query Results</title>
+</head>
+<body>
+    <h1>MySQL Query Results</h1>
+    <ul id="results">
+        <!-- 這裡會動態添加資料 -->
+    </ul>
+
+    <script>
+        // 從 Flask 傳遞的查詢結果
+        var data = {% raw %}{{ data|tojson|safe }}{% endraw %};
+
+        // 更新網頁內容
+        function updatePage() {
+            const resultsList = document.getElementById('results');
+            resultsList.innerHTML = '';
+
+            // 顯示新的資料
+            data.forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${result[0]} - ${result[1]}`;  // 根據您的資料庫欄位修改這裡的索引
+                resultsList.appendChild(listItem);
+            });
+        }
+
+        // 網頁載入完成後更新內容
+        window.onload = updatePage;
+    </script>
+</body>
+</html>

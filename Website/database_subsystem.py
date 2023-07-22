@@ -9,14 +9,18 @@ import mysql.connector
 import datetime
 import gc
 
-maxdb = mysql.connector.connect(
-    host="127.0.0.1",
-    user="root",
-    password="84018401",
-    database="Library",
-)
-cursor = maxdb.cursor()
+config = {
+    'user': '109590037',
+    'password': '109590037',
+    'host': '118.150.125.153',
+    'port': 8888,
+    'database': 'mydatabase'
+}
+# 建立連線
+conn = mysql.connector.connect(**config)
 
+# 建立遊標物件
+cursor = conn.cursor()
 # Read
 
 history_max_ssn = ""
