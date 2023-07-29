@@ -72,5 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Chinese Language Asset (133MB) for TextMeshPro Font Asset
-/[Aa]ssets/Fonts/MSJH.asset
-/[Aa]ssets/Fonts/MSJH.asset.meta
+/[Aa]ssets/Fonts/MSJH-Chinese.asset
+/[Aa]ssets/Fonts/MSJH-Chinese.asset.meta
