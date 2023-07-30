@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MySQL Query Results</title>
+    <title>WebSocket Query</title>
 </head>
 <body>
-    <h1>MySQL Query Results</h1>
-    <ul id="results">
-        <!-- 這裡會動態添加資料 -->
-    </ul>
+    <h1>WebSocket Query</h1>
+    <button onclick="sendQuery()">Send Query</button>
+    <button onclick="clearResults()">Clear</button>
+    <button onclick="addData()">Add Data</button>
+    <button onclick="updateData()">Update Data</button>
+    <button onclick="deleteData()">Delete Data</button>
+    <ul id="results"></ul>
 
     <script>
-        // 從 Flask 傳遞的查詢結果
-        var data = {% raw %}{{ data|tojson|safe }}{% endraw %};
+        const socket = new WebSocket('ws://118.150.125.153:8765');
 
-        // 更新網頁內容
-        function updatePage() {
+        // 當接收到訊息時更新網頁內容
+        socket.onmessage = function(event) {
+            try {
+                const data = event.data;
+                const resultsList = document.getElementById('results');
+                resultsList.innerHTML = data; // 清空原本的資料
+
+                // 顯示新的資料
+                
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+            }
+        };
+
+        // 點擊按鈕時發送訊息給伺服器
+        function clearResults() {
+            console.log("ClearData");
             const resultsList = document.getElementById('results');
-            resultsList.innerHTML = '';
+            resultsList.innerHTML = ' ';
+        };
 
-            // 顯示新的資料
-            data.forEach(result => {
-                const listItem = document.createElement('li');
-                listItem.innerText = `${result[0]} - ${result[1]}`;  // 根據您的資料庫欄位修改這裡的索引
-                resultsList.appendChild(listItem);
-            });
+        // 點擊按鈕時發送訊息給伺服器
+        function sendQuery() {
+            console.log("SendQuery");
+            socket.send('query');
         }
-
-        // 網頁載入完成後更新內容
-        window.onload = updatePage;
     </script>
 </body>
 </html>
