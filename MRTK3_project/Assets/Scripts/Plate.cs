@@ -22,6 +22,12 @@ public class Plate
         this.plate.SetActive(value);
     }
 
+    // Set the plate position
+    public void SetPosition(Vector3 newPosition)
+    {
+        this.plate.transform.position = newPosition;
+    }
+
     // Compare plates
     public bool IsSame(GameObject targetPlate)
     {
