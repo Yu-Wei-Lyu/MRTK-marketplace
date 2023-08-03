@@ -126,19 +126,10 @@ select * from order_items;
 Select * from history;
 Select * from users;
 
+UPDATE Furniture
+SET Name='Test', Number='123', Price=243, ImagePath='ImagePath/Image.jpg', Size='200x200x100', Description='Test', Material='Test'
+WHERE ID = 12;
+
+
 SHOW PROCESSLIST;
-kill 8;
-kill 18;
-kill 21;
-kill 23;
-kill 24;
-kill 25;
-kill 26;
-kill 27;
-kill 28;
-kill 30;
-kill 31;
-kill 32;
-kill 33;
-kill 37;
-kill 17;
+Kill 33;
