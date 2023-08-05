@@ -12,6 +12,34 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
     <!--宣告 JS-->
+    <style>
+      /* 隱藏原本的文字 */
+      input[type="file"] {
+        position: absolute;
+        left: -9999px;
+      }
+
+      /* 自定義的樣式 */
+      .custom-file-upload {
+        display: inline-block;
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      /* 使用 Font Awesome 圖標來取代文字 */
+      .custom-file-upload i {
+        margin-right: 5px;
+      }
+
+      /* 讓描述超過容器就換行 */
+      #description {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -75,14 +103,7 @@
             >
               登出
             </button>
-            <script>
-              function myFunction() {
-                var text = "確定要登出?";
-                if (confirm(text) == true) {
-                  window.location.href = "/";
-                }
-              }
-            </script>
+            <script></script>
           </form>
         </div>
       </div>
@@ -116,30 +137,48 @@
               aria-describedby="sizing-addon1"
               name="productPrice"
             />
+            <label for="picture" class="custom-file-upload">
+              <i class="fas fa-upload"></i> 選擇圖片
+            </label>
             <input
               id="picture"
               type="file"
               class="form-control"
-              placeholder="圖片"
               aria-describedby="sizing-addon1"
               name="productPicture"
+              accept="image/*"
+              onchange="displayFileName()"
             />
-            <input
-              id="size"
-              type="text"
-              class="form-control"
-              placeholder="大小"
-              aria-describedby="sizing-addon1"
-              name="productSize"
-            />
-            <input
-              id="description"
-              type="text"
-              class="form-control"
-              placeholder="描述"
-              aria-describedby="sizing-addon1"
-              name="productDescription"
-            />
+            <span id="fileName"></span>
+            <div>
+              <input
+                id="depth"
+                type="text"
+                class="form-control"
+                placeholder="深度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productDepth"
+                style="display: inline-block; width: 32.5%"
+              />
+              <input
+                id="width"
+                type="text"
+                class="form-control"
+                placeholder="寬度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productWidth"
+                style="display: inline-block; width: 32.5%"
+              />
+              <input
+                id="height"
+                type="text"
+                class="form-control"
+                placeholder="高度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productHeight"
+                style="display: inline-block; width: 32.5%"
+              />
+            </div>
             <input
               id="quality"
               type="text"
@@ -148,6 +187,13 @@
               aria-describedby="sizing-addon1"
               name="productQuality"
             />
+            <textarea
+              id="description"
+              class="form-control"
+              placeholder="描述"
+              aria-describedby="sizing-addon1"
+              name="productDescription"
+            ></textarea>
             <button id="add" type="button" class="btn btn-success btn-block">
               上架
             </button>
@@ -155,6 +201,20 @@
         </div>
       </div>
     </div>
+    <script>
+      function myFunction() {
+        var text = "確定要登出?";
+        if (confirm(text) == true) {
+          window.location.href = "/";
+        }
+      }
+
+      function displayFileName() {
+        const fileInput = document.getElementById("picture");
+        const fileNameSpan = document.getElementById("fileName");
+        fileNameSpan.textContent = fileInput.files[0]?.name || "";
+      }
+    </script>
     <script src="static/add_product.js"></script>
   </body>
 </html>
