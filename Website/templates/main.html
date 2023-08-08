@@ -9,7 +9,27 @@
     />
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
-    <title>Database system</title>
+    <title>首頁</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+
+      .button-container {
+        display: flex;
+        height: 100%;
+      }
+
+      .button {
+        flex: 1;
+        font-size: 5em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,12 +54,26 @@
             </li>
           </ul>
           <form class="d-flex">
-            <button class="btn btn-outline-success" type="button" onclick="window.location.href='/login'">
+            <!-- <button class="btn btn-outline-success" type="button" onclick="window.location.href='/login'">
+              登入
+            </button> -->
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              onclick="window.location.href='login.html'"
+            >
               登入
             </button>
           </form>
           <form class="d-flex">
-            <button class="btn btn-outline-success" type="button" onclick="window.location.href='/register'">
+            <!-- <button class="btn btn-outline-success" type="button" onclick="window.location.href='/register'">
+              註冊
+            </button> -->
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              onclick="window.location.href='register.html'"
+            >
               註冊
             </button>
           </form>
@@ -47,53 +81,16 @@
       </div>
     </nav>
 
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-
-            <div class="container-fluid">
-            <!-- 搜尋框 -->
-                <form class="d-flex">
-                    <input
-                    id="searchBox"
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                    />
-                    <button id="searchButton" class="btn btn-outline-success" type="button">
-                    Search
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
-      <!-- <input
-            name=""
-            type="text"
-            value=""
-            id=""
-            onkeydown="return key_down_single_search(event);"
-          />
-    
-          <input
-            type="button"
-            value="搜尋"
-            name="searchBtn"
-            onclick="do_single_search(); return false;"
-          /> -->
-
-
-    <!-- Section-->
-    <section class="py-5">
-      <div class="container px-4 px-lg-5 mt-5">
-        <div id="ggggg" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-          
-        </div>
-      </div>
-    </section>
+    <div class="container-fluid button-container">
+      <!-- <a href="/login" class="btn btn-primary btn-lg button"
+        >登入</a
+      >
+      <a href="/register" class="btn btn-secondary btn-lg button"
+        >註冊</a
+      > -->
+      <a href="login.html" class="btn btn-success btn-lg button">登入</a>
+      <a href="register.html" class="btn btn-dark btn-lg button">註冊</a>
+    </div>
     <script src="static/main.js"></script>
   </body>
 </html>
- 

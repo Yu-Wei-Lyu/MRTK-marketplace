@@ -1,33 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品詳細內容</title>
     <link
       href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
-    <title>網頁管理程式</title>
+    <!--宣告 JS-->
     <style>
-      body,
-      html {
-        height: 100%;
-        margin: 0;
+      .product-image {
+        width: 100%;
+        height: auto;
       }
-
-      .button-container {
+      .product-info {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .product-details {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .product-buttons {
         display: flex;
-        height: 100%;
-      }
-
-      .button {
-        flex: 1;
-        font-size: 5em;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -51,8 +54,8 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <!-- <a class="nav-link active" aria-current="page" href="/member"
-                >首頁</a
-              > -->
+                  >首頁</a
+                > -->
               <a
                 class="nav-link active"
                 aria-current="page"
@@ -105,29 +108,39 @@
         </div>
       </div>
     </nav>
-
-    <div class="container-fluid button-container">
-      <!-- <a href="/product_list" class="btn btn-primary btn-lg button"
-        >所有商品</a
-      >
-      <a href="/add_product" class="btn btn-secondary btn-lg button"
-        >上架商品</a
-      > -->
-      <a href="product_list.html" class="btn btn-primary btn-lg button"
-        >所有商品</a
-      >
-      <a href="add_product.html" class="btn btn-secondary btn-lg button"
-        >上架商品</a
-      >
+    <div class="container mt-5">
+      <div class="product-info">
+        <!-- 商品詳細內容 -->
+        <h1 class="mb-4">商品名稱</h1>
+        <div class="product-details mb-4">
+          <p class="mb-2">編號：123456</p>
+          <p class="mb-2">售價：$99.99</p>
+          <img
+            src="ProductImages/Example2.jpg"
+            alt="商品圖片"
+            class="product-image mb-3"
+          />
+          <h2 class="mb-3">商品屬性</h2>
+          <p class="mb-2">深度：10 cm</p>
+          <p class="mb-2">寬度：20 cm</p>
+          <p class="mb-2">高度：30 cm</p>
+          <p class="mb-2">材質：木頭</p>
+          <p class="mb-0">描述：這是一個描述商品的範例文字。</p>
+        </div>
+        <!-- 按鈕 -->
+        <div class="product-buttons">
+          <!-- <button class="btn btn-primary" type="button" href="edit_product.html">編輯</button>
+          <button class="btn btn-danger" type="button">下架</button> -->
+          <a
+            id="edit${id}"
+            class="btn btn-primary mt-auto"
+            href="edit_product.html"
+            >編輯</a
+          >
+          <a id="remove${id}" class="btn btn-danger mt-auto" href="#">下架</a>
+        </div>
+      </div>
     </div>
-    <script>
-      function myFunction() {
-        var text = "確定要登出?";
-        if (confirm(text) == true) {
-          window.location.href = "/";
-        }
-      }
-    </script>
-    <script src="static/main_member.js"></script>
+    <script src="../static/product_detail.js"></script>
   </body>
 </html>

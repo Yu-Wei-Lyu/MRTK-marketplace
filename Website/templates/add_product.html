@@ -54,7 +54,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/admin"
+              <!-- <a class="nav-link active" aria-current="page" href="/admin"
+                >首頁 -->
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="main_member.html"
                 >首頁
               </a>
             </li>
@@ -67,15 +72,17 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                帳號
+                功能
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="/edit_account">會員帳號管理</a>
+                  <!-- <a class="dropdown-item" href="/product_list">所有商品</a> -->
+                  <a class="dropdown-item" href="product_list.html">所有商品</a>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="/add_product">上架商品</a>
+                  <!-- <a class="dropdown-item" href="/add_product">上架商品</a> -->
+                  <a class="dropdown-item" href="add_product.html">上架商品</a>
                 </li>
               </ul>
             </li>
@@ -195,20 +202,6 @@
         </div>
       </div>
     </div>
-    <script>
-      function myFunction() {
-        var text = "確定要登出?";
-        if (confirm(text) == true) {
-          window.location.href = "/";
-        }
-      }
-
-      function displayFileName() {
-        const fileInput = document.getElementById("picture");
-        const fileNameSpan = document.getElementById("fileName");
-        fileNameSpan.textContent = fileInput.files[0]?.name || "";
-      }
-    </script>
-    <script src="static/add_product.js"></script>
+    <script src="../static/add_product.js"></script>
   </body>
 </html>
