@@ -57,3 +57,16 @@ $('#add').click(
         }
     }
 );
+
+function myFunction() {
+    var text = "確定要登出?";
+    if (confirm(text) == true) {
+      window.location.href = "/";
+    }
+}
+
+function displayFileName() {
+    const fileInput = document.getElementById("picture");
+    const fileNameSpan = document.getElementById("fileName");
+    fileNameSpan.textContent = fileInput.files[0]?.name || "";
+}
