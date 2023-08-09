@@ -74,4 +74,9 @@ public class PopupDialogController : MonoBehaviour
             this.gameObject.SetActive(value);
         }
     }
+
+    public void RebuildLayout()
+    {
+        LayoutRebuilderUtility.RebuildLayoutsWithContentSizeFitter(rebuilderUtilityParentTarget);
+    }
 }

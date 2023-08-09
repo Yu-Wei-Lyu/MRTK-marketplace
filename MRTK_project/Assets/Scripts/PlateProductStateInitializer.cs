@@ -90,6 +90,7 @@ public class PlateProductStateInitializer : Plate
         {
             associatedPopupDialog.SetTitleMessage("商品已新增至購物清單", $"商品：\n{cacheDataObject.Name}");
             associatedPopupDialog.SetActive(true);
+            associatedPopupDialog.RebuildLayout();
         }
     }
 
