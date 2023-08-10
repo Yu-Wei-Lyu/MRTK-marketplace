@@ -1,21 +1,41 @@
-建置前確認 Edit > Project Validation > UWP > Fixed 任何有可能的錯誤修正
+                           
+                           || 大檔案請先確認是否在專案內 ||
+----------------------------------------------------------
+大檔案連結: https://drive.google.com/drive/folders/1Ip9elEsoMn5WoYW1wTE1oCvLiPaMS-N3?usp=drive_link
+檔案: MSJH.asset
+檔案: MSJH.asset.meta
+放進專案路徑: MRTK_project\Assets\Materials\Fonts
+----------------------------------------------------------
+大檔案連結: https://drive.google.com/drive/folders/1Ip9elEsoMn5WoYW1wTE1oCvLiPaMS-N3?
+檔案: MRTK2_project_test20230809.mp4
+無須放進專案
+----------------------------------------------------------
+                           ||||||||||||||||||||||||||||||||
 
-File > Build Settings... > UWP Platform 設定以下參數
 
-Architecture: ARM 64-bit
-Build Type: D3D Project
-Target SDK Version: Latest Installed
-Minimum Platform Version: 10.0.10240.0
-Visual Studio Version: Latest installed
-Build and Run on: USB device
-Build configuration: Release (there are known performance issues with Debug)
+                                    || 建置流程 ||
 
-按下 Build 選擇資料夾等待建置完成
+ 1. 建置前確認 Edit > Project Validation > UWP > Fixed 任何有可能的錯誤修正 並刪除 Asset\WSATestCertificate.pfx
 
-開啟資料夾中的 .sln 
+ 2. File > Build Settings... > UWP Platform 設定以下參數
 
-建置需設為Unity建置一樣的設定
-Release | ARM64 | 裝置 
-最後點選 偵錯 > 啟動但不偵錯
+  Architecture: ARM 64-bit
+  Build Type: D3D Project
+  Target SDK Version: Latest Installed
+  Minimum Platform Version: 10.0.10240.0
+  Visual Studio Version: Latest installed
+  Build and Run on: USB device
+  Build configuration: Release (there are known performance issues with Debug)
 
-FINISH!!
+ 3. 按下 Build 選擇資料夾 (/Build/) 並等待建置完成
+
+ 4. 開啟建置後資料夾中的 .sln 
+
+ 5. 建置需設為Unity建置一樣的設定
+
+  Release | ARM64 | 裝置 
+
+ 6. 最後點選 偵錯 > 啟動但不偵錯
+
+ 7. FINISH!!
+                                    ||||||||||||||

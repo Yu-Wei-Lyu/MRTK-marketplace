@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品詳細內容</title>
+    <link
+      href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!--宣告 CSS-->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <!--宣告 JS-->
+    <style>
+      .product-image {
+        width: 100%;
+        height: auto;
+      }
+      .product-info {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .product-details {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .product-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">網頁管理程式</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <!-- <a class="nav-link active" aria-current="page" href="/member"
+                  >首頁</a
+                > -->
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="main_member.html"
+                >首頁</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                功能
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <!-- <a class="dropdown-item" href="/product_list">所有商品</a> -->
+                  <a class="dropdown-item" href="product_list.html">所有商品</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <!-- <a class="dropdown-item" href="/add_product">上架商品</a> -->
+                  <a class="dropdown-item" href="add_product.html">上架商品</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              歡迎登入
+            </a>
+            <button
+              class="btn btn-outline-success"
+              onclick="myFunction()"
+              type="button"
+            >
+              登出
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <div class="product-info">
+        <!-- 商品詳細內容 -->
+        <h1 class="mb-4">商品名稱</h1>
+        <div class="product-details mb-4">
+          <p class="mb-2">編號：123456</p>
+          <p class="mb-2">售價：$99.99</p>
+          <img
+            src="ProductImages/Example2.jpg"
+            alt="商品圖片"
+            class="product-image mb-3"
+          />
+          <h2 class="mb-3">商品屬性</h2>
+          <p class="mb-2">深度：10 cm</p>
+          <p class="mb-2">寬度：20 cm</p>
+          <p class="mb-2">高度：30 cm</p>
+          <p class="mb-2">材質：木頭</p>
+          <p class="mb-0">描述：這是一個描述商品的範例文字。</p>
+        </div>
+        <!-- 按鈕 -->
+        <div class="product-buttons">
+          <!-- <button class="btn btn-primary" type="button" href="edit_product.html">編輯</button>
+          <button class="btn btn-danger" type="button">下架</button> -->
+          <a
+            id="edit${id}"
+            class="btn btn-primary mt-auto"
+            href="edit_product.html"
+            >編輯</a
+          >
+          <a id="remove${id}" class="btn btn-danger mt-auto" href="#">下架</a>
+        </div>
+      </div>
+    </div>
+    <script src="../static/product_detail.js"></script>
+  </body>
+</html>

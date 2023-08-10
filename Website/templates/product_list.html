@@ -9,7 +9,7 @@
     />
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
-    <title>Database system</title>
+    <title>所有商品</title>
     <style>
       body,
       html {
@@ -47,7 +47,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/member"
+              <!-- <a class="nav-link active" aria-current="page" href="/member"
+                >首頁</a
+              > -->
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="main_member.html"
                 >首頁</a
               >
             </li>
@@ -60,15 +66,17 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                帳號
+                功能
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="/product_list">所有商品</a>
+                  <!-- <a class="dropdown-item" href="/product_list">所有商品</a> -->
+                  <a class="dropdown-item" href="product_list.html">所有商品</a>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="/add_product">上架商品</a>
+                  <!-- <a class="dropdown-item" href="/add_product">上架商品</a> -->
+                  <a class="dropdown-item" href="add_product.html">上架商品</a>
                 </li>
               </ul>
             </li>
@@ -81,7 +89,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              歡迎登入，會員
+              歡迎登入
             </a>
             <button
               class="btn btn-outline-success"
@@ -90,14 +98,7 @@
             >
               登出
             </button>
-            <script>
-              function myFunction() {
-                var text = "確定要登出?";
-                if (confirm(text) == true) {
-                  window.location.href = "/";
-                }
-              }
-            </script>
+
           </form>
         </div>
       </div>
@@ -124,20 +125,6 @@
             </div>
         </div>
     </header>
-      <!-- <input
-            name=""
-            type="text"
-            value=""
-            id=""
-            onkeydown="return key_down_single_search(event);"
-          />
-    
-          <input
-            type="button"
-            value="搜尋"
-            name="searchBtn"
-            onclick="do_single_search(); return false;"
-          /> -->
 
 
     <!-- Section-->
@@ -145,9 +132,82 @@
       <div class="container px-4 px-lg-5 mt-5">
         <div id="ggggg" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
           
+          <div class="col mb-5" id="field${id}">
+            <div class="card h-100">
+              <!-- Product image-->
+              <img
+                class="card-img-top"
+                src="ProductImages/Example1.jpg"
+                alt="..."
+              />
+              <!-- Product details-->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h3 id="title${id}" class="fw-bolder">${title}</h3>
+                  <!-- <h6 class="fw-bolder">author: ${author}</h6>
+                  <h6 class="fw-bolder">ISBN: ${ISBN}</h6> -->
+                </div>
+              </div>
+              <!-- Product actions-->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                  <a id="reserve${id}" class="btn btn-outline-dark mt-auto" href="product_detail.html" onclick="reserve_book(this.id)"
+                    >詳細資訊</a
+                  >
+                  <!-- <a id="borrow${id}" class="btn btn-outline-dark mt-auto" href="#" onclick="borrow_book(this.id)"
+                    >借閱</a
+                  > -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col mb-5" id="field${id}">
+            <div class="card h-100">
+              <!-- Product image-->
+              <img
+                class="card-img-top"
+                src="ProductImages/Example2.jpg"
+                alt="..."
+              />
+              <!-- Product details-->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h3 id="title${id}" class="fw-bolder">${title}</h3>
+                  <!-- <h6 class="fw-bolder">author: ${author}</h6>
+                  <h6 class="fw-bolder">ISBN: ${ISBN}</h6> -->
+                </div>
+              </div>
+              <!-- Product actions-->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                  <a id="reserve${id}" class="btn btn-outline-dark mt-auto" href="product_detail.html" onclick="reserve_book(this.id)"
+                    >詳細資訊</a
+                  >
+                  <!-- <a id="borrow${id}" class="btn btn-outline-dark mt-auto" href="#" onclick="borrow_book(this.id)"
+                    >借閱</a
+                  > -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
         </div>
       </div>
     </section>
+    <script>
+      function myFunction() {
+        var text = "確定要登出?";
+        if (confirm(text) == true) {
+          window.location.href = "/";
+        }
+      }
+    </script>
     <script src="static/product_list.js"></script>
   </body>
 </html>

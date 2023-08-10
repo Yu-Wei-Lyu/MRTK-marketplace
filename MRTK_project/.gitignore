@@ -70,3 +70,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Chinese Language Asset (143MB) for TextMeshPro Font Asset
+/[Aa]ssets/Materials/Fonts/*
+!/[Aa]ssets/Materials/Fonts/README.txt
+!/[Aa]ssets/Materials/Fonts/README.txt.meta
