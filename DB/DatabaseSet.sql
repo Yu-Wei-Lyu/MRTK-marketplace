@@ -35,6 +35,7 @@ ALTER TABLE Furniture MODIFY ID INT AUTO_INCREMENT PRIMARY KEY;
 
 ALTER TABLE Furniture MODIFY manufacturers varchar(50);
 
+ALTER TABLE Furniture modify ImageData varbinary(200000);
 
 -- 插入家具資料
 INSERT INTO Furniture (Name, Number, Price, ImagePath, Size, Description, Material)

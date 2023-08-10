@@ -22,7 +22,11 @@
     <input type="text" id="materialInput" placeholder="Material">
     <input type="text" id="deleteIdInput" placeholder="deleteID">
     <input type="text" id="updateIdInput" placeholder="updateID">
+    
+    <input type="file" id="imageInput">
+    <button onclick="uploadImage()">Upload</button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
         const socket = new WebSocket('ws://118.150.125.153:8765');
 
@@ -57,32 +61,46 @@
         // 點擊按鈕時將新資料加入伺服器
         function addData() {
             console.log("SendAdd");
-            // 從輸入欄位獲取資料
-            const name = document.getElementById('nameInput').value;
-            const number = document.getElementById('numberInput').value;
-            const price = document.getElementById('priceInput').value;
-            const imagePath = document.getElementById('imagePathInput').value;
-            const size = document.getElementById('sizeInput').value;
-            const description = document.getElementById('descriptionInput').value;
-            const material = document.getElementById('materialInput').value;
 
-            // 建立資料物件
-            const newData = {
-                type: 'add',
-                Name: name,
-                Number: number,
-                Price: price,
-                ImagePath: imagePath,
-                Size: size,
-                Description: description,
-                Material: material
+            const imageInput = document.getElementById('imageInput');
+            const selectedImage = imageInput.files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imageData = event.target.result;
+
+                // 從輸入欄位獲取資料
+                    const name = document.getElementById('nameInput').value;
+                const number = document.getElementById('numberInput').value;
+                const price = document.getElementById('priceInput').value;
+                const imagePath = document.getElementById('imagePathInput').value;
+                const size = document.getElementById('sizeInput').value;
+                const description = document.getElementById('descriptionInput').value;
+                const material = document.getElementById('materialInput').value;
+
+            
+
+                // 建立資料物件
+                const newData = {
+                    type: 'add',
+                    Name: name,
+                    Number: number,
+                    Price: price,
+                    ImagePath: imagePath,
+                    Size: size,
+                    Description: description,
+                    Material: material,
+                    ImageData: imageData
+                };
+            
+                // 將資料物件轉成 JSON 格式
+                const jsonNewData = JSON.stringify(newData);
+            
+                // 發送資料給伺服器
+                socket.send(jsonNewData);
             };
-        
-            // 將資料物件轉成 JSON 格式
-            const jsonNewData = JSON.stringify(newData);
-        
-            // 發送資料給伺服器
-            socket.send(jsonNewData);
+
+            reader.readAsDataURL(selectedImage); // 读取图像文件为Base64编码
         }
 
         // 點擊按鈕時向伺服器發送更新資料的請求

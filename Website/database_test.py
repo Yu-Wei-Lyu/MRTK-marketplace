@@ -50,11 +50,15 @@ async def handle_connection(websocket, path):
                 size = data.get('Size')
                 description = data.get('Description')
                 material = data.get('Material')
+                imageData = data.get('ImageData')
 
+                # 打开文件以写入模式，如果文件不存在会创建一个新的文件
+                with open('output.txt', 'w') as file:
+                    file.write(imageData)
                 # 執行 SQL 新增資料
-                query = f"INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material) VALUES ('{name}', '{number}', {price}, '{imagePath}', '{size}', '{description}', '{material}');"
-                cursor.execute(query)
-                conn.commit()
+                #query = f"INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material) VALUES ('{name}', '{number}', {price}, '{imagePath}', '{size}', '{description}', '{material}');"
+                #cursor.execute(query)
+                #conn.commit()
 
                 response = {'type': 'add', 'message': 'Data added successfully'}
 
