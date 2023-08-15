@@ -2,6 +2,8 @@ import asyncio
 import websockets
 import mysql.connector
 import json
+import base64
+import re
 
 # 連線參數
 config = {
@@ -23,10 +25,8 @@ cursor = conn.cursor()
 async def handle_connection(websocket, path):
     async for message in websocket:
         try:
-            print(message)
             data = json.loads(message)
             message_type = data.get('type')
-            print(message_type)
 
             if message_type == 'query':
                 # 執行 SQL 查詢
@@ -38,8 +38,23 @@ async def handle_connection(websocket, path):
 
                 # 將查詢結果轉成字串格式
                 result_str = str(result)
+                result_array = []
+                start = 0
+                count = 0
+                separator = ")"
 
-                response = {'type': 'query', 'message': result_str}
+                for i in range(len(result_str)):
+                    if result_str[i:i+len(separator)] == separator:
+                        count += 1
+                        if count == 2:
+                            result_array.append(result_str[start:i].strip())
+                            start = i + len(separator)
+                            count = 0
+
+                # 將最後一個片段加入陣列
+                result_array.append(result_str[start:].strip())
+                
+                response = {'type': 'query', 'message': result_array}
 
             elif message_type == 'add':
                 # 取得要新增的資料
@@ -52,14 +67,16 @@ async def handle_connection(websocket, path):
                 material = data.get('Material')
                 imageData = data.get('ImageData')
 
-                # 打开文件以写入模式，如果文件不存在会创建一个新的文件
-                with open('output.txt', 'w') as file:
-                    file.write(imageData)
+                # 先解碼 Base64 編碼的圖片數據
+                imageData_base64 = data.get('ImageData')
+                imageData = base64.b64decode(imageData_base64)
+                
                 # 執行 SQL 新增資料
-                #query = f"INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material) VALUES ('{name}', '{number}', {price}, '{imagePath}', '{size}', '{description}', '{material}');"
-                #cursor.execute(query)
-                #conn.commit()
-
+                query = f"INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageData) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+                values = (name, number, price, imagePath, size, description, material, imageData)
+                cursor.execute(query, values)
+                conn.commit()
+                
                 response = {'type': 'add', 'message': 'Data added successfully'}
 
             elif message_type == 'update':
@@ -73,9 +90,14 @@ async def handle_connection(websocket, path):
                 size = data.get('Size')
                 description = data.get('Description')
                 material = data.get('Material')
+                imageData = data.get('ImageData')
+
+                # 先解碼 Base64 編碼的圖片數據
+                imageData_base64 = data.get('ImageData')
+                imageData = base64.b64decode(imageData_base64)
 
                 # 請根據需求在此處執行 SQL 更新資料的指令，例如：
-                query = f"UPDATE Furniture SET Name='{name}', Number='{number}', Price={price}, ImagePath='{imagePath}', Size='{size}', Description='{description}', Material='{material}' WHERE ID = {update_id};"
+                query = f"UPDATE Furniture SET Name='{name}', Number='{number}', Price={price}, ImagePath='{imagePath}', Size='{size}', Description='{description}', Material='{material}', ImageData='{imageData}' WHERE ID = {update_id};"
                 cursor.execute(query)
                 conn.commit()
 
