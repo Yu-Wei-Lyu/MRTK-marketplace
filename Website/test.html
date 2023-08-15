@@ -39,9 +39,9 @@
                 const data = JSON.parse(event.data);
                 const message_type = data.type;
                 const resultsList = document.getElementById('results');
-                resultsList.innerHTML = data.message[1];
+                resultsList.innerHTML = data.message[0];
                 
-                if (message_type === 'query') {
+                /*if (message_type === 'query') {
                     const imageData = data.message;
                     imageData_string = imageData.substring(2, imageData.length - 2);
                     imageData_string = imageData_string.split(',')
@@ -63,7 +63,7 @@
                     const imageUrl = URL.createObjectURL(blob);
                     const imageDisplay = document.getElementById('imageDisplay');
                     imageDisplay.src = imageUrl;
-                }
+                }*/
                 
             } catch (error) {
                 console.error("Error parsing JSON:", error);

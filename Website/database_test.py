@@ -38,6 +38,21 @@ async def handle_connection(websocket, path):
 
                 # 將查詢結果轉成字串格式
                 result_str = str(result)
+
+                decimal_pattern = r"Decimal\('(\d+\.\d+)'\)"
+                decimal_matches = re.findall(decimal_pattern, result_str)
+
+                # 用相應的數字替換
+                for match in decimal_matches:
+                    result_str = result_str.replace(f"Decimal('{match}')", match)
+
+                # 將單引號 ' 移除
+                result_str = result_str.replace("'", "")
+
+                # 將逗號 , 替換成 &
+                result_str = result_str.replace(",", "&")
+
+                # 將字串分割成陣列
                 result_array = []
                 start = 0
                 count = 0
@@ -46,14 +61,14 @@ async def handle_connection(websocket, path):
                 for i in range(len(result_str)):
                     if result_str[i:i+len(separator)] == separator:
                         count += 1
-                        if count == 2:
+                        if count == 1:
                             result_array.append(result_str[start:i].strip())
                             start = i + len(separator)
                             count = 0
 
                 # 將最後一個片段加入陣列
                 result_array.append(result_str[start:].strip())
-                
+
                 response = {'type': 'query', 'message': result_array}
 
             elif message_type == 'add':
