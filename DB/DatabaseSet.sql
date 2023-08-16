@@ -35,9 +35,9 @@ ALTER TABLE Furniture MODIFY ID INT AUTO_INCREMENT PRIMARY KEY;
 
 ALTER TABLE Furniture MODIFY manufacturers varchar(50);
 
-ALTER TABLE Furniture ADD ImageData LONGBLOB;
+ALTER TABLE Furniture ADD ImageURL VARCHAR(100);
 
-ALTER TABLE Furniture DROP COLUMN ImageData;
+ALTER TABLE Furniture DROP COLUMN ImageURL;
 
 -- 插入家具資料
 INSERT INTO Furniture (Name, Number, Price, ImagePath, Size, Description, Material)
@@ -123,16 +123,21 @@ VALUES  ('109590037', '109590037', 'admin'),
 		('EmilyBrown', 'password4', 'member'),
 		('DavidLee', 'password5', 'member');
 
-Select * from Furniture where id = 13;
+Select * from Furniture;
 SELECT * FROM furniture;
 select * from order_items;
 Select * from history;
 Select * from users;
 
+describe furniture;
+describe order_items;
+describe orders;
+
 UPDATE Furniture
 SET Name='Test', Number='123', Price=243, ImagePath='ImagePath/Image.jpg', Size='200x200x100', Description='Test', Material='Test'
 WHERE ID = 12;
 
+DELETE FROM furniture WHERE id = 14;
 
 SHOW PROCESSLIST;
-Kill 113;
+Kill 55;

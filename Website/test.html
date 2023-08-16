@@ -24,7 +24,6 @@
     <input type="text" id="updateIdInput" placeholder="updateID">
     
     <input type="file" id="imageInput">
-    <button onclick="uploadImage()">Upload</button>
     <br>
     <br>
     <img id="imageDisplay" src="" alt="Image">
@@ -39,7 +38,7 @@
                 const data = JSON.parse(event.data);
                 const message_type = data.type;
                 const resultsList = document.getElementById('results');
-                resultsList.innerHTML = data.message[0];
+                resultsList.innerHTML = data.message[2];
                 
                 /*if (message_type === 'query') {
                     const imageData = data.message;
@@ -84,14 +83,14 @@
         };
 
         // 點擊按鈕時將新資料加入伺服器
-        function addData() {
+        async function addData() {
             console.log("SendAdd");
 
             const imageInput = document.getElementById('imageInput');
             const selectedImage = imageInput.files[0];
 
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = async function(event) {
                 const imageData = event.target.result;
 
                 // 從輸入欄位獲取資料
@@ -103,29 +102,52 @@
                 const description = document.getElementById('descriptionInput').value;
                 const material = document.getElementById('materialInput').value;
 
-            
+                // 上傳圖片到 Imgur
+                const formData = new FormData();
+                formData.append('image', selectedImage);
 
-                // 建立資料物件
-                const newData = {
-                    type: 'add',
-                    Name: name,
-                    Number: number,
-                    Price: price,
-                    ImagePath: imagePath,
-                    Size: size,
-                    Description: description,
-                    Material: material,
-                    ImageData: imageData
-                };
-            
-                // 將資料物件轉成 JSON 格式
-                const jsonNewData = JSON.stringify(newData);
-            
-                // 發送資料給伺服器
-                socket.send(jsonNewData);
+                try {
+                    const imgurResponse = await fetch('https://api.imgur.com/3/image', {
+                        method: 'POST',
+                        headers: {
+                            Authorization: 'Client-ID f46069301854f94', // Replace with your Imgur Client ID
+                        },
+                        body: formData,
+                    });
+
+                    if (imgurResponse.ok) {
+                        const imgurData = await imgurResponse.json();
+                        const imgurImageUrl = imgurData.data.link;
+                        console.log('Imgur Image URL:', imgurImageUrl);
+
+                        // 建立資料物件，包含 Imgur 圖片 URL
+                        const newData = {
+                            type: 'add',
+                            Name: name,
+                            Number: number,
+                            Price: price,
+                            ImagePath: imagePath,
+                            Size: size,
+                            Description: description,
+                            Material: material,
+                            ImageUrl: imgurImageUrl, // Add Imgur Image URL
+                        };
+
+                        // 將資料物件轉成 JSON 格式
+                        const jsonNewData = JSON.stringify(newData);
+
+                        // 發送資料給伺服器
+                        socket.send(jsonNewData);
+                    } else {
+                        console.error('Imgur Upload Error:', imgurResponse.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error during Imgur upload:', error);
+                }
             };
 
-            reader.readAsDataURL(selectedImage); // 读取图像文件为Base64编码
+            // 讀取文件為二進制數據
+            reader.readAsArrayBuffer(selectedImage);
         }
 
         // 點擊按鈕時向伺服器發送更新資料的請求
