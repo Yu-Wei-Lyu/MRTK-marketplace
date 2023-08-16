@@ -33,6 +33,11 @@
       .custom-file-upload i {
         margin-right: 5px;
       }
+
+      /* 調整提醒文字大小 */
+      .small-text {
+        font-size: 30%; /* 調整這個數值以控制字體大小 */
+      }
     </style>
   </head>
   <body>
@@ -138,6 +143,7 @@
               aria-describedby="sizing-addon1"
               name="productPrice"
             />
+            <!-- 圖片 -->
             <label for="picture" class="custom-file-upload">
               <i class="fas fa-upload"></i> 選擇圖片
             </label>
@@ -148,9 +154,23 @@
               aria-describedby="sizing-addon1"
               name="productPicture"
               accept="image/*"
-              onchange="displayFileName()"
+              onchange="displayPictureName()"
             />
-            <span id="fileName"></span>
+            <span id="pictureName"></span>
+            <br />
+            <!-- 模型 -->
+            <label for="model" class="custom-file-upload">
+              <i class="fas fa-upload"></i> 選擇模型
+            </label>
+            <input
+              id="model"
+              type="file"
+              class="form-control"
+              aria-describedby="sizing-addon1"
+              name="productPicture"
+              onchange="displayModelName()"
+            />
+            <span id="modelName"></span>
             <div>
               <input
                 id="depth"
@@ -181,7 +201,7 @@
               />
             </div>
             <input
-              id="quality"
+              id="material"
               type="text"
               class="form-control"
               placeholder="材質"
@@ -195,9 +215,20 @@
               aria-describedby="sizing-addon1"
               name="productDescription"
             ></textarea>
-            <button id="add" type="button" class="btn btn-success btn-block">
-              上架
-            </button>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <small id="inputError" class="text-danger" style="display: none"
+                >欄位中包含不允許的符號</small
+              >
+              <button
+                id="add"
+                type="button"
+                class="btn btn-success"
+                onclick="handleAddClick()"
+              >
+                上架
+              </button>
+            </div>
           </form>
         </div>
       </div>
