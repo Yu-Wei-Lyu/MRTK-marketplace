@@ -4,6 +4,8 @@ import mysql.connector
 import json
 import base64
 import re
+import requests
+import io
 
 # 連線參數
 config = {
@@ -50,7 +52,8 @@ async def handle_connection(websocket, path):
                 result_str = result_str.replace("'", "")
 
                 # 將逗號 , 替換成 &
-                result_str = result_str.replace(",", "&")
+                result_str = result_str.replace(',', '&')
+                result_str = result_str.replace('[', '').replace(']', '').replace('(','')
 
                 # 將字串分割成陣列
                 result_array = []
@@ -72,6 +75,7 @@ async def handle_connection(websocket, path):
                 response = {'type': 'query', 'message': result_array}
 
             elif message_type == 'add':
+
                 # 取得要新增的資料
                 name = data.get('Name')
                 number = data.get('Number')
@@ -80,15 +84,11 @@ async def handle_connection(websocket, path):
                 size = data.get('Size')
                 description = data.get('Description')
                 material = data.get('Material')
-                imageData = data.get('ImageData')
+                imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
 
-                # 先解碼 Base64 編碼的圖片數據
-                imageData_base64 = data.get('ImageData')
-                imageData = base64.b64decode(imageData_base64)
-                
                 # 執行 SQL 新增資料
-                query = f"INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageData) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-                values = (name, number, price, imagePath, size, description, material, imageData)
+                query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+                values = (name, number, price, imagePath, size, description, material, imageUrl)
                 cursor.execute(query, values)
                 conn.commit()
                 
