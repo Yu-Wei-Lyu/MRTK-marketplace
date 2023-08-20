@@ -11,6 +11,7 @@
     <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <!--宣告 JS-->
     <style>
       /* 隱藏原本的文字 */
@@ -37,6 +38,16 @@
       /* 調整提醒文字大小 */
       .small-text {
         font-size: 30%; /* 調整這個數值以控制字體大小 */
+      }
+
+      /* checkbox group */
+      .checkbox-group {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      .checkbox-group label {
+        margin-right: 15px; /* 調整間隔寬度 */
       }
     </style>
   </head>
@@ -114,6 +125,11 @@
         </div>
       </div>
     </nav>
+    <!-- websocket test section -->
+    <!-- <h1>WebSocket Query Test</h1>
+    <button onclick="sendQuery()">Send Query</button>
+    <ul id="results"></ul> -->
+    <!-- websocket test section end -->
     <div class="position-absolute top-50 start-50 translate-middle">
       <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: 450px; height: auto">
@@ -126,23 +142,67 @@
               placeholder="名稱"
               aria-describedby="sizing-addon1"
               name="productTitle"
-            />
-            <input
-              id="number"
-              type="text"
-              class="form-control"
-              placeholder="編號"
-              aria-describedby="sizing-addon1"
-              name="productNumber"
+              
             />
             <input
               id="price"
               type="text"
               class="form-control"
-              placeholder="售價"
+              placeholder="售價(TWD)"
               aria-describedby="sizing-addon1"
               name="productPrice"
+              
             />
+            
+            <div>
+              <input
+                id="depth"
+                type="text"
+                class="form-control"
+                placeholder="深度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productDepth"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+              <input
+                id="width"
+                type="text"
+                class="form-control"
+                placeholder="寬度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productWidth"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+              <input
+                id="height"
+                type="text"
+                class="form-control"
+                placeholder="高度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productHeight"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+            </div>
+            <input
+              id="material"
+              type="text"
+              class="form-control"
+              placeholder="材質"
+              aria-describedby="sizing-addon1"
+              name="productQuality"
+              
+            />
+            <textarea
+              id="description"
+              class="form-control"
+              placeholder="描述"
+              aria-describedby="sizing-addon1"
+              name="productDescription"
+              
+            ></textarea>
             <!-- 圖片 -->
             <label for="picture" class="custom-file-upload">
               <i class="fas fa-upload"></i> 選擇圖片
@@ -169,56 +229,34 @@
               aria-describedby="sizing-addon1"
               name="productPicture"
               onchange="displayModelName()"
+              accept=".glb"
             />
             <span id="modelName"></span>
-            <div>
-              <input
-                id="depth"
-                type="text"
-                class="form-control"
-                placeholder="深度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productDepth"
-                style="display: inline-block; width: 32.5%"
-              />
-              <input
-                id="width"
-                type="text"
-                class="form-control"
-                placeholder="寬度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productWidth"
-                style="display: inline-block; width: 32.5%"
-              />
-              <input
-                id="height"
-                type="text"
-                class="form-control"
-                placeholder="高度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productHeight"
-                style="display: inline-block; width: 32.5%"
-              />
-            </div>
-            <input
-              id="material"
-              type="text"
-              class="form-control"
-              placeholder="材質"
-              aria-describedby="sizing-addon1"
-              name="productQuality"
-            />
-            <textarea
-              id="description"
-              class="form-control"
-              placeholder="描述"
-              aria-describedby="sizing-addon1"
-              name="productDescription"
-            ></textarea>
-
+            <h5>選擇分類：</h5>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="study-office-furniture"> 書房．辦公家具</label>
+              <label><input type="checkbox" name="category" value="bed-dressing-table"> 床・化妝台</label>
+              <label><input type="checkbox" name="category" value="wardrobe-shoe-cabinet"> 衣櫃・鞋櫃</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="living-room-furniture"> 客廳家具</label>
+              <label><input type="checkbox" name="category" value="storage-products"> 收納用品</label>
+              <label><input type="checkbox" name="category" value="carpet-mats"> 地毯．地墊</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="dining-room-furniture"> 餐廳家具</label>
+              <label><input type="checkbox" name="category" value="curtains-window-accessories"> 窗簾．窗飾用品</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="kitchen-furniture"> 廚房家具</label>
+              <label><input type="checkbox" name="category" value="children-baby-products"> 孩童用品．嬰幼兒用品</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="other"> 其他</label>
+            </div><br>
             <div class="d-flex justify-content-between align-items-center">
               <small id="inputError" class="text-danger" style="display: none"
-                >欄位中包含不允許的符號</small
+                ></small
               >
               <button
                 id="add"
