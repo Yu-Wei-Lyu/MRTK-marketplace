@@ -11,6 +11,7 @@
     <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <!--宣告 JS-->
     <style>
       .product-image {
@@ -108,36 +109,45 @@
         </div>
       </div>
     </nav>
+
+    <!-- 後端範例 -->
+    <!-- <h1 class="mb-4" id="productTitle">商品名稱</h1>
+<p class="mb-2" id="category">分類：書房．辦公家具</p>
+<p class="mb-2" id="price">售價：$99</p>
+<p class="mb-0" id="description">描述：這是一個描述商品的範例文字。</p> -->
+
     <div class="container mt-5">
       <div class="product-info">
         <!-- 商品詳細內容 -->
-        <h1 class="mb-4">商品名稱</h1>
+        <h1 class="mb-4" id="productTitle">商品名稱</h1>
         <div class="product-details mb-4">
-          <p class="mb-2">編號：123456</p>
-          <p class="mb-2">售價：$99.99</p>
+          <p class="mb-2" id="category">分類：書房．辦公家具</p>
+          <p class="mb-2" id="price">售價：NT$99</p>
           <img
-            src="ProductImages/Example2.jpg"
+            id = "image"
+            src="#"
             alt="商品圖片"
             class="product-image mb-3"
           />
           <h2 class="mb-3">商品屬性</h2>
-          <p class="mb-2">深度：10 cm</p>
-          <p class="mb-2">寬度：20 cm</p>
-          <p class="mb-2">高度：30 cm</p>
-          <p class="mb-2">材質：木頭</p>
-          <p class="mb-0">描述：這是一個描述商品的範例文字。</p>
+          <p class="mb-2" id="depth">深度：10 cm</p>
+          <p class="mb-2" id="width">寬度：20 cm</p>
+          <p class="mb-2" id="height">高度：30 cm</p>
+          <p class="mb-2" id="material">材質：木頭，其實是鐵</p>
+          <p class="mb-0" id="description">描述：這是一個描述商品的範例文字。</p>
+          <a id="model" href="#">點擊這裡打開模型</a>
         </div>
         <!-- 按鈕 -->
         <div class="product-buttons">
           <!-- <button class="btn btn-primary" type="button" href="edit_product.html">編輯</button>
           <button class="btn btn-danger" type="button">下架</button> -->
           <a
-            id="edit${id}"
+            id="edit"
             class="btn btn-primary mt-auto"
             href="edit_product.html"
             >編輯</a
           >
-          <a id="remove${id}" class="btn btn-danger mt-auto" href="#">下架</a>
+          <a id="remove" class="btn btn-danger mt-auto" href="#">下架</a>
         </div>
       </div>
     </div>
