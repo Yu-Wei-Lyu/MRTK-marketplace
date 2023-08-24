@@ -11,6 +11,7 @@
     <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <!--宣告 JS-->
     <style>
       /* 隱藏原本的文字 */
@@ -112,28 +113,29 @@
     <div class="position-absolute top-50 start-50 translate-middle">
       <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: auto; height: auto">
+          
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">名稱</th>
-                <th scope="col">編號</th>
                 <th scope="col">售價</th>
-                <th scope="col">圖片</th>
-                <th scope="col">深度</th>
-                <th scope="col">寬度</th>
-                <th scope="col">高度</th>
+                <th scope="col">大小</th>
                 <th scope="col">材質</th>
                 <th scope="col">描述</th>
+                <th scope="col">圖片</th>
+                <th scope="col">模型</th>
+                <th scope="col">分類</th>
               </tr>
             </thead>
             <tbody id="product_field"></tbody>
           </table>
         </div>
       </div>
+      <h3>上面這條表格部分不知道需不需要ㄟ</h3>
       <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: 450px; height: auto">
           <form action="">
-            <h3>商品編輯</h3>
+            <h3>商品新增</h3>
             <input
               id="title"
               type="text"
@@ -141,23 +143,68 @@
               placeholder="名稱"
               aria-describedby="sizing-addon1"
               name="productTitle"
-            />
-            <input
-              id="number"
-              type="text"
-              class="form-control"
-              placeholder="編號"
-              aria-describedby="sizing-addon1"
-              name="productNumber"
+              
             />
             <input
               id="price"
               type="text"
               class="form-control"
-              placeholder="售價"
+              placeholder="售價(TWD)"
               aria-describedby="sizing-addon1"
               name="productPrice"
+              
             />
+            
+            <div>
+              <input
+                id="depth"
+                type="text"
+                class="form-control"
+                placeholder="深度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productDepth"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+              <input
+                id="width"
+                type="text"
+                class="form-control"
+                placeholder="寬度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productWidth"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+              <input
+                id="height"
+                type="text"
+                class="form-control"
+                placeholder="高度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productHeight"
+                style="display: inline-block; width: 32.5%"
+                
+              />
+            </div>
+            <input
+              id="material"
+              type="text"
+              class="form-control"
+              placeholder="材質"
+              aria-describedby="sizing-addon1"
+              name="productQuality"
+              
+            />
+            <textarea
+              id="description"
+              class="form-control"
+              placeholder="描述"
+              aria-describedby="sizing-addon1"
+              name="productDescription"
+              
+            ></textarea>
+            <!-- 圖片 -->
             <label for="picture" class="custom-file-upload">
               <i class="fas fa-upload"></i> 重新選擇圖片
             </label>
@@ -168,54 +215,51 @@
               aria-describedby="sizing-addon1"
               name="productPicture"
               accept="image/*"
-              onchange="displayFileName()"
+              onchange="displayPictureName()"
             />
-            <span id="fileName"></span>
-            <div>
-              <input
-                id="depth"
-                type="text"
-                class="form-control"
-                placeholder="深度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productDepth"
-                style="display: inline-block; width: 32.5%"
-              />
-              <input
-                id="width"
-                type="text"
-                class="form-control"
-                placeholder="寬度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productWidth"
-                style="display: inline-block; width: 32.5%"
-              />
-              <input
-                id="height"
-                type="text"
-                class="form-control"
-                placeholder="高度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productHeight"
-                style="display: inline-block; width: 32.5%"
-              />
-            </div>
+            <span id="pictureName"></span>
+            <br />
+            <!-- 模型 -->
+            <label for="model" class="custom-file-upload">
+              <i class="fas fa-upload"></i> 重新選擇模型
+            </label>
             <input
-              id="quality"
-              type="text"
+              id="model"
+              type="file"
               class="form-control"
-              placeholder="材質"
               aria-describedby="sizing-addon1"
-              name="productQuality"
+              name="productPicture"
+              onchange="displayModelName()"
+              accept=".glb"
             />
-            <textarea
-              id="description"
-              class="form-control"
-              placeholder="描述"
-              aria-describedby="sizing-addon1"
-              name="productDescription"
-            ></textarea>
-            <button id="save" type="button" class="btn btn-success btn-block">
+            <span id="modelName"></span>
+            <h5>選擇分類：</h5>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="study-office-furniture"> 書房．辦公家具</label>
+              <label><input type="checkbox" name="category" value="bed-dressing-table"> 床・化妝台</label>
+              <label><input type="checkbox" name="category" value="wardrobe-shoe-cabinet"> 衣櫃・鞋櫃</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="living-room-furniture"> 客廳家具</label>
+              <label><input type="checkbox" name="category" value="storage-products"> 收納用品</label>
+              <label><input type="checkbox" name="category" value="carpet-mats"> 地毯．地墊</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="dining-room-furniture"> 餐廳家具</label>
+              <label><input type="checkbox" name="category" value="curtains-window-accessories"> 窗簾．窗飾用品</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="kitchen-furniture"> 廚房家具</label>
+              <label><input type="checkbox" name="category" value="children-baby-products"> 孩童用品．嬰幼兒用品</label>
+            </div><br>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="category" value="other"> 其他</label>
+            </div><br>
+            <div class="d-flex justify-content-between align-items-center">
+              <small id="inputError" class="text-danger" style="display: none"
+                ></small
+              >
+            <button id="save" type="button" class="btn btn-success btn-block" onclick="handleAddClick()">
               儲存
             </button>
             <button id="remove" type="button" class="btn btn-success btn-block">
@@ -225,20 +269,6 @@
         </div>
       </div>
     </div>
-    <script>
-      function myFunction() {
-        var text = "確定要登出?";
-        if (confirm(text) == true) {
-          window.location.href = "/";
-        }
-      }
-
-      function displayFileName() {
-        const fileInput = document.getElementById("picture");
-        const fileNameSpan = document.getElementById("fileName");
-        fileNameSpan.textContent = fileInput.files[0]?.name || "";
-      }
-    </script>
-    <script src="static/edit_product.js"></script>
+    <script src="../static/edit_product.js"></script>
   </body>
 </html>
