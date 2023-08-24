@@ -37,10 +37,6 @@
     <script>
         const socket = new WebSocket('ws://118.150.125.153:8765');
 
-        const githubToken = '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'; // 您的GitHub令牌
-        const owner = 'SNWBS'; // GitHub帳戶名
-        const repo = 'Modal_database'; // 存儲庫名
-
         const showImageButton = document.getElementById('showImageButton');
         const imageContainer = document.getElementById('imageContainer');
 
@@ -117,6 +113,8 @@
             reader.onload = async function(event) {
                 const imageData = event.target.result;
 
+                const fileInput = document.getElementById('fileInput');
+
                 // 從輸入欄位獲取資料
                 const name = document.getElementById('nameInput').value;
                 const number = document.getElementById('numberInput').value;
@@ -125,6 +123,7 @@
                 const size = document.getElementById('sizeInput').value;
                 const description = document.getElementById('descriptionInput').value;
                 const material = document.getElementById('materialInput').value;
+                const file = fileInput.files[0];
 
                 // 上傳圖片到 Imgur
                 const formData = new FormData();
@@ -155,6 +154,7 @@
                             Description: description,
                             Material: material,
                             ImageUrl: imgurImageUrl, // Add Imgur Image URL
+                            File: file
                         };
 
                         // 將資料物件轉成 JSON 格式

@@ -115,12 +115,14 @@ async def handle_connection(websocket, path):
                 description = data.get('Description')
                 material = data.get('Material')
                 imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
+                file = data.get('File')
+                print(file.decode())
 
                 # 執行 SQL 新增資料
-                query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-                values = (name, number, price, imagePath, size, description, material, imageUrl)
-                cursor.execute(query, values)
-                conn.commit()
+                #query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+                #values = (name, number, price, imagePath, size, description, material, imageUrl)
+                #cursor.execute(query, values)
+                #conn.commit()
                 
                 response = {'type': 'add', 'message': 'Data added successfully'}
 
