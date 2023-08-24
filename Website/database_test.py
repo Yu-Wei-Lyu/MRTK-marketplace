@@ -7,6 +7,16 @@ import re
 import requests
 import io
 
+def get_imgur_image_url(image_url):
+    response = requests.get(image_url)
+
+    if response.status_code == 200:
+        image_content = response.content
+        return image_content
+    else:
+        print('Error fetching Imgur image:', response.status_code)
+        return None
+
 # 連線參數
 config = {
     'user': '109590037',
@@ -29,6 +39,7 @@ async def handle_connection(websocket, path):
         try:
             data = json.loads(message)
             message_type = data.get('type')
+            print(message_type =='query_website')
 
             if message_type == 'query':
                 # 執行 SQL 查詢
@@ -38,41 +49,60 @@ async def handle_connection(websocket, path):
                 # 取得查詢結果
                 result = cursor.fetchall()
 
-                # 將查詢結果轉成字串格式
-                result_str = str(result)
+                result_data = []
+        
+                for row in result:  # 假設您有一個 result 包含查詢結果
+        
+                    # 將資料整理成字典，包括 ImageUrl
+                    item = {
+                        'ID': row[0],
+                        'Name': row[1],
+                        'Price': float(row[2]),
+                        'Size': row[3],
+                        'Tags': row[4],
+                        'Description': row[5],
+                        'Material': row[6],
+                        'Manufacturer': row[7],
+                        'ImageURL': row[8],
+                        'ModelURL': row[9]
+                    }
+                    result_data.append(item)
+                response = result_data
+        
+                # 將處理後的資料發送回前端網頁
+                await websocket.send(json.dumps(response))
 
-                decimal_pattern = r"Decimal\('(\d+\.\d+)'\)"
-                decimal_matches = re.findall(decimal_pattern, result_str)
+            elif message_type == 'query_website':
+                # 執行 SQL 查詢
+                query = "SELECT * FROM furniture;"
+                cursor.execute(query)
 
-                # 用相應的數字替換
-                for match in decimal_matches:
-                    result_str = result_str.replace(f"Decimal('{match}')", match)
+                # 取得查詢結果
+                result = cursor.fetchall()
 
-                # 將單引號 ' 移除
-                result_str = result_str.replace("'", "")
-
-                # 將逗號 , 替換成 &
-                result_str = result_str.replace(',', '&')
-                result_str = result_str.replace('[', '').replace(']', '').replace('(','')
-
-                # 將字串分割成陣列
-                result_array = []
-                start = 0
-                count = 0
-                separator = ")"
-
-                for i in range(len(result_str)):
-                    if result_str[i:i+len(separator)] == separator:
-                        count += 1
-                        if count == 1:
-                            result_array.append(result_str[start:i].strip())
-                            start = i + len(separator)
-                            count = 0
-
-                # 將最後一個片段加入陣列
-                result_array.append(result_str[start:].strip())
-
-                response = {'type': 'query', 'message': result_array}
+                result_data = []
+        
+                for row in result:  # 假設您有一個 result 包含查詢結果
+        
+                    # 將資料整理成字典，包括 ImageUrl
+                    item = {
+                        'ID': row[0],
+                        'Name': row[1],
+                        'Price': float(row[2]),
+                        'Size': row[3],
+                        'Tags': row[4],
+                        'Description': row[5],
+                        'Material': row[6],
+                        'Manufacturer': row[7],
+                        'ImageURL': row[8],
+                        'ModelURL': row[9]
+                    }
+                    result_data.append(item)
+                print(result_data)
+                response = {'type': 'query_webiste', 'message': result_data}
+        
+                # 將處理後的資料發送回前端網頁
+                await websocket.send(json.dumps(response))
 
             elif message_type == 'add':
 

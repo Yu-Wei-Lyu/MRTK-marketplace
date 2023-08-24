@@ -24,45 +24,69 @@
     <input type="text" id="updateIdInput" placeholder="updateID">
     
     <input type="file" id="imageInput">
+
+    <input type="file" id="fileInput">
     <br>
     <br>
     <img id="imageDisplay" src="" alt="Image">
+    <h1>Image Display</h1>
+    <div id="imageContainer"></div>
+    <button id="showImageButton">Show Image</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
         const socket = new WebSocket('ws://118.150.125.153:8765');
+
+        const githubToken = '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'; // 您的GitHub令牌
+        const owner = 'SNWBS'; // GitHub帳戶名
+        const repo = 'Modal_database'; // 存儲庫名
+
+        const showImageButton = document.getElementById('showImageButton');
+        const imageContainer = document.getElementById('imageContainer');
+
+        // 添加按鈕點擊事件監聽器
+        showImageButton.addEventListener('click', () => {
+            // Imgur 圖片的網址
+            const imgurImageUrl = 'https://i.imgur.com/QkwpQXf.jpg';
+        
+            // 創建 img 元素
+            const imgElement = document.createElement('img');
+
+            // 設定 src 屬性為 Imgur 圖片的網址
+            imgElement.src = imgurImageUrl;
+
+            // 將 img 元素添加到容器中
+            imageContainer.appendChild(imgElement);
+        });
 
         // 當接收到訊息時更新網頁內容
         socket.onmessage = function(event) {
             try {
                 const data = JSON.parse(event.data);
                 const message_type = data.type;
-                const resultsList = document.getElementById('results');
-                resultsList.innerHTML = data.message[2];
-                
-                /*if (message_type === 'query') {
-                    const imageData = data.message;
-                    imageData_string = imageData.substring(2, imageData.length - 2);
-                    imageData_string = imageData_string.split(',')
-                    imageData_string = imageData_string[9]
+                // 假設 data 是您接收到的物件陣列
+                const dataList = data.message;  // 如果 'message' 包含資料物件
 
-                    // 解碼 Base64 資料為 Uint8Array
-                    const decodedData = atob(imageData_string);
+                // 取得要顯示資料的容器
+                const resultsContainer = document.getElementById('results');  // 這是您的HTML容器的ID
 
-                    // 將 Uint8Array 轉換為 Uint8Array 視圖
-                    const uint8Array = new Uint8Array(decodedData.length);
-                    for (let i = 0; i < decodedData.length; i++) {
-                        uint8Array[i] = decodedData.charCodeAt(i);
-                    }
-
-                    // 建立 Blob 物件
-                    const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-
-                    // 建立 URL 物件，並設置圖片的 Blob URL 作為 src
-                    const imageUrl = URL.createObjectURL(blob);
-                    const imageDisplay = document.getElementById('imageDisplay');
-                    imageDisplay.src = imageUrl;
-                }*/
+                // 遍歷資料並顯示每個物件的資料
+                dataList.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = `
+                        <p>ID: ${item.ID}</p>
+                        <p>Name: ${item.Name}</p>
+                        <p>Price: ${item.Price}</p>
+                        <p>Size: ${item.Size}</p>
+                        <p>Tags: ${item.Tags}</p>
+                        <p>Description: ${item.Description}</p>
+                        <p>Material: ${item.Material}</p>
+                        <p>Manufacturer: ${item.Manufacturer}</p>
+                        <p>ImageURL: ${item.ImageURL}</p>
+                        <p>ModelURL: ${item.ModelURL}</p>
+                    `;
+                    resultsContainer.appendChild(itemDiv);
+                });
                 
             } catch (error) {
                 console.error("Error parsing JSON:", error);
@@ -79,7 +103,7 @@
         // 點擊按鈕時發送訊息給伺服器
         function sendQuery() {
             console.log("SendQuery");
-            socket.send('{"type":"query"}');
+            socket.send('{"type":"query_website"}');
         };
 
         // 點擊按鈕時將新資料加入伺服器
@@ -110,7 +134,7 @@
                     const imgurResponse = await fetch('https://api.imgur.com/3/image', {
                         method: 'POST',
                         headers: {
-                            Authorization: 'Client-ID f46069301854f94', // Replace with your Imgur Client ID
+                            Authorization: 'Client-ID a4764610882ef96', // Replace with your Imgur Client ID
                         },
                         body: formData,
                     });
