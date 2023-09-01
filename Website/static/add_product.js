@@ -50,16 +50,16 @@ async function addData() {
   const imageInput = document.getElementById('picture');
   const selectedImage = imageInput.files[0];
 
+  const fileInput = document.getElementById('model');
+  const selectedFile = fileInput.files[0];
+
   const reader = new FileReader();
   reader.onload = async function(event) {
       const imageData = event.target.result;
 
       // 從輸入欄位獲取資料
       const name = document.getElementById('title').value;
-      // const number = document.getElementById('number').value;
-      
       const price = document.getElementById('price').value;
-      // const imagePath = document.getElementById('imagePathInput').value;
       
       // 取得家具size
       const depth = document.getElementById('depth').value;
@@ -78,7 +78,6 @@ async function addData() {
       const description = document.getElementById('description').value;
       const material = document.getElementById('material').value;
 
-      
 
       // 上傳圖片到 Imgur
       const formData = new FormData();
@@ -98,27 +97,50 @@ async function addData() {
               const imgurImageUrl = imgurData.data.link;
               console.log('Imgur Image URL:', imgurImageUrl);
 
-              // 建立資料物件，包含 Imgur 圖片 URL
-              const newData = {
-                  type: 'add',
-                  Name: name,
-                  // Number: number, 應該可移除
-                  Price: price,
-                  // ImagePath: imagePath, 應該可移除
-                  Size: size,
-                  Tags:selectedCategories,
-                  Description: description,
-                  Material: material,
-                  // Manufacturer: manufacturer, 不知加在哪  
-                  ImageUrl: imgurImageUrl, // Add Imgur Image URL
-                  // ModelUrl: imgurModelUrl, // Add Imgur Model URL 未實裝
+              // 文件上傳的開始
+              const fileReader = new FileReader();
+
+              fileReader.onload = async (event) => {
+                  const fileData = event.target.result;
+
+                  // 資料物件
+                  const dataToSend = {
+                      type: 'add',
+                      Name: name,
+                      Price: price,
+                      Size: size,
+                      Tags: selectedCategories,
+                      Description: description,
+                      Material: material,
+                      // Manufacturer: manufacturer,
+                      ImageUrl: imgurImageUrl, // Add Imgur Image URL
+                      filename: selectedFile.name,
+                      content: new Uint8Array(fileData),
+                  };
+
+                  const chunkSize = 8192; // 設定每個塊的大小（可以根據需要調整）
+
+                  // 顯示進度條
+                  const progressContainer = document.getElementById('progressContainer');
+                  const progressBar = document.getElementById('progressBar');
+                  const progressLabel = document.getElementById('progressLabel');
+                  progressContainer.style.display = 'block';
+
+                  // 將content分割傳送
+                  for (let i = 0; i < dataToSend.content.length; i += chunkSize) {
+                      const chunk = dataToSend.content.slice(i, i + chunkSize);
+                      const dataChunk = { ...dataToSend, content: Array.from(chunk) };
+                      socket.send(JSON.stringify(dataChunk));
+                      
+                      // 更新進度條的值和標籤
+                      const progress = (i / dataToSend.content.length) * 100;
+                      progressBar.value = progress;
+                      progressLabel.textContent = `Uploading... ${progress.toFixed(2)}%`;
+
+                      await new Promise(resolve => setTimeout(resolve, 10));
+                    }
               };
-
-              // 將資料物件轉成 JSON 格式
-              const jsonNewData = JSON.stringify(newData);
-
-              // 發送資料給伺服器
-              socket.send(jsonNewData);
+              fileReader.readAsArrayBuffer(selectedFile);
           } else {
               console.error('Imgur Upload Error:', imgurResponse.statusText);
           }
@@ -136,16 +158,6 @@ function myFunction() {
     if (confirm(text) == true) {
       window.location.href = "/";
     }
-}
-
-function checkInputLength(inputElement, maxLength) {
-  const inputValue = inputElement.value;
-  const currentLength = inputValue.length;
-
-  if (currentLength > maxLength) {
-      inputElement.value = inputValue.substring(0, maxLength); // 截斷輸入超過的部分
-      alert(`超過最大字數限制（${maxLength}字），多餘的字將被移除。`);
-  }
 }
 
 function displayPictureName() {
@@ -169,19 +181,6 @@ const unicode_hex_ranges = [
 
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx);
-}
-
-function checkInput(inputElement) {
-  const inputValue = inputElement.value;
-
-  // 檢查輸入是否包含不允許的字符或 &
-  const hasInvalidChars = inputValue.split('').some(char => {
-    return !unicode_hex_ranges.flat().includes(char.charCodeAt(0)) || char === '&';
-  });
-
-  // 根據檢查結果顯示或隱藏錯誤訊息
-  const errorElement = document.getElementById('inputError');
-  errorElement.style.display = hasInvalidChars ? 'inline-block' : 'none';
 }
   
 function handleAddClick() {

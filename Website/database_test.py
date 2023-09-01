@@ -6,6 +6,10 @@ import base64
 import re
 import requests
 import io
+import os
+
+# 定義檔案分割傳輸每一段的大小(8192 = 2^13)
+chunkSize = 8192
 
 def get_imgur_image_url(image_url):
     response = requests.get(image_url)
@@ -35,6 +39,10 @@ cursor = conn.cursor()
 
 # 定義 WebSocket 連線的處理函式
 async def handle_connection(websocket, path):
+    filename = None
+    # 接收檔案分段內容的list
+    content_chunks = []
+
     async for message in websocket:
         try:
             data = json.loads(message)
@@ -105,25 +113,39 @@ async def handle_connection(websocket, path):
                 await websocket.send(json.dumps(response))
 
             elif message_type == 'add':
-
-                # 取得要新增的資料
-                name = data.get('Name')
-                number = data.get('Number')
-                price = data.get('Price')
-                imagePath = data.get('ImagePath')
-                size = data.get('Size')
-                description = data.get('Description')
-                material = data.get('Material')
-                imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
-                file = data.get('File')
-                print(file.decode())
+                # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
+                # 因為檔案上傳過程中以下數據也會不停地被重複送來
+                if filename is None:
+                    filename = data['filename']
+                    name = data.get('Name') # or data['Name']
+                    price = data.get('Price')
+                    size = data.get('Size')
+                    tags = data.get('Tags')
+                    description = data.get('Description')
+                    material = data.get('Material')
+                    imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
+                    print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
                 # 執行 SQL 新增資料
                 #query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
                 #values = (name, number, price, imagePath, size, description, material, imageUrl)
                 #cursor.execute(query, values)
                 #conn.commit()
-                
+
+                # 如果有filename，content_chunks才會持續接收分段內容。
+                if filename:
+                    content_chunks.append(bytes(data['content']))
+                    
+                    # 判斷是不是最後一個chunk
+                    if len(data['content']) < chunkSize:
+                        # 將所有分割的數據結合成完整的數據
+                        content = b''.join(content_chunks)
+                        # 將檔案存在本地端與檔案同目錄的uploads資料夾之內。
+                        # 請確保有uploads資料夾
+                        with open(os.path.join('uploads', filename), 'wb') as f:
+                            f.write(content)
+                        filename = None
+                        content_chunks = []
                 response = {'type': 'add', 'message': 'Data added successfully'}
 
             elif message_type == 'update':

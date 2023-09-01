@@ -142,7 +142,6 @@
               placeholder="名稱"
               aria-describedby="sizing-addon1"
               name="productTitle"
-              
             />
             <input
               id="price"
@@ -151,7 +150,6 @@
               placeholder="售價(TWD)"
               aria-describedby="sizing-addon1"
               name="productPrice"
-              
             />
             
             <div>
@@ -163,7 +161,6 @@
                 aria-describedby="sizing-addon1"
                 name="productDepth"
                 style="display: inline-block; width: 32.5%"
-                
               />
               <input
                 id="width"
@@ -173,7 +170,6 @@
                 aria-describedby="sizing-addon1"
                 name="productWidth"
                 style="display: inline-block; width: 32.5%"
-                
               />
               <input
                 id="height"
@@ -183,7 +179,6 @@
                 aria-describedby="sizing-addon1"
                 name="productHeight"
                 style="display: inline-block; width: 32.5%"
-                
               />
             </div>
             <input
@@ -193,7 +188,6 @@
               placeholder="材質"
               aria-describedby="sizing-addon1"
               name="productQuality"
-              
             />
             <textarea
               id="description"
@@ -201,7 +195,6 @@
               placeholder="描述"
               aria-describedby="sizing-addon1"
               name="productDescription"
-              
             ></textarea>
             <!-- 圖片 -->
             <label for="picture" class="custom-file-upload">
@@ -232,6 +225,10 @@
               accept=".glb"
             />
             <span id="modelName"></span>
+            <div id="progressContainer" style="display: none;">
+              <progress id="progressBar" value="0" max="100"></progress>
+              <span id="progressLabel">Uploading...</span>
+            </div>
             <h5>選擇分類：</h5>
             <div class="checkbox-group">
               <label><input type="checkbox" name="category" value="study-office-furniture"> 書房．辦公家具</label>
