@@ -47,7 +47,7 @@ async def handle_connection(websocket, path):
         try:
             data = json.loads(message)
             message_type = data.get('type')
-            print(message_type =='query_website')
+            print(message_type)
 
             if message_type == 'query':
                 # 執行 SQL 查詢
@@ -106,7 +106,6 @@ async def handle_connection(websocket, path):
                         'ModelURL': row[9]
                     }
                     result_data.append(item)
-                print(result_data)
                 response = {'type': 'query_webiste', 'message': result_data}
         
                 # 將處理後的資料發送回前端網頁
@@ -181,6 +180,40 @@ async def handle_connection(websocket, path):
                 cursor.execute(query)
                 conn.commit()
                 response = {'type': 'delete', 'message': 'Data deleted successfully'}
+
+            elif message_type == 'addUser':
+                #新增使用者
+                username = data['id']
+                password = data['password']
+                email = data['email']
+                department = data['department']
+
+                 # 插入用户数据到 MySQL 数据库
+                query = "INSERT INTO Users (Username, Password, Email, Department) VALUES (%s, %s, %s, %s)"
+                values = (username, password, email, department)
+                cursor.execute(query, values)
+                conn.commit()
+
+                response = {'type': 'user_created', 'message': 'User created successfully'}
+
+            elif message_type == 'Login':
+                #登入使用者資料
+                username = data['id']
+                password = data['password']
+
+                # 查询数据库以验证用户名和密码
+                query = "SELECT * FROM Users WHERE Username = %s AND Password = %s"
+                values = (username, password)
+                cursor.execute(query, values)
+                user = cursor.fetchone()
+
+                if user:
+                    print("Login successful.")
+                    response = {'type': 'user_created', 'message': 'User Login successfully'}
+                else:
+                    print("Login failed. User not found or incorrect password.")
+                    response = {'type': 'user_created', 'message': 'User Login unsuccessfully'}
+
 
             else:
                 response = {'type': 'error', 'message': 'Invalid message type'}

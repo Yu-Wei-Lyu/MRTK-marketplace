@@ -54,13 +54,29 @@ VALUES
     ('檯燈', 200.00, '30x30x50', '', '現代風格檯燈', '金屬、塑膠', '', '', ''),
     ('茶几', 800.00, '80x80x40', '', '實木茶几', '木材', '', '', '');
 
+-- 用户1
+INSERT INTO Users (Username, Password, Email, Department)
+VALUES	('109590037', '109590037', 'user1@example.com', 'ALL'),
+		('109590038', '109590038', 'user2@example.com', 'ALL'),
+		('109590039', '109590039', 'user3@example.com', 'ALL');
 
--- 創建 users 表格
-CREATE TABLE users (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) NOT NULL
+-- 用户2
+INSERT INTO Users (Username, Password, Email, Department)
+VALUES ('109590038', '109590038', 'user2@example.com', 'ALL');
+
+-- 用户3
+INSERT INTO Users (Username, Password, Email, Department)
+VALUES ('109590039', '109590039', 'user3@example.com', 'ALL');
+
+
+
+CREATE TABLE Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Password VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    Department VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE History (

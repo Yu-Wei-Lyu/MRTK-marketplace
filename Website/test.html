@@ -31,7 +31,23 @@
     <img id="imageDisplay" src="" alt="Image">
     <h1>Image Display</h1>
     <div id="imageContainer"></div>
-    <button id="showImageButton">Show Image</button>
+    <button id="showImageButton" >Show Image</button>
+
+    <br>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="department" placeholder="Department">
+    <button onclick="addUser()">Create User</button>
+
+    <br>
+    <br>
+    <input type="text" id="Enterusername" placeholder="Username">
+    <input type="password" id="Enterpassword" placeholder="Password">
+    <button onclick="Login()">Login</button>
+    <br>
+    <br>
+    <div id="messageContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
@@ -66,9 +82,19 @@
                 // 取得要顯示資料的容器
                 const resultsContainer = document.getElementById('results');  // 這是您的HTML容器的ID
 
+                // 在接收到登录成功的回应后
+                const messageContainer = document.getElementById('messageContainer');
+                const itemDiv = document.createElement('div');
+                itemDiv.innerHTML = data.message; // data.message 包含成功的消息
+                            
+                // 清空消息容器的内容
+                messageContainer.innerHTML = '';
+                            
+                // 将新消息添加到消息容器中
+                messageContainer.appendChild(itemDiv);
+
                 // 遍歷資料並顯示每個物件的資料
                 dataList.forEach(item => {
-                    const itemDiv = document.createElement('div');
                     itemDiv.innerHTML = `
                         <p>ID: ${item.ID}</p>
                         <p>Name: ${item.Name}</p>
@@ -235,6 +261,48 @@
             const jsonRequestData = JSON.stringify(requestData);
 
             // 發送資料給伺服器
+            socket.send(jsonRequestData);
+        }
+
+        // 點擊按鈕時向伺服器發送刪除資料的請求
+        function addUser() {
+            console.log("addUser");
+            // 從輸入欄位獲取要刪除的資料的 ID
+            const deleteId = document.getElementById('deleteIdInput').value;
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department').value;
+
+            // 建立要傳送的資料物件
+            const requestData = {
+                type: 'addUser',
+                id: username,
+                password: password,
+                email: email,
+                department: department
+            };
+
+            // 將資料物件轉成 JSON 格式
+            const jsonRequestData = JSON.stringify(requestData);
+            socket.send(jsonRequestData);
+        }
+        function Login(){
+            console.log("login");
+
+            const username = document.getElementById('Enterusername').value;
+            const password = document.getElementById('Enterpassword').value;
+
+            // 建立要傳送的資料物件
+            const requestData = {
+                type: 'Login',
+                id: username,
+                password: password,
+            };
+
+            // 將資料物件轉成 JSON 格式
+            const jsonRequestData = JSON.stringify(requestData);
             socket.send(jsonRequestData);
         }
     </script>
