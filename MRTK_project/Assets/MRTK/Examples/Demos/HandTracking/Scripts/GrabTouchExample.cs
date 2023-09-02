@@ -34,9 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public void OnInputPressed(InputEventData<float> eventData) { }
+        public void OnInputPressed(InputEventData<float> eventData)
+        {
+        }
 
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        {
+        }
 
         /// <summary>
         /// This Handler is called by a HandTrackingInputSource when a Touch action for that hand starts.

@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using System;
 
 
 namespace TMPro
@@ -10,19 +10,29 @@ namespace TMPro
     public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [Serializable]
-        public class CharacterSelectionEvent : UnityEvent<char, int> { }
+        public class CharacterSelectionEvent : UnityEvent<char, int>
+        {
+        }
 
         [Serializable]
-        public class SpriteSelectionEvent : UnityEvent<char, int> { }
+        public class SpriteSelectionEvent : UnityEvent<char, int>
+        {
+        }
 
         [Serializable]
-        public class WordSelectionEvent : UnityEvent<string, int, int> { }
+        public class WordSelectionEvent : UnityEvent<string, int, int>
+        {
+        }
 
         [Serializable]
-        public class LineSelectionEvent : UnityEvent<string, int, int> { }
+        public class LineSelectionEvent : UnityEvent<string, int, int>
+        {
+        }
 
         [Serializable]
-        public class LinkSelectionEvent : UnityEvent<string, string, int> { }
+        public class LinkSelectionEvent : UnityEvent<string, string, int>
+        {
+        }
 
 
         /// <summary>
@@ -30,8 +40,14 @@ namespace TMPro
         /// </summary>
         public CharacterSelectionEvent onCharacterSelection
         {
-            get { return m_OnCharacterSelection; }
-            set { m_OnCharacterSelection = value; }
+            get
+            {
+                return m_OnCharacterSelection;
+            }
+            set
+            {
+                m_OnCharacterSelection = value;
+            }
         }
         [SerializeField]
         private CharacterSelectionEvent m_OnCharacterSelection = new CharacterSelectionEvent();
@@ -42,8 +58,14 @@ namespace TMPro
         /// </summary>
         public SpriteSelectionEvent onSpriteSelection
         {
-            get { return m_OnSpriteSelection; }
-            set { m_OnSpriteSelection = value; }
+            get
+            {
+                return m_OnSpriteSelection;
+            }
+            set
+            {
+                m_OnSpriteSelection = value;
+            }
         }
         [SerializeField]
         private SpriteSelectionEvent m_OnSpriteSelection = new SpriteSelectionEvent();
@@ -54,8 +76,14 @@ namespace TMPro
         /// </summary>
         public WordSelectionEvent onWordSelection
         {
-            get { return m_OnWordSelection; }
-            set { m_OnWordSelection = value; }
+            get
+            {
+                return m_OnWordSelection;
+            }
+            set
+            {
+                m_OnWordSelection = value;
+            }
         }
         [SerializeField]
         private WordSelectionEvent m_OnWordSelection = new WordSelectionEvent();
@@ -66,8 +94,14 @@ namespace TMPro
         /// </summary>
         public LineSelectionEvent onLineSelection
         {
-            get { return m_OnLineSelection; }
-            set { m_OnLineSelection = value; }
+            get
+            {
+                return m_OnLineSelection;
+            }
+            set
+            {
+                m_OnLineSelection = value;
+            }
         }
         [SerializeField]
         private LineSelectionEvent m_OnLineSelection = new LineSelectionEvent();
@@ -78,8 +112,14 @@ namespace TMPro
         /// </summary>
         public LinkSelectionEvent onLinkSelection
         {
-            get { return m_OnLinkSelection; }
-            set { m_OnLinkSelection = value; }
+            get
+            {
+                return m_OnLinkSelection;
+            }
+            set
+            {
+                m_OnLinkSelection = value;
+            }
         }
         [SerializeField]
         private LinkSelectionEvent m_OnLinkSelection = new LinkSelectionEvent();

@@ -19,7 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private string textureShaderProperty = DefaultTextureShaderProperty;
         public string TextureShaderProperty
         {
-            get { return textureShaderProperty; }
+            get
+            {
+                return textureShaderProperty;
+            }
             set
             {
                 textureShaderProperty = value;

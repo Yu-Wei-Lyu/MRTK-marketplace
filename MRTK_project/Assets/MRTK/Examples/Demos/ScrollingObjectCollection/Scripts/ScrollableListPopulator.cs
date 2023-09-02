@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -23,8 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public ScrollingObjectCollection ScrollView
         {
-            get { return scrollView; }
-            set { scrollView = value; }
+            get
+            {
+                return scrollView;
+            }
+            set
+            {
+                scrollView = value;
+            }
         }
 
         [SerializeField]
@@ -36,8 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public GameObject DynamicItem
         {
-            get { return dynamicItem; }
-            set { dynamicItem = value; }
+            get
+            {
+                return dynamicItem;
+            }
+            set
+            {
+                dynamicItem = value;
+            }
         }
 
         [SerializeField]
@@ -49,8 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public int NumItems
         {
-            get { return numItems; }
-            set { numItems = value; }
+            get
+            {
+                return numItems;
+            }
+            set
+            {
+                numItems = value;
+            }
         }
 
         [SerializeField]
@@ -62,8 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public bool LazyLoad
         {
-            get { return lazyLoad; }
-            set { lazyLoad = value; }
+            get
+            {
+                return lazyLoad;
+            }
+            set
+            {
+                lazyLoad = value;
+            }
         }
 
         [SerializeField]
@@ -75,8 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public int ItemsPerFrame
         {
-            get { return itemsPerFrame; }
-            set { itemsPerFrame = value; }
+            get
+            {
+                return itemsPerFrame;
+            }
+            set
+            {
+                itemsPerFrame = value;
+            }
         }
 
         [SerializeField]
@@ -108,8 +138,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public GameObject Loader
         {
-            get { return loader; }
-            set { loader = value; }
+            get
+            {
+                return loader;
+            }
+            set
+            {
+                loader = value;
+            }
         }
 
         private void OnEnable()

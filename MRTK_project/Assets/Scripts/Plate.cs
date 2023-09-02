@@ -1,75 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Plate : MonoBehaviour
+namespace Assets.Scripts
 {
-    [SerializeField]
-    private string plateTitle;
-
-    private GameObject plate;
-
-    // Awake is called when the script instance is being loaded.
-    public virtual void Awake()
+    [System.Serializable]
+    public class Plate : MonoBehaviour
     {
-        this.plate = this.gameObject;
-    }
+        [SerializeField]
+        private string _plateTitle;
 
-    // Start is called before the first frame update
-    public virtual void Start()
-    {
+        // Get plate title
+        public string Title => _plateTitle;
 
-    }
+        // Awake is called when the script instance is being loaded.
+        public virtual void Awake()
+        {
+        }
 
-    // Update is called once per frame
-    public virtual void Update()
-    {
-        
-    }
+        // Start is called before the first frame update
+        public virtual void Start()
+        {
+        }
 
-    // This function is called when the object becomes enabled and active.
-    public virtual void OnEnable()
-    {
-        this.Initialize();
-    }
+        // Update is called once per frame
+        public virtual void Update()
+        {
+        }
 
-    // This function is called when the object becomes disabled or inactive.
-    public virtual void OnDisable()
-    {
+        // This function is called when the object becomes enabled and active.
+        public virtual void OnEnable()
+        {
 
-    }
+        }
 
-    // This function is called when the MonoBehaviour will be destroyed.
-    public virtual void OnDestroy()
-    {
+        // This function is called when the object becomes disabled or inactive.
+        public virtual void OnDisable()
+        {
+        }
 
-    }
+        // This function is called when the MonoBehaviour will be destroyed.
+        public virtual void OnDestroy()
+        {
+        }
 
-    // Get plate title
-    public string Title
-    {
-        get { return this.plateTitle; }
-    }
+        // Initialize (virtual function)
+        public virtual void Initialize()
+        {
+        }
 
-    // Initialize (virtual function)
-    public virtual void Initialize() { }
+        // Set the plate activation state
+        public virtual void SetActive(bool value)
+        {
+            if (value)
+                Initialize();
+            gameObject.SetActive(value);
+        }
 
-    // Set the plate activation state
-    public virtual void SetActive(bool value)
-    {
-        this.plate.SetActive(value);
-    }
-
-    // Set the plate position
-    public void SetPosition(Vector3 newPosition)
-    {
-        this.plate.transform.position = newPosition;
-    }
-
-    // Compare plates
-    public bool IsSameReference(GameObject targetPlate)
-    {
-        return ReferenceEquals(this.plate, targetPlate);
+        // Compare plates
+        public bool IsSameReference(GameObject targetPlate)
+        {
+            return ReferenceEquals(gameObject, targetPlate);
+        }
     }
 }

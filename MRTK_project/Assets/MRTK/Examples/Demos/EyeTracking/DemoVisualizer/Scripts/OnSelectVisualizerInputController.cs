@@ -36,10 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+        }
 
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+        }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
     }
 }

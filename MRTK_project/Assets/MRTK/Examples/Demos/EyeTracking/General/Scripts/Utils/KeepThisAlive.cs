@@ -12,7 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     [AddComponentMenu("Scripts/MRTK/Obsolete/KeepThisAlive")]
     public class KeepThisAlive : MonoBehaviour
     {
-        public static KeepThisAlive Instance { get; private set; }
+        public static KeepThisAlive Instance
+        {
+            get; private set;
+        }
 
         private void Awake()
         {

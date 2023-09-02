@@ -351,7 +351,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public int AmountOfSamples
         {
-            get { return numberOfTraceSamples; }
+            get
+            {
+                return numberOfTraceSamples;
+            }
             set
             {
                 numberOfTraceSamples = value;

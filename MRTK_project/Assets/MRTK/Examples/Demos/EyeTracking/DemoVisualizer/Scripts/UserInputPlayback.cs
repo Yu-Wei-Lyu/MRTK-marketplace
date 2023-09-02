@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -256,9 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             _HeadGazeVisualizer.ResetVisualizations();
         }
 
-        public void SpeedUp() { }
+        public void SpeedUp()
+        {
+        }
 
-        public void SlowDown() { }
+        public void SlowDown()
+        {
+        }
 
         public void ShowAllAndFreeze()
         {
@@ -422,7 +426,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         #region Handle data replay
         private bool DataIsLoaded
         {
-            get { return (loggedLines.Count > 0); }
+            get
+            {
+                return (loggedLines.Count > 0);
+            }
         }
 
         DateTime lastUpdatedTime;

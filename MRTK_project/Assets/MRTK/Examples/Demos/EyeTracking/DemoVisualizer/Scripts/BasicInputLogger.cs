@@ -221,12 +221,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         protected string FilenameWithTimestamp
         {
-            get { return (FormattedTimeStamp + "_" + FilenameNoTimestamp); }
+            get
+            {
+                return (FormattedTimeStamp + "_" + FilenameNoTimestamp);
+            }
         }
 
         protected string FilenameNoTimestamp
         {
-            get { return GetFileName() + ".csv"; }
+            get
+            {
+                return GetFileName() + ".csv";
+            }
         }
 
         public virtual void OnDestroy()

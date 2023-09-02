@@ -16,7 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private AudioSource audioSource;
 
-        public static AudioFeedbackPlayer Instance { get; private set; }
+        public static AudioFeedbackPlayer Instance
+        {
+            get; private set;
+        }
 
         private void Start()
         {

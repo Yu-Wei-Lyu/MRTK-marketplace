@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.elringus.unitygoogledrive": {
+      "version": "https://github.com/Elringus/UnityGoogleDrive.git#package",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "605db6321fd98de30422215655b87493cd29a1e7"
+    },
     "com.microsoft.azure.spatial-anchors-sdk.core": {
       "version": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.core-2.10.0.tgz",
       "depth": 0,
@@ -111,6 +118,15 @@
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.xr.interaction.toolkit": "2.2.0"
       }
+    },
+    "com.siccity.gltfutility": {
+      "version": "https://github.com/Siccity/GLTFUtility.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.0"
+      },
+      "hash": "96619fcd48ffe5c4ad122837a21601a6f7c20080"
     },
     "com.unity.collab-proxy": {
       "version": "1.5.7",

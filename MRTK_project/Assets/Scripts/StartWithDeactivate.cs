@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StartWithDeactivate : MonoBehaviour
+namespace Assets.Scripts
 {
-    // Awake is called when the script instance is being loaded.
-    void Awake()
+    public class StartWithDeactivate : MonoBehaviour
     {
-        gameObject.SetActive(false);
+        // Awake is called when the script instance is being loaded.
+        public void Awake()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

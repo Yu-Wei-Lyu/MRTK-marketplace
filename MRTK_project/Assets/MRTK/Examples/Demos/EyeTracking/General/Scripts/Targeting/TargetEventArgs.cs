@@ -10,7 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// </summary>
     public class TargetEventArgs : System.EventArgs
     {
-        public EyeTrackingTarget HitTarget { get; private set; }
+        public EyeTrackingTarget HitTarget
+        {
+            get; private set;
+        }
 
         public TargetEventArgs(EyeTrackingTarget hitTarget)
         {

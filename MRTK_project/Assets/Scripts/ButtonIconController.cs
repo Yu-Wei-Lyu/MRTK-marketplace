@@ -1,55 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine;
 
-public class ButtonIconController : MonoBehaviour
+namespace Assets.Scripts
 {
-    [SerializeField]
-    private bool isToggle;
-    [SerializeField]
-    private Texture IconActive;
-    [SerializeField]
-    private Texture IconDefault;
-
-    private ButtonConfigHelper buttonConfigHelper;
-
-    // Awake is called when the script instance is being loaded.
-    void Awake()
+    public class ButtonIconController : MonoBehaviour
     {
-        this.buttonConfigHelper = this.GetComponent<ButtonConfigHelper>();
-    }
+        [SerializeField]
+        private bool _isToggle;
+        [SerializeField]
+        private Texture _iconActive;
+        [SerializeField]
+        private Texture _iconDefault;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        this.UpdateDisplay();
-    }
+        private ButtonConfigHelper _buttonConfigHelper;
 
-    // Update and display button icon texture
-    public void UpdateDisplay()
-    {
-        if (this.isToggle)
+        // Awake is called when the script instance is being loaded.
+        public void Awake()
         {
-            this.buttonConfigHelper.SetQuadIcon(this.IconActive);
+            _buttonConfigHelper = GetComponent<ButtonConfigHelper>();
         }
-        else
+
+        // Start is called before the first frame update
+        public void Start()
         {
-            this.buttonConfigHelper.SetQuadIcon(this.IconDefault);
+            UpdateDisplay();
         }
-    }
 
-    // Toggle button state
-    public void ToggleState()
-    {
-        this.isToggle = !this.isToggle;
-        this.UpdateDisplay();
-    }
+        // Update and display button icon texture
+        public void UpdateDisplay()
+        {
+            _buttonConfigHelper.SetQuadIcon((_isToggle) ? _iconActive : _iconDefault);
+        }
 
-    // Force setting state
-    public void ForceSetToggle(bool value)
-    {
-        this.isToggle = value;
-        this.UpdateDisplay();
+        // Toggle button state
+        public void ToggleState()
+        {
+            _isToggle = !_isToggle;
+            UpdateDisplay();
+        }
+
+        // Force setting state
+        public void ForceToggle(bool value)
+        {
+            _isToggle = value;
+            UpdateDisplay();
+        }
     }
 }

@@ -157,7 +157,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public GameObject CurrentTarget
         {
-            get { return targets[currTargetIndex]; }
+            get
+            {
+                return targets[currTargetIndex];
+            }
         }
 
         /// <summary>
@@ -179,7 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public bool CurrentTargetIsValid
         {
-            get { return ((targets != null) && (targets.Length > 0) && (currTargetIndex < targets.Length)); }
+            get
+            {
+                return ((targets != null) && (targets.Length > 0) && (currTargetIndex < targets.Length));
+            }
         }
 
         /// <summary>
@@ -297,11 +303,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
 
         #region IMixedRealityPointerHandler
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+        }
 
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+        }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {

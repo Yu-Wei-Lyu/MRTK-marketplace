@@ -75,3 +75,9 @@ crashlytics-build.properties
 /[Aa]ssets/Materials/Fonts/*
 !/[Aa]ssets/Materials/Fonts/README.txt
 !/[Aa]ssets/Materials/Fonts/README.txt.meta
+
+# Glb files
+/[Aa]ssets/StreamingAssets/*.glb
+/[Aa]ssets/StreamingAssets/*.glb.meta
+/[Aa]ssets/StreamingAssets/*.gltf
+/[Aa]ssets/StreamingAssets/*.gltf.meta

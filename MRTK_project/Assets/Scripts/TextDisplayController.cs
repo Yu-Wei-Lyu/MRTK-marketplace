@@ -1,31 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextDisplayController : MonoBehaviour
+namespace Assets.Scripts
 {
-    private TextMeshProUGUI textMeshProUGUI;
-    private ContentSizeFitter contentSizeFitter;
-    private RectTransform rectTransform;
-
-    // Awake is called when the script instance is being loaded.
-    void Awake()
+    public class TextDisplayController : MonoBehaviour
     {
-        this.textMeshProUGUI = this.GetComponent<TextMeshProUGUI>();
-        this.contentSizeFitter = this.GetComponent<ContentSizeFitter>();
-        this.rectTransform = this.GetComponent<RectTransform>();
-    }
+        private const float DETAILHEIGHT = 0.19F;
+        private TextMeshProUGUI _textMeshProUGUI;
+        private ContentSizeFitter _contentSizeFitter;
+        private RectTransform _rectTransform;
 
-    // Expand associated text object vertically
-    public void ExpandTextVertically()
-    {
-        if (this.textMeshProUGUI.isTextOverflowing)
+        // Awake is called when the script instance is being loaded.
+        public void Awake()
         {
-            this.textMeshProUGUI.overflowMode = TextOverflowModes.Overflow;
-            this.contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            LayoutRebuilderUtility.RebuildLayoutsWithContentSizeFitter(this.rectTransform);
+            _textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+            _contentSizeFitter = GetComponent<ContentSizeFitter>();
+            _rectTransform = GetComponent<RectTransform>();
+        }
+
+        // Default text performance
+        public void DefaultPerformance()
+        {
+            _textMeshProUGUI.overflowMode = TextOverflowModes.Ellipsis;
+            _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+            _rectTransform.sizeDelta = new Vector2(_rectTransform.sizeDelta.x, DETAILHEIGHT);
+        }
+
+        // Expand associated text object vertically
+        public void ExpandTextVertically()
+        {
+            if (_textMeshProUGUI.isTextOverflowing)
+            {
+                _textMeshProUGUI.overflowMode = TextOverflowModes.Overflow;
+                _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+                LayoutRebuilderUtility.RebuildLayoutsWithContentSizeFitter(_rectTransform);
+            }
+        }
+
+        // Return the bool of the text overflowing or not
+        public bool IsTextOverflowing()
+        {
+            return _textMeshProUGUI.isTextOverflowing;
+        }
+
+        // Set text
+        public void SetText(string targetString)
+        {
+            _textMeshProUGUI.text = targetString;
         }
     }
 }

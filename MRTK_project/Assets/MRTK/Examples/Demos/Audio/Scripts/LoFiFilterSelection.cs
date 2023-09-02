@@ -83,18 +83,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// This script does not handle pointer down events.
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
-        { }
+        {
+        }
 
         /// <summary>
         /// This script does not handle pointer dragged events.
         /// </summary>
-        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
 
         /// <summary>
         /// This script does not handle pointer up events.
         /// </summary>
         public void OnPointerUp(MixedRealityPointerEventData eventData)
-        { }
+        {
+        }
 
         /// <summary>
         /// Sets the appropriate material based on the source quality setting.

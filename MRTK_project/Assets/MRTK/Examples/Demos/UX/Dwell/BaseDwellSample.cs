@@ -21,7 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         /// <summary>
         /// The dwell handler associated with the target
         /// </summary>
-        protected DwellHandler DwellHandler { get; set; }
+        protected DwellHandler DwellHandler
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Whether the targeting is being dwelled on
@@ -39,17 +42,25 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         /// <summary>
         /// Function called when entering dwell started state
         /// </summary>
-        public virtual void DwellStarted(IMixedRealityPointer pointer) { IsDwelling = true; }
+        public virtual void DwellStarted(IMixedRealityPointer pointer)
+        {
+            IsDwelling = true;
+        }
 
         /// <summary>
         /// Function called when entering dwell intended state
         /// </summary>
-        public virtual void DwellIntended(IMixedRealityPointer pointer) { }
+        public virtual void DwellIntended(IMixedRealityPointer pointer)
+        {
+        }
 
         /// <summary>
         /// Function called when entering dwell canceled state
         /// </summary>
-        public virtual void DwellCanceled(IMixedRealityPointer pointer) { IsDwelling = false; }
+        public virtual void DwellCanceled(IMixedRealityPointer pointer)
+        {
+            IsDwelling = false;
+        }
 
         /// <summary>
         /// Function called when entering dwell completed state
@@ -66,6 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         /// <summary>
         /// Function called when the target button is pressed
         /// </summary>
-        public virtual void ButtonExecute() { }
+        public virtual void ButtonExecute()
+        {
+        }
     }
 }

@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LayoutRebuilderUtility : MonoBehaviour
+namespace Assets.Scripts
 {
-    // Rebuild layouts with content size fitter (component)
-    public static void RebuildLayoutsWithContentSizeFitter(RectTransform parentRectTransform)
+    public static class LayoutRebuilderUtility
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
-        for (int i = 0; i < parentRectTransform.childCount; i++)
+        // Rebuild layouts with content size fitter (component)
+        public static void RebuildLayoutsWithContentSizeFitter(RectTransform parentRectTransform)
         {
-            Transform child = parentRectTransform.GetChild(i);
-            ContentSizeFitter contentSizeFitter = child.GetComponent<ContentSizeFitter>();
-            RectTransform rectTransform = child.GetComponent<RectTransform>();
-            if (contentSizeFitter != null && rectTransform != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
+            for (var index = 0; index < parentRectTransform.childCount; index++)
             {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+                var child = parentRectTransform.GetChild(index);
+                var contentSizeFitter = child.GetComponent<ContentSizeFitter>();
+                var rectTransform = child.GetComponent<RectTransform>();
+                if (contentSizeFitter != null && rectTransform != null)
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
             }
         }
     }

@@ -22,7 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Debug.LogError(this.GetType().Name + " is deprecated");
         }
 
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+        }
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
@@ -36,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             OnRelease.Invoke();
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
     }
 }

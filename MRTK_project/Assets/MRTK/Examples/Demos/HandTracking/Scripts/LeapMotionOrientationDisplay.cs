@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-using TMPro;
 #if LEAPMOTIONCORE_PRESENT
 using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
 #endif

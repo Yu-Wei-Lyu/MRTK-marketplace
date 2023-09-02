@@ -1,145 +1,147 @@
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
+using System.Collections.Generic;
+using Assets.Scripts;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using TMPro;
+using UnityEngine;
 
 public class SlateController : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshPro titlebarTextMeshPro;
+    private DataManager _dataManager;
     [SerializeField]
-    private GameObject closeButton;
+    private TextMeshPro _titlebarText;
     [SerializeField]
-    private ButtonIconController followButton;
+    private ButtonIconController _followButton;
     [SerializeField]
-    private GameObject backButton;
+    private GameObject _backButton;
     [SerializeField]
-    private List<Plate> plates;
+    private List<Plate> _plates;
 
-    private Plate currentPlate;
-    private Plate primaryPlate;
-    private Stack<Plate> previousPlateStack = new Stack<Plate>();
-    private RadialView radialView;
-    private AudioSource audioSource;
-    private const int primaryPlateIndex = 0;
-    private const int secondaryPlateBeginIndex = 1;
+    private Plate _currentPlate;
+    private Plate _primaryPlate;
+    private Stack<Plate> _previousPlateStack = new Stack<Plate>();
+    private RadialView _radialView;
+    private AudioSource _audioSource = null;
+    private const int PRIMARY_PLATE_INDEX = 0;
+    private const int SECONDARY_PLATE_BEGIN_INDEX = 1;
 
     // Awake is called when the script instance is being loaded.
     void Awake()
     {
-        this.radialView = this.GetComponentInChildren<RadialView>();
+        _radialView = this.GetComponentInChildren<RadialView>();
     }
 
     // Start is called before the first frame updates
     void Start()
     {
-        this.backButton.SetActive(false);
+        _backButton.SetActive(false);
         InitializePlate();
     }
 
     // Initialize plate
     private void InitializePlate()
     {
-        this.primaryPlate = this.plates[primaryPlateIndex];
-        this.primaryPlate.SetActive(true);
-        this.titlebarTextMeshPro.text = this.primaryPlate.Title;
-        this.currentPlate = this.primaryPlate;
-        this.followButton.ForceSetToggle(true);
-        for (int index = secondaryPlateBeginIndex; index < this.plates.Count; ++index)
+        _primaryPlate = _plates[PRIMARY_PLATE_INDEX];
+        _primaryPlate.SetActive(true);
+        _titlebarText.text = _primaryPlate.Title;
+        _currentPlate = _primaryPlate;
+        _followButton.ForceToggle(true);
+        for (int index = SECONDARY_PLATE_BEGIN_INDEX; index < _plates.Count; ++index)
         {
-            this.plates[index].SetActive(false);
+            _plates[index].SetActive(false);
         }
     }
 
     // Return the Plate object that contains the target plate, not found will be null.
     private Plate GetPlateIfContains(GameObject targetPlate)
     {
-        return this.plates.Find(plate => plate.IsSameReference(targetPlate));
+        return _plates.Find(plate => plate.IsSameReference(targetPlate));
     }
 
     // Wait for sound played
     private IEnumerator WaitForSoundPlayed()
     {
-        if (this.audioSource.isPlaying)
+        if (_audioSource.isPlaying)
         {
-            yield return new WaitWhile(() => this.audioSource.isPlaying);
-            this.audioSource = null;
+            yield return new WaitWhile(() => _audioSource.isPlaying);
+            _audioSource = null;
         }
     }
 
     // SetAudioSourcePlaying
     public void SetAudioSourcePlaying(AudioSource source)
     {
-        this.audioSource = source;
+        _audioSource = source;
     }
 
     // Activate target plate and deactivate other plates
     public void SwitchToPlate(GameObject targetPlate)
     {
-        if (this.audioSource != null)
+        if (_audioSource != null)
         {
             StartCoroutine(WaitForSoundPlayed());
         }
-        if (this.currentPlate.IsSameReference(targetPlate))
+        if (_currentPlate.IsSameReference(targetPlate))
         {
             return;
         }
-        this.currentPlate.SetActive(false);
-        this.previousPlateStack.Push(this.currentPlate);
-        this.currentPlate = this.GetPlateIfContains(targetPlate);
-        this.currentPlate.SetActive(true);
-        this.titlebarTextMeshPro.text = this.currentPlate.Title;
-        if (this.currentPlate == this.primaryPlate)
+        _currentPlate.SetActive(false);
+        _previousPlateStack.Push(_currentPlate);
+        _currentPlate = this.GetPlateIfContains(targetPlate);
+        _currentPlate.SetActive(true);
+        _titlebarText.text = _currentPlate.Title;
+        if (_currentPlate == _primaryPlate)
         {
-            this.previousPlateStack.Clear();
-            this.backButton.SetActive(false);
+            _previousPlateStack.Clear();
+            _backButton.SetActive(false);
         }
         else
         {
-            this.backButton.SetActive(true);
+            _backButton.SetActive(true);
         }
     }
 
     // Activate Previous plate and deactivate current plates
     public void SwitchToPreviousPlate()
     {
-        if (this.audioSource != null)
+        if (_audioSource != null)
         {
             StartCoroutine(WaitForSoundPlayed());
         }
-        this.currentPlate.SetActive(false);
-        this.currentPlate = this.previousPlateStack.Pop();
-        this.currentPlate.SetActive(true);
-        this.titlebarTextMeshPro.text = currentPlate.Title;
-        if (this.currentPlate == this.primaryPlate)
+        _currentPlate.SetActive(false);
+        _currentPlate = _previousPlateStack.Pop();
+        _currentPlate.SetActive(true);
+        _titlebarText.text = _currentPlate.Title;
+        if (_currentPlate == _primaryPlate)
         {
-            this.backButton.SetActive(false);
+            _backButton.SetActive(false);
+            _dataManager.ResetRecentlyQueriedIndex();
         }
         else
         {
-            this.backButton.SetActive(true);
+            _backButton.SetActive(true);
         }
     }
 
     // Do something before setting activated
     public void SetActive(bool value)
     {
-        if (this.audioSource != null && this.isActiveAndEnabled)
+        if (_audioSource != null && this.isActiveAndEnabled)
         {
             StartCoroutine(WaitForSoundPlayed());
         }
         this.gameObject.SetActive(value);
         if (value)
         {
-            this.radialView.enabled = true;
-            this.followButton.ForceSetToggle(true);
+            _radialView.enabled = true;
+            _followButton.ForceToggle(true);
         }
     }
 
     // Toggle the radial view state
     public void ToggleRadialViewState()
     {
-        this.radialView.enabled = !this.radialView.enabled;
+        _radialView.enabled = !_radialView.enabled;
     }
 }
