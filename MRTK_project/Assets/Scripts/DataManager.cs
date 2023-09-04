@@ -13,6 +13,8 @@ namespace Assets.Scripts
 {
     public class DataManager : MonoBehaviour
     {
+        public delegate void SetShoppingCartDelegate(ShoppingCart cart);
+
         private const string WEBSOCKET_QUERY_TYPE = "query";
         private const string WEBSOCKET_QUERY_MESSAGE = "Hello from Hololens!";
         private const string LOADING_DATA_TITLE = "應用程式初始化";
@@ -27,11 +29,15 @@ namespace Assets.Scripts
         [SerializeField]
         private string _webSocketUri;
         [SerializeField]
+        private string _websiteRootUrl;
+        [SerializeField]
         private PopupDialog _dialogController;
 
+        private readonly GlbModelManager _glbModelList = new GlbModelManager();
+        private readonly ShoppingCart _shoppingCart = new ShoppingCart();
         private List<FurnitureData> _furnitureDataList;
-        private int _queryId = -1;
-        private CancellationToken _cancellationToken = CancellationToken.None;
+
+        public int QueryID { get; set; } = -1;
 
         // Start is called before the first frame update
         public void Start()
@@ -39,7 +45,7 @@ namespace Assets.Scripts
             if (_isDatabaseOnline)
             {
                 Debug.Log($"[DataManager] Data is in online mode");
-                _ = GetFurnitureDataAsync();
+                _ = GetFurnitureDataAsync(_webSocketUri);
             }
             else
             {
@@ -62,67 +68,24 @@ namespace Assets.Scripts
             }
         }
 
-        // Connect to server by uri
-        private async Task<ClientWebSocket> ConnectToServer(string webSocketUri)
-        {
-            var ws = new ClientWebSocket();
-            var serverUri = new Uri(webSocketUri);
-            await ws.ConnectAsync(serverUri, _cancellationToken);
-            return ws;
-        }
-
-        // Send message to server request data
-        private async Task SendMessageToServer(ClientWebSocket ws, string data)
-        {
-            var sendBuffer = Encoding.UTF8.GetBytes(data);
-            await ws.SendAsync(new ArraySegment<byte>(sendBuffer), WebSocketMessageType.Text, true, _cancellationToken);
-        }
-
-        // Receive message from server
-        private async Task<string> ReceiveMessageFromServer(ClientWebSocket ws)
-        {
-            var memoryStream = new MemoryStream();
-            var receiveBuffer = new byte[1024];
-            WebSocketReceiveResult receiveResult;
-            do
-            {
-                receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellationToken);
-                memoryStream.Write(receiveBuffer, 0, receiveResult.Count);
-            } while (!receiveResult.EndOfMessage);
-            var resultBuffer = memoryStream.ToArray();
-            return Encoding.UTF8.GetString(resultBuffer);
-        }
-
         // Get furniture datas from database
-        public async Task GetFurnitureDataAsync()
+        public async Task GetFurnitureDataAsync(string uri)
         {
+            var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
+            var jsonStr = JsonConvert.SerializeObject(sendData);
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
-            try
+            var receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
+            if (receivedMessage == null)
             {
-                var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
-                var jsonStr = JsonConvert.SerializeObject(sendData);
-                string receivedMessage;
-                _dialogController.SetTexts(LOADING_DATA_TITLE, "connecting");
-                Debug.Log("[DataManager] Connecting");
-                using (var ws = await ConnectToServer(_webSocketUri))
-                {
-                    _dialogController.SetTexts(LOADING_DATA_TITLE, "sending");
-                    Debug.Log("[DataManager] Sending");
-                    await SendMessageToServer(ws, jsonStr);
-                    _dialogController.SetTexts(LOADING_DATA_TITLE, "receiving");
-                    Debug.Log("[DataManager] Receiving");
-                    receivedMessage = await ReceiveMessageFromServer(ws);
-                }
-                Debug.Log($"[DataManager] Received:\n{receivedMessage}");
+                _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
+                Debug.LogError($"[DataManager] Error happened when using websocket:\nUri: {uri}\nSend: {sendData}");
+            }
+            else
+            {
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
                 await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
                 _dialogController.CloseDialog();
-                Debug.Log($"[DataManager] Receive data successfully");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[DataManager] {ex.Message}");
-                _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
+                Debug.Log($"[DataManager] Received:\n{receivedMessage}");
             }
         }
 
@@ -176,10 +139,9 @@ namespace Assets.Scripts
                 return null;
             }
             var furnitureData = _furnitureDataList[index];
-            _queryId = furnitureData.ID;
+            QueryID = furnitureData.ID;
             return furnitureData;
         }
-
 
         // Get furniture data by index
         public FurnitureData GetFurnitureDataById(int id)
@@ -190,26 +152,32 @@ namespace Assets.Scripts
                 Debug.LogError($"[DataManager] No furniture data has id {id}");
                 return null;
             }
-            _queryId = furnitureData.ID;
+            QueryID = furnitureData.ID;
             return furnitureData;
         }
 
         // Get data from the most recently queried index value
         public FurnitureData GetCacheFurnitureData()
         {
-            return GetFurnitureDataById(_queryId);
+            return GetFurnitureDataById(QueryID);
         }
 
         // Reset recently queried index
         public void ResetRecentlyQueriedIndex()
         {
-            _queryId = -1;
+            QueryID = -1;
         }
 
-        // Ser query index
-        public void SetQueryIndex(int index)
+        // Get shopping cart
+        public ShoppingCart GetShoppingCart()
         {
-            _queryId = index;
+            return _shoppingCart;
+        }
+
+        // Get model list
+        public GlbModelManager GetModelManager()
+        {
+            return _glbModelList;
         }
     }
 }

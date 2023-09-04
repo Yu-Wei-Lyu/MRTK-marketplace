@@ -15,8 +15,6 @@ namespace Assets.Scripts
         [SerializeField]
         private DataManager _dataManager;
         [SerializeField]
-        private ShoppingList _shoppingList;
-        [SerializeField]
         private PopupDialog _dialogController;
         [SerializeField]
         private TextMeshProUGUI _furnitureName;
@@ -29,10 +27,18 @@ namespace Assets.Scripts
         [SerializeField]
         private RectTransform _rebuilderUtilityParentTarget;
 
+        private ShoppingCart _shoppingCart;
         private AudioSource _audioSource;
         private bool _isLayoutChanged = false;
         private string _furnitureModelUri;
         private int _cacheFurnitureID = -1;
+
+        // Awake is called when the script instance is being loaded.
+        public override void Awake()
+        {
+            base.Awake();
+            _shoppingCart = _dataManager.GetShoppingCart();
+        }
 
         // Update is called once per frame
         public override void Update()
@@ -54,10 +60,17 @@ namespace Assets.Scripts
             _isLayoutChanged = true;
         }
 
+        // Get shopping cart reference
+        public void GetShoppingCart(ShoppingCart linkedShoppingCart)
+        {
+            _shoppingCart = linkedShoppingCart;
+        }
+
         // Set product data to cache
         private void UpdateFurnitureDisplay()
         {
             var cacheFurnitureData = _dataManager.GetCacheFurnitureData();
+            _cacheFurnitureID = _dataManager.QueryID;
             if (cacheFurnitureData != null)
             {
                 _furnitureName.text = cacheFurnitureData.Name;
@@ -115,7 +128,7 @@ namespace Assets.Scripts
         {
             if (response == PopupDialog.Response.Confirm)
             {
-                _shoppingList.AddFurnitures(_cacheFurnitureID, amount);
+                _shoppingCart.AddFurnitures(_cacheFurnitureID, amount);
                 _cacheFurnitureID = -1;
                 _dialogController.ConfirmDialog(ADD_CONFIRM_TITLE);
             }
@@ -132,6 +145,8 @@ namespace Assets.Scripts
         {
             var glbLoader = new GlbLoader();
             glbLoader.SetPopupDialog(_dialogController);
+            glbLoader.SetModelManager(_dataManager.GetModelManager());
+            glbLoader.SetFurnitureID(_cacheFurnitureID);
             _ = glbLoader.LoadModelUri(_furnitureModelUri);
         }
     }

@@ -1,51 +1,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShoppingList : MonoBehaviour
+namespace Assets.Scripts
 {
-    private Dictionary<int, int> _shoppingDictionary = new Dictionary<int, int>();
-
-    public int Count
+    public class ShoppingCart
     {
-        get
+        private readonly Dictionary<int, int> _shoppingDictionary;
+
+        public ShoppingCart()
         {
-            return _shoppingDictionary.Count;
+            _shoppingDictionary = new Dictionary<int, int>();
         }
-    }
 
-    // Get list of ID
-    public Dictionary<int, int> GetDictionary()
-    {
-        return new Dictionary<int, int>(_shoppingDictionary);
-    }
+        public int Count => _shoppingDictionary.Count;
 
-    // Add furnitures
-    public void AddFurnitures(int id, int amount)
-    {
-        if (_shoppingDictionary.ContainsKey(id))
+        // Get list of ID
+        public Dictionary<int, int> GetDictionary()
         {
-            _shoppingDictionary[id] += amount;
+            return new Dictionary<int, int>(_shoppingDictionary);
         }
-        else
-        {
-            _shoppingDictionary[id] = amount;
-        }
-    }
 
-    // Decrease or delete furniture
-    public void DecreaseFurnitureByID(int id, int amount)
-    {
-        if (_shoppingDictionary.ContainsKey(id))
+        // Add furnitures
+        public void AddFurnitures(int id, int amount)
         {
-            int currentAmount = _shoppingDictionary[id];
-            currentAmount -= amount;
-            if (currentAmount <= 0)
-            {
-                _shoppingDictionary.Remove(id);
-            }
+            if (_shoppingDictionary.ContainsKey(id))
+                _shoppingDictionary[id] += amount;
             else
+                _shoppingDictionary[id] = amount;
+        }
+
+        // Decrease or delete furniture
+        public void DecreaseFurnitureByID(int id, int quantity)
+        {
+            if (_shoppingDictionary.TryGetValue(id, out var currentQuantity))
             {
-                _shoppingDictionary[id] = currentAmount;
+                currentQuantity -= quantity;
+                if (currentQuantity <= 0)
+                {
+                    _shoppingDictionary.Remove(id);
+                }
+                else
+                {
+                    _shoppingDictionary[id] = currentQuantity;
+                }
             }
         }
     }

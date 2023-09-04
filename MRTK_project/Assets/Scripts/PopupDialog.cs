@@ -79,7 +79,9 @@ namespace Assets.Scripts
         public void CloseDialog()
         {
             if (_audioSource != null)
+            {
                 StartCoroutine(WaitForSoundPlayed());
+            }
             SetActive(false);
         }
 
@@ -89,7 +91,9 @@ namespace Assets.Scripts
             var messageTextObject = _messageTextLabel.gameObject;
             _titleTextLabel.text = titleString;
             if (messageString == null)
+            {
                 messageTextObject.SetActive(false);
+            }
             else
             {
                 _messageTextLabel.text = messageString;
@@ -103,6 +107,7 @@ namespace Assets.Scripts
         {
             gameObject.SetActive(value);
             if (_deactivatedList.Count != 0)
+            {
                 if (value)
                 {
                     _deactivatedList.ForEach(targetObject => targetObject.SetActive(false));
@@ -113,6 +118,7 @@ namespace Assets.Scripts
                     _deactivatedList.ForEach(targetObject => targetObject.SetActive(true));
                     _deactivatedList.Clear();
                 }
+            }
             RebuildLayout();
         }
 

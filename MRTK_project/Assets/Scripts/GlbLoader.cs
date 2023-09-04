@@ -16,14 +16,28 @@ namespace Assets.Scripts
         private const string LOADING_MODEL_FAILED_TITLE = "模型載入失敗";
         private const string LOADING_MODEL_FAILED_MESSAGE = "請聯絡管理員修正錯誤\nexample@gmail.com";
 
+        private GlbModelManager _modelManager;
         private PopupDialog _dialogController;
         private Vector3 _modelSize;
         private Vector3 _modelCenter;
+        private int _cacheFurnitureID;
 
         // Set dialog controller 
         public void SetPopupDialog(PopupDialog dialogController)
         {
             _dialogController = dialogController;
+        }
+
+        // Set model manager
+        public void SetModelManager(GlbModelManager modelManager)
+        {
+            _modelManager = modelManager;
+        }
+
+        // Set cache furniture ID
+        public void SetFurnitureID(int id)
+        {
+            _cacheFurnitureID = id;
         }
 
         // Using MeshRenderer to calculate 3D object (and its child object) size and center by bounds
@@ -80,6 +94,7 @@ namespace Assets.Scripts
                 CalculateModelSizeAndCenter(model);
                 ConfigureModelComponents(model);
                 ConfigureModelPosition(model);
+                _modelManager.Add(_cacheFurnitureID, model);
                 _dialogController.CloseDialog();
             }
             else
