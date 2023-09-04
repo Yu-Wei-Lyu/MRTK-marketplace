@@ -156,10 +156,10 @@ async def handle_connection(websocket, path):
                     print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
                     #執行 SQL 新增資料
-                    query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                    values = (name, number, price, imagePath, size, description, material, imageUrl, ModelURL)
-                    cursor.execute(query, values)
-                    conn.commit()
+                    #query = "INSERT INTO furniture (Name, Price, ImagePath, Size, Description, Material, ImageUrl, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                    #values = (name, price, imagePath, size, description, material, imageUrl, ModelURL)
+                    #cursor.execute(query, values)
+                    #conn.commit()
 
                 # 如果有filename，content_chunks才會持續接收分段內容。
                 if filename:

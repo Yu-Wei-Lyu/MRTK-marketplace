@@ -87,7 +87,7 @@ async function addData() {
           const imgurResponse = await fetch('https://api.imgur.com/3/image', {
               method: 'POST',
               headers: {
-                  Authorization: 'Client-ID f46069301854f94', // Replace with your Imgur Client ID
+                  Authorization: 'Client-ID a4764610882ef96', // Replace with your Imgur Client ID
               },
               body: formData,
           });
