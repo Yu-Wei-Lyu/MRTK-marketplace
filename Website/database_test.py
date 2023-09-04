@@ -111,6 +111,35 @@ async def handle_connection(websocket, path):
                 # 將處理後的資料發送回前端網頁
                 await websocket.send(json.dumps(response))
 
+            elif message_type == 'query_user':
+                Material = data.get('Material')
+                # 執行 SQL 查詢
+                query = "SELECT * FROM furniture WHERE Material = %s;"
+                cursor.execute(query, Material)
+
+                # 取得查詢結果
+                result = cursor.fetchall()
+
+                result_data = []
+        
+                for row in result:  # 假設您有一個 result 包含查詢結果
+        
+                    # 將資料整理成字典，包括 ImageUrl
+                    item = {
+                        'ID': row[0],
+                        'Name': row[1],
+                        'Price': float(row[2]),
+                        'Size': row[3],
+                        'Tags': row[4],
+                        'Description': row[5],
+                        'Material': row[6],
+                        'Manufacturer': row[7],
+                        'ImageURL': row[8],
+                        'ModelURL': row[9]
+                    }
+                    result_data.append(item)
+                response = {'type': 'query_webiste', 'message': result_data}
+
             elif message_type == 'add':
                 # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
                 # 因為檔案上傳過程中以下數據也會不停地被重複送來
@@ -123,13 +152,14 @@ async def handle_connection(websocket, path):
                     description = data.get('Description')
                     material = data.get('Material')
                     imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
+                    ModalUrl = "\\Uploads\\" + filename
                     print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
-                # 執行 SQL 新增資料
-                #query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
-                #values = (name, number, price, imagePath, size, description, material, imageUrl)
-                #cursor.execute(query, values)
-                #conn.commit()
+                    #執行 SQL 新增資料
+                    query = "INSERT INTO furniture (Name, Number, Price, ImagePath, Size, Description, Material, ImageUrl, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                    values = (name, number, price, imagePath, size, description, material, imageUrl, ModelURL)
+                    cursor.execute(query, values)
+                    conn.commit()
 
                 # 如果有filename，content_chunks才會持續接收分段內容。
                 if filename:
@@ -141,7 +171,7 @@ async def handle_connection(websocket, path):
                         content = b''.join(content_chunks)
                         # 將檔案存在本地端與檔案同目錄的uploads資料夾之內。
                         # 請確保有uploads資料夾
-                        with open(os.path.join('uploads', filename), 'wb') as f:
+                        with open(os.path.join('Uploads', filename), 'wb') as f:
                             f.write(content)
                         filename = None
                         content_chunks = []
@@ -209,10 +239,10 @@ async def handle_connection(websocket, path):
 
                 if user:
                     print("Login successful.")
-                    response = {'type': 'user_created', 'message': 'User Login successfully'}
+                    response = {'type': 'LoginSuccess','message': data['id']}
                 else:
                     print("Login failed. User not found or incorrect password.")
-                    response = {'type': 'user_created', 'message': 'User Login unsuccessfully'}
+                    response = {'type': 'LoginFall'}
 
 
             else:

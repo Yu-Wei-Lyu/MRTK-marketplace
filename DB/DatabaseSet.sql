@@ -54,21 +54,11 @@ VALUES
     ('檯燈', 200.00, '30x30x50', '', '現代風格檯燈', '金屬、塑膠', '', '', ''),
     ('茶几', 800.00, '80x80x40', '', '實木茶几', '木材', '', '', '');
 
--- 用户1
+-- 使用者範例資料
 INSERT INTO Users (Username, Password, Email, Department)
 VALUES	('109590037', '109590037', 'user1@example.com', 'ALL'),
 		('109590038', '109590038', 'user2@example.com', 'ALL'),
 		('109590039', '109590039', 'user3@example.com', 'ALL');
-
--- 用户2
-INSERT INTO Users (Username, Password, Email, Department)
-VALUES ('109590038', '109590038', 'user2@example.com', 'ALL');
-
--- 用户3
-INSERT INTO Users (Username, Password, Email, Department)
-VALUES ('109590039', '109590039', 'user3@example.com', 'ALL');
-
-
 
 CREATE TABLE Users (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
@@ -159,3 +149,12 @@ DELETE FROM furniture WHERE id = 15;
 
 SHOW PROCESSLIST;
 Kill 55;
+
+INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL)
+VALUES ('典雅空間櫥櫃', 59999, '71.2x196x244', '廚房家具', '現代櫥櫃廚具，簡約設計融合實用功能，高品質材料與創新設計完美結合，為現代生活注入風格與便利。', '大理石、高壓塑膠板、金屬', 'Unreal Factory', 'http://26.122.221.31:8765/modern_cabinet_hutch.jpg', 'http://26.122.221.31:8765/modern_cabinet_hutch.glb');
+
+INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL)
+VALUES ('古董立鏡', 12999, '62.75x89.46x194.12', '其他', '歷史情懷中的精緻古董立鏡，華美雕飾和雙面設計，為您的空間增添典雅氛圍。', '實木框架、金屬飾件、玻璃鏡面', 'Unreal Factory', 'http://26.122.221.31:8765/antique_standing_mirror.png', 'http://26.122.221.31:8765/antique_standing_mirror.glb');
+
+INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL)
+VALUES ('古典歐洲風格奢華實木雕花紅木大理石餐桌椅家具套裝，室內裝潢設計師首選', 800, '120x60x75', '', '當我們面臨眾多選擇時，有時會感到困惑，就像置身於知識的大海，每一波浪都代表一種可能性，等待我們去探索。生活就像一本永無止境的書，每一頁都充滿著不同的故事和冒險，等待我們翻閱。', '木材', NULL, NULL);

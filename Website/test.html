@@ -49,6 +49,8 @@
     <br>
     <div id="messageContainer"></div>
 
+    <div id="userStatus"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
         const socket = new WebSocket('ws://118.150.125.153:8765');
@@ -78,42 +80,50 @@
                 const message_type = data.type;
                 // 假設 data 是您接收到的物件陣列
                 const dataList = data.message;  // 如果 'message' 包含資料物件
+                
+                if (message_type == 'query_website'){
+                    // 取得要顯示資料的容器
+                    const resultsContainer = document.getElementById('results');  // 這是您的HTML容器的ID
 
-                // 取得要顯示資料的容器
-                const resultsContainer = document.getElementById('results');  // 這是您的HTML容器的ID
+                    // 在接收到登录成功的回应后
+                    const messageContainer = document.getElementById('messageContainer');
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = data.message; // data.message 包含成功的消息
 
-                // 在接收到登录成功的回应后
-                const messageContainer = document.getElementById('messageContainer');
-                const itemDiv = document.createElement('div');
-                itemDiv.innerHTML = data.message; // data.message 包含成功的消息
-                            
-                // 清空消息容器的内容
-                messageContainer.innerHTML = '';
-                            
-                // 将新消息添加到消息容器中
-                messageContainer.appendChild(itemDiv);
+                    // 清空消息容器的内容
+                    messageContainer.innerHTML = '';
 
-                // 遍歷資料並顯示每個物件的資料
-                dataList.forEach(item => {
-                    itemDiv.innerHTML = `
-                        <p>ID: ${item.ID}</p>
-                        <p>Name: ${item.Name}</p>
-                        <p>Price: ${item.Price}</p>
-                        <p>Size: ${item.Size}</p>
-                        <p>Tags: ${item.Tags}</p>
-                        <p>Description: ${item.Description}</p>
-                        <p>Material: ${item.Material}</p>
-                        <p>Manufacturer: ${item.Manufacturer}</p>
-                        <p>ImageURL: ${item.ImageURL}</p>
-                        <p>ModelURL: ${item.ModelURL}</p>
-                    `;
-                    resultsContainer.appendChild(itemDiv);
-                });
+                    // 将新消息添加到消息容器中
+                    messageContainer.appendChild(itemDiv);
+
+                    // 遍歷資料並顯示每個物件的資料
+                    dataList.forEach(item => {
+                        itemDiv.innerHTML = `
+                            <p>ID: ${item.ID}</p>
+                            <p>Name: ${item.Name}</p>
+                            <p>Price: ${item.Price}</p>
+                            <p>Size: ${item.Size}</p>
+                            <p>Tags: ${item.Tags}</p>
+                            <p>Description: ${item.Description}</p>
+                            <p>Material: ${item.Material}</p>
+                            <p>Manufacturer: ${item.Manufacturer}</p>
+                            <p>ImageURL: ${item.ImageURL}</p>
+                            <p>ModelURL: ${item.ModelURL}</p>
+                        `;
+                        resultsContainer.appendChild(itemDiv);
+                    });
+                }else if(message_type == 'LoginSuccess'){
+                    const account = data.message;
+                    console.log(account)
+                }else if(message_type == 'LoginFall'){
+                    console.log('Login Fell')
+                }
                 
             } catch (error) {
                 console.error("Error parsing JSON:", error);
             }
         };
+        
 
         // 點擊按鈕時發送訊息給伺服器
         function clearResults() {
