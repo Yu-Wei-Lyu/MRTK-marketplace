@@ -1,42 +1,5 @@
 const socket = new WebSocket('ws://118.150.125.153:8765');
 
-// 當接收到訊息時更新網頁內容
-socket.onmessage = function(event) {
-    try {
-        const data = JSON.parse(event.data);
-        const message_type = data.type;
-        const resultsList = document.getElementById('results');
-        resultsList.innerHTML = data.message[2];
-        
-        /*if (message_type === 'query') {
-            const imageData = data.message;
-            imageData_string = imageData.substring(2, imageData.length - 2);
-            imageData_string = imageData_string.split(',')
-            imageData_string = imageData_string[9]
-
-            // 解碼 Base64 資料為 Uint8Array
-            const decodedData = atob(imageData_string);
-
-            // 將 Uint8Array 轉換為 Uint8Array 視圖
-            const uint8Array = new Uint8Array(decodedData.length);
-            for (let i = 0; i < decodedData.length; i++) {
-                uint8Array[i] = decodedData.charCodeAt(i);
-            }
-
-            // 建立 Blob 物件
-            const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-
-            // 建立 URL 物件，並設置圖片的 Blob URL 作為 src
-            const imageUrl = URL.createObjectURL(blob);
-            const imageDisplay = document.getElementById('imageDisplay');
-            imageDisplay.src = imageUrl;
-        }*/
-        
-    } catch (error) {
-        console.error("Error parsing JSON:", error);
-    }
-};
-
 // 點擊按鈕時發送訊息給伺服器
 function sendQuery() {
   console.log("SendQuery");
@@ -139,6 +102,17 @@ async function addData() {
 
                       await new Promise(resolve => setTimeout(resolve, 10));
                     }
+
+                console.log('檔案已上傳成功');
+                // 修改顯示的文字
+                progressLabel.textContent = `5秒後將刷新頁面並上傳至伺服器`;
+
+                setTimeout(() => {
+                console.log('Waiting for 5 seconds...');
+                // console.log('Data sent, reloading page...');
+                location.reload();
+                }, 5000); // 5秒後執行
+
               };
               fileReader.readAsArrayBuffer(selectedFile);
           } else {
