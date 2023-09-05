@@ -11,6 +11,13 @@ import os
 # 定義檔案分割傳輸每一段的大小(8192 = 2^13)
 chunkSize = 8192
 
+def has_common_element(list1, list2):
+    set1 = set(list1)
+    set2 = set(list2)
+    common_elements = set1.intersection(set2)
+    
+    return len(common_elements) > 0
+
 def get_imgur_image_url(image_url):
     response = requests.get(image_url)
 
@@ -140,6 +147,37 @@ async def handle_connection(websocket, path):
                     result_data.append(item)
                 response = {'type': 'query_webiste', 'message': result_data}
 
+            elif message_type == 'query_tags':
+                Material = data.get('Material')
+                Tags = data.get('Tags').split('、')
+                # 執行 SQL 查詢
+                query = "SELECT * FROM furniture WHERE Material = %s;"
+                cursor.execute(query, Material)
+
+                # 取得查詢結果
+                result = cursor.fetchall()
+
+                result_data = []
+        
+                for row in result:  # 假設您有一個 result 包含查詢結果
+                    isallow = row[4].split('、')
+                    if (has_common_element(isallow, Tags)):
+                        # 將資料整理成字典，包括 ImageUrl
+                        item = {
+                            'ID': row[0],
+                            'Name': row[1],
+                            'Price': float(row[2]),
+                            'Size': row[3],
+                            'Tags': row[4],
+                            'Description': row[5],
+                            'Material': row[6],
+                            'Manufacturer': row[7],
+                            'ImageURL': row[8],
+                            'ModelURL': row[9]
+                        }
+                        result_data.append(item)
+                response = {'type': 'query_webiste', 'message': result_data}
+
             elif message_type == 'add':
                 # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
                 # 因為檔案上傳過程中以下數據也會不停地被重複送來
@@ -151,15 +189,16 @@ async def handle_connection(websocket, path):
                     tags = data.get('Tags')
                     description = data.get('Description')
                     material = data.get('Material')
+                    manufacturer = data.ger('manufacturer')
                     imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
                     ModalUrl = "\\Uploads\\" + filename
                     print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
-                    #執行 SQL 新增資料
-                    #query = "INSERT INTO furniture (Name, Price, ImagePath, Size, Description, Material, ImageUrl, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                    #values = (name, price, imagePath, size, description, material, imageUrl, ModelURL)
-                    #cursor.execute(query, values)
-                    #conn.commit()
+                    # 執行 SQL 新增資料
+                    query = "INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                    values = (name, price, size, tags, description, material, manufacturer, imageUrl, ModalUrl)
+                    cursor.execute(query, values)
+                    conn.commit()
 
                 # 如果有filename，content_chunks才會持續接收分段內容。
                 if filename:
