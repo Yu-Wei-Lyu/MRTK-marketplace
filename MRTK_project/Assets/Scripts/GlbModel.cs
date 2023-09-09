@@ -8,15 +8,13 @@ namespace Assets.Scripts
     {
         private readonly int _id;
         private readonly GameObject _model;
+        public int FurnitureID => _id;
+        public GameObject ModelObject => _model;
 
         public GlbModel(int id, GameObject model)
         {
             _id = id;
             _model = model;
         }
-
-        public int FurnitureID => _id;
-
-        public GameObject ModelObject => _model;
     }
 }

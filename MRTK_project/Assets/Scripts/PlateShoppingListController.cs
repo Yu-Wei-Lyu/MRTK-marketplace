@@ -105,6 +105,7 @@ namespace Assets.Scripts
             _dialogController.AddToBeDeactived(transform.parent.gameObject);
             _dialogController.SetTexts(DELETE_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, furnitureData.Name));
             _dialogController.WaitingResponseDialog(HandleDeleteRequest, true);
+            _dialogController.SetKeepOpen();
         }
 
         // Handling the request for the removal of furniture
@@ -114,7 +115,7 @@ namespace Assets.Scripts
             {
                 _shoppingCart.DecreaseFurnitureByID(_cacheFurnitureID, deleteAmount);
                 _cacheFurnitureID = -1;
-                _dialogController.ConfirmDialog(DELETE_CONFIRM_TITLE);
+                _ = _dialogController.DelayCloseDialog(DELETE_CONFIRM_TITLE);
                 Initialize();
             }
         }

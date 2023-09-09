@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -19,10 +20,11 @@ namespace Assets.Scripts
         private const string WEBSOCKET_QUERY_MESSAGE = "Hello from Hololens!";
         private const string LOADING_DATA_TITLE = "應用程式初始化";
         private const string LOADING_DATA_MESSAGE = "向資料庫請求資料中...";
+        private const string LOADING_DATA_SUCCESS_TITLE = "應用程式初始化完成！";
         private const string LOADING_DATA_FAILED_TITLE = "資料載入失敗";
-        private const string LOADING_DATA_FAILED_MESSAGE = "請聯絡管理員修正錯誤\nexample@gmail.com";
+        private const string LOADING_DATA_FAILED_MESSAGE = "請檢查網路連線或聯絡管理員修正錯誤\nexample@gmail.com";
         private const string BACKUP_FILE = "database_query.txt";
-        private const string FAKE_DATA_FILE = "fake_query_data.txt";
+        private const string FAKE_DATA_FILE = "fake_query_data.json";
 
         [SerializeField]
         private bool _isDatabaseOnline;
@@ -50,7 +52,7 @@ namespace Assets.Scripts
             else
             {
                 Debug.Log($"[DataManager] Data is in offline mode");
-                GetFakeData();
+                _ = GetFakeData();
             }
         }
 
@@ -75,22 +77,22 @@ namespace Assets.Scripts
             var jsonStr = JsonConvert.SerializeObject(sendData);
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
             var receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
-            if (receivedMessage == null)
+            if (receivedMessage != null)
             {
-                _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
-                Debug.LogError($"[DataManager] Error happened when using websocket:\nUri: {uri}\nSend: {sendData}");
+                _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
+                Debug.Log($"[DataManager] Received:\n{receivedMessage}");
+                await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
+                await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
             else
             {
-                _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
-                await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
-                _dialogController.CloseDialog();
-                Debug.Log($"[DataManager] Received:\n{receivedMessage}");
+                _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
+                Debug.LogError($"[DataManager] Error happened when receiving data from websocket");
             }
         }
 
         // Only for database and website is offline
-        public void GetFakeData()
+        public async Task GetFakeData()
         {
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
             var filePath = Path.Combine(Application.streamingAssetsPath, FAKE_DATA_FILE);
@@ -98,8 +100,8 @@ namespace Assets.Scripts
             {
                 var socketContent = File.ReadAllText(filePath);
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(socketContent);
-                _dialogController.CloseDialog();
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
+                await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
             else
             {
@@ -111,17 +113,7 @@ namespace Assets.Scripts
         // Determine whether the index is out of range
         private FurnitureData IsExistingFurnitureID(int id)
         {
-            FurnitureData resultData = null;
-            for (var i = 0; i < _furnitureDataList.Count; ++i)
-            {
-                var furnitureData = _furnitureDataList[i];
-                if (furnitureData.ID == id)
-                {
-                    resultData = furnitureData;
-                    break;
-                }
-            }
-            return resultData;
+            return _furnitureDataList.Find(data => data.ID == id);
         }
 
         // Get furniture counts
@@ -178,6 +170,12 @@ namespace Assets.Scripts
         public GlbModelManager GetModelManager()
         {
             return _glbModelList;
+        }
+
+        // Get dialog controller
+        public PopupDialog GetDialogController()
+        {
+            return _dialogController;
         }
     }
 }

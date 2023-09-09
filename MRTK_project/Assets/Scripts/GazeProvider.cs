@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class GazeProvider : MonoBehaviour
+    public static class GazeProvider
     {
         // Log current gaze target
-        public void LogCurrentGazeTarget()
+        public static void LogCurrentGazeTarget()
         {
             if (CoreServices.InputSystem.GazeProvider.GazeTarget)
                 Debug.Log("User gaze is currently over game object: "
