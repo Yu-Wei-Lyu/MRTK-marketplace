@@ -54,6 +54,11 @@ VALUES
     ('檯燈', 200.00, '30x30x50', '', '現代風格檯燈', '金屬、塑膠', '', '', ''),
     ('茶几', 800.00, '80x80x40', '', '實木茶几', '木材', '', '', '');
 
+-- 插入家具資料
+INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL)
+VALUES
+    ('測試', 800.00, '80x80x40', '測試1、測試2、測試3', '實木茶几', '木材', '', '', '');    
+
 -- 使用者範例資料
 INSERT INTO Users (Username, Password, Email, Department)
 VALUES	('109590037', '109590037', 'user1@example.com', 'ALL'),
@@ -145,7 +150,7 @@ UPDATE Furniture
 SET Name='Test', Number='123', Price=243, ImagePath='ImagePath/Image.jpg', Size='200x200x100', Description='Test', Material='Test'
 WHERE ID = 12;
 
-DELETE FROM furniture WHERE id = 15;
+DELETE FROM furniture WHERE id = 13;
 
 SHOW PROCESSLIST;
 Kill 55;

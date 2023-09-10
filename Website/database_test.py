@@ -54,7 +54,6 @@ async def handle_connection(websocket, path):
         try:
             data = json.loads(message)
             message_type = data.get('type')
-            print(message_type)
 
             if message_type == 'query':
                 # 執行 SQL 查詢
@@ -187,19 +186,19 @@ async def handle_connection(websocket, path):
                     price = data.get('Price')
                     size = data.get('Size')
                     tags = data.get('Tags')
+                    tags_string = "、".join(tags)
                     description = data.get('Description')
                     material = data.get('Material')
-                    manufacturer = data.ger('manufacturer')
+                    manufacturer = 'test'
                     imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
                     ModalUrl = "\\Uploads\\" + filename
-                    print(tags)
-                    #print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
+                    #print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags_string}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
                     # 執行 SQL 新增資料
-                    #query = "INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                    #values = (name, price, size, tags, description, material, manufacturer, imageUrl, ModalUrl)
-                    #cursor.execute(query, values)
-                    #conn.commit()
+                    query = "INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                    values = (name, price, size, tags_string, description, material, manufacturer, imageUrl, ModalUrl)
+                    cursor.execute(query, values)
+                    conn.commit()
 
                 # 如果有filename，content_chunks才會持續接收分段內容。
                 if filename:
@@ -267,7 +266,7 @@ async def handle_connection(websocket, path):
                 response = {'type': 'user_created', 'message': 'User created successfully'}
 
             elif message_type == 'Login':
-                #登入使用者資料
+                # 登入使用者資料
                 username = data['id']
                 password = data['password']
 
@@ -279,10 +278,18 @@ async def handle_connection(websocket, path):
 
                 if user:
                     print("Login successful.")
-                    response = {'type': 'LoginSuccess','message': data['id']}
+                    # 在這裡加入使用者資料到回應中
+                    user_data = {
+                        'id': user[0],
+                        'username': user[1],
+                        'password': user[2],
+                        'Email': user[3],
+                        'Department': user[4]
+                    }
+                    response = {'type': 'LoginSuccess', 'user': user_data}
                 else:
                     print("Login failed. User not found or incorrect password.")
-                    response = {'type': 'LoginFall'}
+                    response = {'type': 'LoginFail'}
 
 
             else:
