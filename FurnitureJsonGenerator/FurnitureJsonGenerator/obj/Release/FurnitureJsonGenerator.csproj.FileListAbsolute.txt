@@ -8,3 +8,6 @@ D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerat
 D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.csproj.CoreCompileInputs.cache
 D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.exe
 D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.pdb
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\bin\Release\Newtonsoft.Json.dll
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\bin\Release\Newtonsoft.Json.xml
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.csproj.CopyComplete
