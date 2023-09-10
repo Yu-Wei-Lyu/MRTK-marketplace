@@ -21,6 +21,18 @@
         height: 100vh;
       }
 
+      /* 白色底 */
+      .white-overlay {
+        position: absolute;
+        top: 15%; /* 距離上邊緣的距離增加到 20% */
+        left: 10%; /* 距離左邊緣的距離 */
+        width: 80%; /* 寬度 */
+        height: 75%; /* 高度減少到 60% */
+        background-color: rgba(255, 255, 255, 0.8); /* 白色底不透明 */
+        z-index: -1; /* 設定z-index為-1，將白色底置於內容之下 */
+        padding: 20px; /* 內邊距，可根據需要調整 */
+      }
+
       /* 自定義按鈕樣式 */
       .login-button {
         padding: 10px 20px;
@@ -76,8 +88,10 @@
       </div>
     </nav>
 
+    <div class="white-overlay"></div>
+
     <div class="container-fluid button-container">
-      <h1 style="color: #fff; font-size: 32px; font-weight: bold; text-transform: uppercase; letter-spacing: 5px; text-align: center;">
+      <h1 style="color: #9d7979; font-size: 32px; font-weight: bold; text-transform: uppercase; letter-spacing: 5px; text-align: center;">
         家具販賣管理系統
       </h1>
       <a href="login.html" class="btn login-button">登入</a>

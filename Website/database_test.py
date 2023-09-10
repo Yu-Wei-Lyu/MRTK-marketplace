@@ -192,13 +192,14 @@ async def handle_connection(websocket, path):
                     manufacturer = data.ger('manufacturer')
                     imageUrl = data.get('ImageUrl')  # 從前端取得圖片連結
                     ModalUrl = "\\Uploads\\" + filename
-                    print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
+                    print(tags)
+                    #print(f'商品名稱:{name}\n價格:{price}\n大小:{size}\n分類:{tags}\n描述:{description}\n材質:{material}\n圖片URL:{imageUrl}\n模型檔案名稱:{filename}\n')
 
                     # 執行 SQL 新增資料
-                    query = "INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                    values = (name, price, size, tags, description, material, manufacturer, imageUrl, ModalUrl)
-                    cursor.execute(query, values)
-                    conn.commit()
+                    #query = "INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                    #values = (name, price, size, tags, description, material, manufacturer, imageUrl, ModalUrl)
+                    #cursor.execute(query, values)
+                    #conn.commit()
 
                 # 如果有filename，content_chunks才會持續接收分段內容。
                 if filename:

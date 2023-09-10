@@ -36,7 +36,7 @@ async function addData() {
       checkboxes.forEach(function(checkbox) {
           selectedCategories.push(checkbox.value);
       });
-      // console.log('選中的分類：', selectedCategories);
+      console.log('選中的分類：', selectedCategories);
 
       const description = document.getElementById('description').value;
       const material = document.getElementById('material').value;
