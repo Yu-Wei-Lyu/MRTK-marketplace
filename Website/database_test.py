@@ -255,11 +255,11 @@ async def handle_connection(websocket, path):
                 username = data['id']
                 password = data['password']
                 email = data['email']
-                department = data['department']
+                Manufacturer = data['Manufacturer']
 
                  # 插入用户数据到 MySQL 数据库
-                query = "INSERT INTO Users (Username, Password, Email, Department) VALUES (%s, %s, %s, %s)"
-                values = (username, password, email, department)
+                query = "INSERT INTO Users (Username, Password, Email, Manufacturer) VALUES (%s, %s, %s, %s)"
+                values = (username, password, email, Manufacturer)
                 cursor.execute(query, values)
                 conn.commit()
 
@@ -284,7 +284,7 @@ async def handle_connection(websocket, path):
                         'username': user[1],
                         'password': user[2],
                         'Email': user[3],
-                        'Department': user[4]
+                        'Manufacturer': user[4]
                     }
                     response = {'type': 'LoginSuccess', 'user': user_data}
                 else:

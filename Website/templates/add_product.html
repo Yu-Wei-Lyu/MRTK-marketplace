@@ -151,7 +151,7 @@
               aria-describedby="sizing-addon1"
               name="productPrice"
             />
-            
+
             <div>
               <input
                 id="depth"
@@ -225,36 +225,88 @@
               accept=".glb"
             />
             <span id="modelName"></span>
-            <div id="progressContainer" style="display: none;">
+            <div id="progressContainer" style="display: none">
               <progress id="progressBar" value="0" max="100"></progress>
               <span id="progressLabel">Uploading...</span>
             </div>
             <h5>選擇分類：</h5>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="書房．辦公家具"> 書房．辦公家具</label>
-              <label><input type="checkbox" name="category" value="床・化妝台"> 床・化妝台</label>
-              <label><input type="checkbox" name="category" value="衣櫃・鞋櫃"> 衣櫃・鞋櫃</label>
-            </div><br>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="客廳家具"> 客廳家具</label>
-              <label><input type="checkbox" name="category" value="收納用品"> 收納用品</label>
-              <label><input type="checkbox" name="category" value="地毯．地墊"> 地毯．地墊</label>
-            </div><br>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="餐廳家具"> 餐廳家具</label>
-              <label><input type="checkbox" name="category" value="窗簾．窗飾用品"> 窗簾．窗飾用品</label>
-            </div><br>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="廚房家具"> 廚房家具</label>
-              <label><input type="checkbox" name="category" value="孩童用品．嬰幼兒用品"> 孩童用品．嬰幼兒用品</label>
-            </div><br>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="其他"> 其他</label>
-            </div><br>
-            <div class="d-flex justify-content-between align-items-center">
-              <small id="inputError" class="text-danger" style="display: none"
-                ></small
+              <label
+                ><input
+                  type="checkbox"
+                  name="category"
+                  value="書房．辦公家具"
+                />
+                書房．辦公家具</label
               >
+              <label
+                ><input type="checkbox" name="category" value="床・化妝台" />
+                床・化妝台</label
+              >
+              <label
+                ><input type="checkbox" name="category" value="衣櫃・鞋櫃" />
+                衣櫃・鞋櫃</label
+              >
+            </div>
+            <br />
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="category" value="客廳家具" />
+                客廳家具</label
+              >
+              <label
+                ><input type="checkbox" name="category" value="收納用品" />
+                收納用品</label
+              >
+              <label
+                ><input type="checkbox" name="category" value="地毯．地墊" />
+                地毯．地墊</label
+              >
+            </div>
+            <br />
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="category" value="餐廳家具" />
+                餐廳家具</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="category"
+                  value="窗簾．窗飾用品"
+                />
+                窗簾．窗飾用品</label
+              >
+            </div>
+            <br />
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="category" value="廚房家具" />
+                廚房家具</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="category"
+                  value="孩童用品．嬰幼兒用品"
+                />
+                孩童用品．嬰幼兒用品</label
+              >
+            </div>
+            <br />
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="category" value="其他" />
+                其他</label
+              >
+            </div>
+            <br />
+            <div class="d-flex justify-content-between align-items-center">
+              <small
+                id="inputError"
+                class="text-danger"
+                style="display: none"
+              ></small>
               <button
                 id="add"
                 type="button"
@@ -268,6 +320,6 @@
         </div>
       </div>
     </div>
-    <script src="../static/add_product.js"></script>
+    <script type="module" src="../static/add_product.js"></script>
   </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>WebSocket Query</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>WebSocket Query</h1>
     <button onclick="sendQuery()">Send Query</button>
     <button onclick="clearResults()">Clear</button>
@@ -13,92 +13,94 @@
     <ul id="results"></ul>
 
     <!-- 輸入欄位 -->
-    <input type="text" id="nameInput" placeholder="Name">
-    <input type="text" id="numberInput" placeholder="Number">
-    <input type="number" id="priceInput" placeholder="Price">
-    <input type="text" id="imagePathInput" placeholder="ImagePath">
-    <input type="text" id="sizeInput" placeholder="Size">
-    <input type="text" id="descriptionInput" placeholder="Description">
-    <input type="text" id="materialInput" placeholder="Material">
-    <input type="text" id="deleteIdInput" placeholder="deleteID">
-    <input type="text" id="updateIdInput" placeholder="updateID">
-    
-    <input type="file" id="imageInput">
+    <input type="text" id="nameInput" placeholder="Name" />
+    <input type="text" id="numberInput" placeholder="Number" />
+    <input type="number" id="priceInput" placeholder="Price" />
+    <input type="text" id="imagePathInput" placeholder="ImagePath" />
+    <input type="text" id="sizeInput" placeholder="Size" />
+    <input type="text" id="descriptionInput" placeholder="Description" />
+    <input type="text" id="materialInput" placeholder="Material" />
+    <input type="text" id="deleteIdInput" placeholder="deleteID" />
+    <input type="text" id="updateIdInput" placeholder="updateID" />
 
-    <input type="file" id="fileInput">
-    <br>
-    <br>
-    <img id="imageDisplay" src="" alt="Image">
+    <input type="file" id="imageInput" />
+
+    <input type="file" id="fileInput" />
+    <br />
+    <br />
+    <img id="imageDisplay" src="" alt="Image" />
     <h1>Image Display</h1>
     <div id="imageContainer"></div>
-    <button id="showImageButton" >Show Image</button>
+    <button id="showImageButton">Show Image</button>
 
-    <br>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <input type="email" id="email" placeholder="Email">
-    <input type="text" id="department" placeholder="Department">
+    <br />
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="text" id="department" placeholder="Department" />
     <button onclick="addUser()">Create User</button>
 
-    <br>
-    <br>
-    <input type="text" id="Enterusername" placeholder="Username">
-    <input type="password" id="Enterpassword" placeholder="Password">
+    <br />
+    <br />
+    <input type="text" id="Enterusername" placeholder="Username" />
+    <input type="password" id="Enterpassword" placeholder="Password" />
     <button onclick="Login()">Login</button>
-    <br>
-    <br>
+    <br />
+    <br />
     <div id="messageContainer"></div>
 
     <div id="userStatus"></div>
 
+    <script src="static/localStorage.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
-        const socket = new WebSocket('ws://118.150.125.153:8765');
+      const socket = new WebSocket("ws://118.150.125.153:8765");
 
-        const showImageButton = document.getElementById('showImageButton');
-        const imageContainer = document.getElementById('imageContainer');
+      const showImageButton = document.getElementById("showImageButton");
+      const imageContainer = document.getElementById("imageContainer");
 
-        // 添加按鈕點擊事件監聽器
-        showImageButton.addEventListener('click', () => {
-            // Imgur 圖片的網址
-            const imgurImageUrl = 'https://i.imgur.com/QkwpQXf.jpg';
-        
-            // 創建 img 元素
-            const imgElement = document.createElement('img');
+      // 添加按鈕點擊事件監聽器
+      showImageButton.addEventListener("click", () => {
+        // Imgur 圖片的網址
+        const imgurImageUrl = "https://i.imgur.com/QkwpQXf.jpg";
 
-            // 設定 src 屬性為 Imgur 圖片的網址
-            imgElement.src = imgurImageUrl;
+        // 創建 img 元素
+        const imgElement = document.createElement("img");
 
-            // 將 img 元素添加到容器中
-            imageContainer.appendChild(imgElement);
-        });
+        // 設定 src 屬性為 Imgur 圖片的網址
+        imgElement.src = imgurImageUrl;
 
-        // 當接收到訊息時更新網頁內容
-        socket.onmessage = function(event) {
-            try {
-                const data = JSON.parse(event.data);
-                const message_type = data.type;
-                // 假設 data 是您接收到的物件陣列
-                const dataList = data.message;  // 如果 'message' 包含資料物件
-                
-                if (message_type == 'query_website'){
-                    // 取得要顯示資料的容器
-                    const resultsContainer = document.getElementById('results');  // 這是您的HTML容器的ID
+        // 將 img 元素添加到容器中
+        imageContainer.appendChild(imgElement);
+      });
 
-                    // 在接收到登录成功的回应后
-                    const messageContainer = document.getElementById('messageContainer');
-                    const itemDiv = document.createElement('div');
-                    itemDiv.innerHTML = data.message; // data.message 包含成功的消息
+      // 當接收到訊息時更新網頁內容
+      socket.onmessage = function (event) {
+        try {
+          const data = JSON.parse(event.data);
+          const message_type = data.type;
+          // 假設 data 是您接收到的物件陣列
+          const dataList = data.message; // 如果 'message' 包含資料物件
 
-                    // 清空消息容器的内容
-                    messageContainer.innerHTML = '';
+          if (message_type == "query_website") {
+            // 取得要顯示資料的容器
+            const resultsContainer = document.getElementById("results"); // 這是您的HTML容器的ID
 
-                    // 将新消息添加到消息容器中
-                    messageContainer.appendChild(itemDiv);
+            // 在接收到登录成功的回应后
+            const messageContainer =
+              document.getElementById("messageContainer");
+            const itemDiv = document.createElement("div");
+            itemDiv.innerHTML = data.message; // data.message 包含成功的消息
 
-                    // 遍歷資料並顯示每個物件的資料
-                    dataList.forEach(item => {
-                        itemDiv.innerHTML = `
+            // 清空消息容器的内容
+            messageContainer.innerHTML = "";
+
+            // 将新消息添加到消息容器中
+            messageContainer.appendChild(itemDiv);
+
+            // 遍歷資料並顯示每個物件的資料
+            dataList.forEach((item) => {
+              itemDiv.innerHTML = `
                             <p>ID: ${item.ID}</p>
                             <p>Name: ${item.Name}</p>
                             <p>Price: ${item.Price}</p>
@@ -110,211 +112,215 @@
                             <p>ImageURL: ${item.ImageURL}</p>
                             <p>ModelURL: ${item.ModelURL}</p>
                         `;
-                        resultsContainer.appendChild(itemDiv);
-                    });
-                }else if(message_type == 'LoginSuccess'){
-                    const account = data.message;
-                    console.log(account)
-                }else if(message_type == 'LoginFall'){
-                    console.log('Login Fell')
-                }
-                
-            } catch (error) {
-                console.error("Error parsing JSON:", error);
+              resultsContainer.appendChild(itemDiv);
+            });
+          } else if (message_type == "LoginSuccess") {
+            // const account = data.message;
+            const userID = data.id;
+            const Manufacturer = data.Manufacturer;
+            setDataInLocalStorage(userID, Manufacturer);
+            console.log("userid:");
+            console.log(getUserIDFromLocalStorage());
+            console.log("Manufacturer:");
+            console.log(getManufacturerFromLocalStorage());
+          } else if (message_type == "LoginFall") {
+            console.log("Login Fell");
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      };
+
+      // 點擊按鈕時發送訊息給伺服器
+      function clearResults() {
+        console.log("ClearData");
+        const resultsList = document.getElementById("results");
+        resultsList.innerHTML = "";
+      }
+
+      // 點擊按鈕時發送訊息給伺服器
+      function sendQuery() {
+        console.log("SendQuery");
+        socket.send('{"type":"query_website"}');
+      }
+
+      // 點擊按鈕時將新資料加入伺服器
+      async function addData() {
+        console.log("SendAdd");
+
+        const imageInput = document.getElementById("imageInput");
+        const selectedImage = imageInput.files[0];
+
+        const reader = new FileReader();
+        reader.onload = async function (event) {
+          const imageData = event.target.result;
+
+          const fileInput = document.getElementById("fileInput");
+
+          // 從輸入欄位獲取資料
+          const name = document.getElementById("nameInput").value;
+          const number = document.getElementById("numberInput").value;
+          const price = document.getElementById("priceInput").value;
+          const imagePath = document.getElementById("imagePathInput").value;
+          const size = document.getElementById("sizeInput").value;
+          const description = document.getElementById("descriptionInput").value;
+          const material = document.getElementById("materialInput").value;
+          const file = fileInput.files[0];
+
+          // 上傳圖片到 Imgur
+          const formData = new FormData();
+          formData.append("image", selectedImage);
+
+          try {
+            const imgurResponse = await fetch("https://api.imgur.com/3/image", {
+              method: "POST",
+              headers: {
+                Authorization: "Client-ID a4764610882ef96", // Replace with your Imgur Client ID
+              },
+              body: formData,
+            });
+
+            if (imgurResponse.ok) {
+              const imgurData = await imgurResponse.json();
+              const imgurImageUrl = imgurData.data.link;
+              console.log("Imgur Image URL:", imgurImageUrl);
+
+              // 建立資料物件，包含 Imgur 圖片 URL
+              const newData = {
+                type: "add",
+                Name: name,
+                Number: number,
+                Price: price,
+                ImagePath: imagePath,
+                Size: size,
+                Description: description,
+                Material: material,
+                ImageUrl: imgurImageUrl, // Add Imgur Image URL
+                File: file,
+              };
+
+              // 將資料物件轉成 JSON 格式
+              const jsonNewData = JSON.stringify(newData);
+
+              // 發送資料給伺服器
+              socket.send(jsonNewData);
+            } else {
+              console.error("Imgur Upload Error:", imgurResponse.statusText);
             }
-        };
-        
-
-        // 點擊按鈕時發送訊息給伺服器
-        function clearResults() {
-            console.log("ClearData");
-            const resultsList = document.getElementById('results');
-            resultsList.innerHTML = '';
+          } catch (error) {
+            console.error("Error during Imgur upload:", error);
+          }
         };
 
-        // 點擊按鈕時發送訊息給伺服器
-        function sendQuery() {
-            console.log("SendQuery");
-            socket.send('{"type":"query_website"}');
+        // 讀取文件為二進制數據
+        reader.readAsArrayBuffer(selectedImage);
+      }
+
+      // 點擊按鈕時向伺服器發送更新資料的請求
+      function updateData() {
+        console.log("SendUpdate");
+
+        const imageInput = document.getElementById("imageInput");
+        const selectedImage = imageInput.files[0];
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          const imageData = event.target.result;
+          // 從輸入欄位獲取資料
+          const name = document.getElementById("nameInput").value;
+          const number = document.getElementById("numberInput").value;
+          const price = document.getElementById("priceInput").value;
+          const imagePath = document.getElementById("imagePathInput").value;
+          const size = document.getElementById("sizeInput").value;
+          const description = document.getElementById("descriptionInput").value;
+          const material = document.getElementById("materialInput").value;
+
+          // 從輸入欄位獲取要更新的資料的 ID
+          const updateId = document.getElementById("updateIdInput").value;
+
+          // 建立要傳送的資料物件
+          const requestData = {
+            type: "update",
+            id: updateId,
+            Name: name,
+            Number: number,
+            Price: price,
+            ImagePath: imagePath,
+            Size: size,
+            Description: description,
+            Material: material,
+            ImageData: imageData,
+          };
+
+          // 將資料物件轉成 JSON 格式
+          const jsonRequestData = JSON.stringify(requestData);
+
+          // 發送資料給伺服器
+          socket.send(jsonRequestData);
+        };
+        reader.readAsDataURL(selectedImage); // 读取图像文件为Base64编码
+      }
+
+      // 點擊按鈕時向伺服器發送刪除資料的請求
+      function deleteData() {
+        console.log("SendDelete");
+        // 從輸入欄位獲取要刪除的資料的 ID
+        const deleteId = document.getElementById("deleteIdInput").value;
+
+        // 建立要傳送的資料物件
+        const requestData = {
+          type: "delete",
+          id: deleteId,
         };
 
-        // 點擊按鈕時將新資料加入伺服器
-        async function addData() {
-            console.log("SendAdd");
+        // 將資料物件轉成 JSON 格式
+        const jsonRequestData = JSON.stringify(requestData);
 
-            const imageInput = document.getElementById('imageInput');
-            const selectedImage = imageInput.files[0];
+        // 發送資料給伺服器
+        socket.send(jsonRequestData);
+      }
 
-            const reader = new FileReader();
-            reader.onload = async function(event) {
-                const imageData = event.target.result;
+      // 點擊按鈕時向伺服器發送刪除資料的請求
+      function addUser() {
+        console.log("addUser");
+        // 從輸入欄位獲取要刪除的資料的 ID
+        const deleteId = document.getElementById("deleteIdInput").value;
 
-                const fileInput = document.getElementById('fileInput');
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
+        const department = document.getElementById("department").value;
 
-                // 從輸入欄位獲取資料
-                const name = document.getElementById('nameInput').value;
-                const number = document.getElementById('numberInput').value;
-                const price = document.getElementById('priceInput').value;
-                const imagePath = document.getElementById('imagePathInput').value;
-                const size = document.getElementById('sizeInput').value;
-                const description = document.getElementById('descriptionInput').value;
-                const material = document.getElementById('materialInput').value;
-                const file = fileInput.files[0];
+        // 建立要傳送的資料物件
+        const requestData = {
+          type: "addUser",
+          id: username,
+          password: password,
+          email: email,
+          department: department,
+        };
 
-                // 上傳圖片到 Imgur
-                const formData = new FormData();
-                formData.append('image', selectedImage);
+        // 將資料物件轉成 JSON 格式
+        const jsonRequestData = JSON.stringify(requestData);
+        socket.send(jsonRequestData);
+      }
+      function Login() {
+        console.log("login");
 
-                try {
-                    const imgurResponse = await fetch('https://api.imgur.com/3/image', {
-                        method: 'POST',
-                        headers: {
-                            Authorization: 'Client-ID a4764610882ef96', // Replace with your Imgur Client ID
-                        },
-                        body: formData,
-                    });
+        const username = document.getElementById("Enterusername").value;
+        const password = document.getElementById("Enterpassword").value;
 
-                    if (imgurResponse.ok) {
-                        const imgurData = await imgurResponse.json();
-                        const imgurImageUrl = imgurData.data.link;
-                        console.log('Imgur Image URL:', imgurImageUrl);
+        // 建立要傳送的資料物件
+        const requestData = {
+          type: "Login",
+          id: username,
+          password: password,
+        };
 
-                        // 建立資料物件，包含 Imgur 圖片 URL
-                        const newData = {
-                            type: 'add',
-                            Name: name,
-                            Number: number,
-                            Price: price,
-                            ImagePath: imagePath,
-                            Size: size,
-                            Description: description,
-                            Material: material,
-                            ImageUrl: imgurImageUrl, // Add Imgur Image URL
-                            File: file
-                        };
-
-                        // 將資料物件轉成 JSON 格式
-                        const jsonNewData = JSON.stringify(newData);
-
-                        // 發送資料給伺服器
-                        socket.send(jsonNewData);
-                    } else {
-                        console.error('Imgur Upload Error:', imgurResponse.statusText);
-                    }
-                } catch (error) {
-                    console.error('Error during Imgur upload:', error);
-                }
-            };
-
-            // 讀取文件為二進制數據
-            reader.readAsArrayBuffer(selectedImage);
-        }
-
-        // 點擊按鈕時向伺服器發送更新資料的請求
-        function updateData() {
-            console.log("SendUpdate");
-            
-            const imageInput = document.getElementById('imageInput');
-            const selectedImage = imageInput.files[0];
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imageData = event.target.result;
-                // 從輸入欄位獲取資料
-                const name = document.getElementById('nameInput').value;
-                const number = document.getElementById('numberInput').value;
-                const price = document.getElementById('priceInput').value;
-                const imagePath = document.getElementById('imagePathInput').value;
-                const size = document.getElementById('sizeInput').value;
-                const description = document.getElementById('descriptionInput').value;
-                const material = document.getElementById('materialInput').value;
-
-                // 從輸入欄位獲取要更新的資料的 ID
-                const updateId = document.getElementById('updateIdInput').value;
-
-                // 建立要傳送的資料物件
-                const requestData = {
-                    type: 'update',
-                    id: updateId,
-                    Name: name,
-                    Number: number,
-                    Price: price,
-                    ImagePath: imagePath,
-                    Size: size,
-                    Description: description,
-                    Material: material,
-                    ImageData: imageData
-                };
-            
-                // 將資料物件轉成 JSON 格式
-                const jsonRequestData = JSON.stringify(requestData);
-            
-                // 發送資料給伺服器
-                socket.send(jsonRequestData);
-            };
-            reader.readAsDataURL(selectedImage); // 读取图像文件为Base64编码
-        }
-
-        // 點擊按鈕時向伺服器發送刪除資料的請求
-        function deleteData() {
-            console.log("SendDelete");
-            // 從輸入欄位獲取要刪除的資料的 ID
-            const deleteId = document.getElementById('deleteIdInput').value;
-
-            // 建立要傳送的資料物件
-            const requestData = {
-                type: 'delete',
-                id: deleteId
-            };
-
-            // 將資料物件轉成 JSON 格式
-            const jsonRequestData = JSON.stringify(requestData);
-
-            // 發送資料給伺服器
-            socket.send(jsonRequestData);
-        }
-
-        // 點擊按鈕時向伺服器發送刪除資料的請求
-        function addUser() {
-            console.log("addUser");
-            // 從輸入欄位獲取要刪除的資料的 ID
-            const deleteId = document.getElementById('deleteIdInput').value;
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const email = document.getElementById('email').value;
-            const department = document.getElementById('department').value;
-
-            // 建立要傳送的資料物件
-            const requestData = {
-                type: 'addUser',
-                id: username,
-                password: password,
-                email: email,
-                department: department
-            };
-
-            // 將資料物件轉成 JSON 格式
-            const jsonRequestData = JSON.stringify(requestData);
-            socket.send(jsonRequestData);
-        }
-        function Login(){
-            console.log("login");
-
-            const username = document.getElementById('Enterusername').value;
-            const password = document.getElementById('Enterpassword').value;
-
-            // 建立要傳送的資料物件
-            const requestData = {
-                type: 'Login',
-                id: username,
-                password: password,
-            };
-
-            // 將資料物件轉成 JSON 格式
-            const jsonRequestData = JSON.stringify(requestData);
-            socket.send(jsonRequestData);
-        }
+        // 將資料物件轉成 JSON 格式
+        const jsonRequestData = JSON.stringify(requestData);
+        socket.send(jsonRequestData);
+      }
     </script>
-</body>
+  </body>
 </html>
