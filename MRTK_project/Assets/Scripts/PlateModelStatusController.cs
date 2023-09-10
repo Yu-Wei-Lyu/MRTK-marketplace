@@ -20,6 +20,8 @@ namespace Assets.Scripts
         private Transform _entryArea;
         [SerializeField]
         private TMP_Text _quantityDisplay;
+        [SerializeField]
+        private ModelOperatorDialog _modelDialog;
 
         private GlbModelManager _modelManager;
 
@@ -74,9 +76,12 @@ namespace Assets.Scripts
         }
 
         // On button pressed, tell DataManager the ID of furniture
-        private void OnButtonPressed(int referenceID)
+        private void OnButtonPressed(int modelIndex)
         {
-            _dataManager.QueryID = referenceID;
+            var parent = gameObject.transform.parent;
+            _modelManager.CacheIndex = modelIndex;
+            _modelDialog.AddToBeDeactived(parent.gameObject);
+            _modelDialog.SetActive(true);
         }
 
         // Copy object with children

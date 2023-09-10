@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class PopupDialog : MonoBehaviour
+    public class PopupDialog : DialogBase
     {
+        private const string AUTO_CLOSE_MESSAGE = "對話將自動關閉";
+        private const double CLOSE_DELAY_SECOND = 1.5;
         public enum Response
         {
             Confirm,
@@ -27,21 +30,22 @@ namespace Assets.Scripts
         [SerializeField]
         private GameObject _counterZone;
         [SerializeField]
+        private GameObject _responseButtonsParent;
+        [SerializeField]
         private GameObject _confirmButton;
         [SerializeField]
         private GameObject _cancelButton;
 
-        private List<GameObject> _deactivatedList;
-        private AudioSource _audioSource;
         private CounterController _counter;
 
         // Awake is called when the script instance is being loaded.
-        private void Awake()
+        public override void Awake()
         {
-            _deactivatedList = new List<GameObject>();
+            base.Awake();
             _counter = _counterZone.GetComponent<CounterController>();
             SetDisplayMode(DialogDisplayOptions.Default);
             _counter.ResetCounter();
+            gameObject.SetActive(false);
         }
 
         // Set dialog display mode
@@ -51,38 +55,13 @@ namespace Assets.Scripts
             _counterZone.SetActive(options.ShowCounterZone);
             _confirmButton.SetActive(options.ShowConfirmButton);
             _cancelButton.SetActive(options.ShowCancelButton);
+            _responseButtonsParent.SetActive(options.ShowConfirmButton || options.ShowCancelButton);
         }
 
         // Rebuild layout by parent game object
         public void RebuildLayout()
         {
             LayoutRebuilderUtility.RebuildLayoutsWithContentSizeFitter(_rebuilderUtilityParentTarget);
-        }
-
-        // Wait for sound played
-        private IEnumerator WaitForSoundPlayed()
-        {
-            if (_audioSource.isPlaying)
-            {
-                yield return new WaitWhile(() => _audioSource.isPlaying);
-                _audioSource = null;
-            }
-        }
-
-        // SetAudioSourcePlaying
-        public void SetAudioSourcePlaying(AudioSource source)
-        {
-            _audioSource = source;
-        }
-
-        // Close dialog
-        public void CloseDialog()
-        {
-            if (_audioSource != null)
-            {
-                StartCoroutine(WaitForSoundPlayed());
-            }
-            SetActive(false);
         }
 
         // Set title and message
@@ -102,33 +81,27 @@ namespace Assets.Scripts
             RebuildLayout();
         }
 
-        // Set activation
-        public void SetActive(bool value)
+        // Set the activation state of this gameObject
+        public override void SetActive(bool value)
         {
-            gameObject.SetActive(value);
-            if (_deactivatedList.Count != 0)
+            base.SetActive(value);
+            if (value)
             {
-                if (value)
-                {
-                    _deactivatedList.ForEach(targetObject => targetObject.SetActive(false));
-                    _counter.ResetCounter();
-                }
-                else
-                {
-                    _deactivatedList.ForEach(targetObject => targetObject.SetActive(true));
-                    _deactivatedList.Clear();
-                }
+                _counter.ResetCounter();
             }
+            gameObject.SetActive(value);
             RebuildLayout();
         }
 
-        // Add associated gameobject to deactivated later
-        public void AddToBeDeactived(GameObject gameObject)
+        // Display a dialog box with texts
+        public void TextDialog(string title, string message = null)
         {
-            _deactivatedList.Add(gameObject);
+            SetTexts(title, message);
+            SetDisplayMode(DialogDisplayOptions.Default);
+            SetActive(true);
         }
 
-        // Display a dialog box with loaded icons and text
+        // Display a dialog box with loaded icons and texts
         public void LoadingDialog(string title, string message = null)
         {
             SetTexts(title, message);
@@ -136,7 +109,7 @@ namespace Assets.Scripts
             SetActive(true);
         }
 
-        // Display a dialog box with confirmation options and text
+        // Display a dialog box with confirmation options and texts
         public void ConfirmDialog(string title, string message = null)
         {
             SetTexts(title, message);
@@ -144,22 +117,32 @@ namespace Assets.Scripts
             SetActive(true);
         }
 
-        // Displaying the dialog and waiting for response before calling the callback function
+        // Invoking the callback function when the dialog is confirmed or canceled
         public void WaitingResponseDialog(Action<Response, int> callback, bool enabledCounter = false)
         {
             if (enabledCounter)
+            {
                 SetDisplayMode(DialogDisplayOptions.CounterReturnOrCancel);
+            }
             else
+            {
                 SetDisplayMode(DialogDisplayOptions.ConfirmOrCancel);
+            }
             SetActive(true);
             _responseCallback = callback;
+        }
+
+        // Nested dialog
+        public void SetKeepOpen()
+        {
+            KeepDeactiveList = true;
         }
 
         // On confirm button click
         public void OnConfirmButtonClicked()
         {
             SetActive(false);
-            var quantity = _counter.GetValue();
+            var quantity = _counter.Value;
             _responseCallback?.Invoke(Response.Confirm, quantity);
             _responseCallback = null;
         }
@@ -170,6 +153,15 @@ namespace Assets.Scripts
             SetActive(false);
             _responseCallback?.Invoke(Response.Cancel, 0);
             _responseCallback = null;
+        }
+
+        // Close dialog
+        public async Task DelayCloseDialog(string title)
+        {
+            TextDialog(title, AUTO_CLOSE_MESSAGE);
+            await Task.Delay(TimeSpan.FromSeconds(CLOSE_DELAY_SECOND));
+            KeepDeactiveList = false;
+            SetActive(false);
         }
     }
 }

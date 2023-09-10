@@ -26,11 +26,11 @@ namespace Assets.Scripts
         // Set the plate activation state
         public virtual void SetActive(bool value)
         {
-            gameObject.SetActive(value);
             if (value)
             {
                 Initialize();
             }
+            gameObject.SetActive(value);
         }
 
         // Compare plates

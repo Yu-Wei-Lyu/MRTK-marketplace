@@ -9,7 +9,7 @@ namespace Assets.Scripts
     {
         private const string DETAILFORMAT = "價格：\tNT$ {0}\n尺寸：\t{1}cm\n材料：\t{2}\n供應商：\t{3}\n描述：\t{4}";
         private const string ADD_REQUEST_TITLE = "是否要將下述商品加入購物清單？";
-        private const string ADD_CONFIRM_TITLE = "成功加入購物清單";
+        private const string ADD_SUCCESS_TITLE = "成功加入購物清單";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
 
         [SerializeField]
@@ -28,7 +28,6 @@ namespace Assets.Scripts
         private RectTransform _rebuilderUtilityParentTarget;
 
         private ShoppingCart _shoppingCart;
-        private AudioSource _audioSource;
         private bool _isLayoutChanged = false;
         private string _furnitureModelUri;
         private int _cacheFurnitureID = -1;
@@ -92,27 +91,9 @@ namespace Assets.Scripts
             LayoutRebuilderUtility.RebuildLayoutsWithContentSizeFitter(_rebuilderUtilityParentTarget);
         }
 
-        // Wait for sound played
-        private IEnumerator WaitForSoundPlayed()
-        {
-            if (_audioSource.isPlaying)
-            {
-                yield return new WaitWhile(() => _audioSource.isPlaying);
-                _audioSource = null;
-            }
-        }
-
-        // SetAudioSourcePlaying
-        public void SetAudioSourcePlaying(AudioSource source)
-        {
-            _audioSource = source;
-        }
-
         // Trigger request of adding furniture to shopping list dialog
         public void AddingToListDialog()
         {
-            if (_audioSource != null)
-                StartCoroutine(WaitForSoundPlayed());
             var cacheDataObject = _dataManager.GetCacheFurnitureData();
             if (cacheDataObject != null)
             {
@@ -120,6 +101,7 @@ namespace Assets.Scripts
                 _dialogController.AddToBeDeactived(transform.parent.gameObject);
                 _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
                 _dialogController.WaitingResponseDialog(HandleAddRequest, true);
+                _dialogController.SetKeepOpen();
             }
         }
 
@@ -130,7 +112,7 @@ namespace Assets.Scripts
             {
                 _shoppingCart.AddFurnitures(_cacheFurnitureID, amount);
                 _cacheFurnitureID = -1;
-                _dialogController.ConfirmDialog(ADD_CONFIRM_TITLE);
+                _ = _dialogController.DelayCloseDialog(ADD_SUCCESS_TITLE);
             }
         }
 
@@ -147,6 +129,7 @@ namespace Assets.Scripts
             glbLoader.SetPopupDialog(_dialogController);
             glbLoader.SetModelManager(_dataManager.GetModelManager());
             glbLoader.SetFurnitureID(_cacheFurnitureID);
+            _dialogController.AddToBeDeactived(gameObject.transform.parent.gameObject);
             _ = glbLoader.LoadModelUri(_furnitureModelUri);
         }
     }

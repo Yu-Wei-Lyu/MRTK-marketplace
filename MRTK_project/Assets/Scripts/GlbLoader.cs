@@ -12,9 +12,10 @@ namespace Assets.Scripts
 {
     public class GlbLoader
     {
-        private const string LOADING_MODEL_TITLE = "載入模型中...";
-        private const string LOADING_MODEL_FAILED_TITLE = "模型載入失敗";
-        private const string LOADING_MODEL_FAILED_MESSAGE = "請聯絡管理員修正錯誤\nexample@gmail.com";
+        private const string LOADING_TITLE = "載入模型中...";
+        private const string LOADING_SUCCESS_TITLE = "模型載入成功";
+        private const string LOADING_FAILED_TITLE = "模型載入失敗";
+        private const string LOADING_FAILED_MESSAGE = "請檢查網路連線或聯絡管理員修正錯誤\nexample@gmail.com";
 
         private GlbModelManager _modelManager;
         private PopupDialog _dialogController;
@@ -95,25 +96,25 @@ namespace Assets.Scripts
                 ConfigureModelComponents(model);
                 ConfigureModelPosition(model);
                 _modelManager.Add(_cacheFurnitureID, model);
-                _dialogController.CloseDialog();
+                _ = _dialogController.DelayCloseDialog(LOADING_SUCCESS_TITLE);
             }
             else
             {
                 Debug.LogError("Failed to import model.");
-                _dialogController.ConfirmDialog(LOADING_MODEL_FAILED_TITLE, LOADING_MODEL_FAILED_MESSAGE);
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
             }
         }
 
         // Load 3D object to scene by uri
         public async Task LoadModelUri(string uri)
         {
-            _dialogController.LoadingDialog(LOADING_MODEL_TITLE);
+            _dialogController.LoadingDialog(LOADING_TITLE);
             try
             {
                 var response = await Rest.GetAsync(uri, readResponseData: true);
                 if (!response.Successful)
                 {
-                    _dialogController.ConfirmDialog(LOADING_MODEL_FAILED_TITLE, LOADING_MODEL_FAILED_MESSAGE);
+                    _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
                     return;
                 }
                 Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinishAsync);
@@ -121,7 +122,7 @@ namespace Assets.Scripts
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
-                _dialogController.ConfirmDialog(LOADING_MODEL_FAILED_TITLE, LOADING_MODEL_FAILED_MESSAGE);
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
             }
         }
     }

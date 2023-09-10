@@ -8,6 +8,12 @@ namespace Assets.Scripts
         private readonly List<GlbModel> _models;
         public int Count => _models.Count;
 
+        public int CacheIndex
+        {
+            get;
+            set;
+        }
+
         public GlbModelManager()
         {
             _models = new List<GlbModel>();
@@ -19,7 +25,7 @@ namespace Assets.Scripts
             return index >= 0 && index < _models.Count;
         }
 
-        // Get list of ID
+        // Get model by index
         public GlbModel GetModelAt(int index)
         {
             GlbModel model = null;
@@ -32,6 +38,18 @@ namespace Assets.Scripts
                 Debug.LogError($"[GlbModelManager] index {index} out of the range");
             }
             return model;
+        }
+
+        // Reset cache index
+        public void ResetCacheIndex()
+        {
+            CacheIndex = -1;
+        }
+
+        // Get cache model by index
+        public GlbModel GetCacheModel()
+        {
+            return GetModelAt(CacheIndex);
         }
 
         // Add furnitures

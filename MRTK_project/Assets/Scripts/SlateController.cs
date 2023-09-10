@@ -23,7 +23,6 @@ namespace Assets.Scripts
         private Plate _primaryPlate;
         private Stack<Plate> _previousPlateStack;
         private RadialView _radialView;
-        private AudioSource _audioSource = null;
         private const int PRIMARY_PLATE_INDEX = 0;
         private const int SECONDARY_PLATE_BEGIN_INDEX = 1;
 
@@ -59,27 +58,9 @@ namespace Assets.Scripts
             return _plates.Find(plate => plate.IsSameReference(targetPlate));
         }
 
-        // Wait for sound played
-        private IEnumerator WaitForSoundPlayed()
-        {
-            if (_audioSource.isPlaying)
-            {
-                yield return new WaitWhile(() => _audioSource.isPlaying);
-                _audioSource = null;
-            }
-        }
-
-        // SetAudioSourcePlaying
-        public void SetAudioSourcePlaying(AudioSource source)
-        {
-            _audioSource = source;
-        }
-
         // Activate target plate and deactivate other plates
         public void SwitchToPlate(GameObject targetPlate)
         {
-            if (_audioSource != null)
-                StartCoroutine(WaitForSoundPlayed());
             if (_currentPlate.IsSameReference(targetPlate))
             {
                 Debug.Log($"Is same plate: {_currentPlate}: {targetPlate}");
@@ -104,8 +85,6 @@ namespace Assets.Scripts
         // Activate Previous plate and deactivate current plates
         public void SwitchToPreviousPlate()
         {
-            if (_audioSource != null)
-                StartCoroutine(WaitForSoundPlayed());
             _currentPlate.SetActive(false);
             _currentPlate = _previousPlateStack.Pop();
             _currentPlate.SetActive(true);
@@ -122,14 +101,9 @@ namespace Assets.Scripts
         // Do something before setting activated
         public void SetActive(bool value)
         {
-            if (_audioSource != null && isActiveAndEnabled)
-                StartCoroutine(WaitForSoundPlayed());
             gameObject.SetActive(value);
-            if (value)
-            {
-                _radialView.enabled = true;
-                _followButton.ForceToggle(true);
-            }
+            _radialView.enabled = value;
+            _followButton.ForceToggle(value);
         }
 
         // Toggle the radial view state

@@ -1,0 +1,10 @@
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\bin\Release\FurnitureJsonGenerator.exe.config
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\bin\Release\FurnitureJsonGenerator.exe
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\bin\Release\FurnitureJsonGenerator.pdb
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.csproj.AssemblyReference.cache
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.Form1.resources
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.Properties.Resources.resources
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.csproj.GenerateResource.cache
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.csproj.CoreCompileInputs.cache
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.exe
+D:\_git_repository\MRTK3-marketplace\FurnitureJsonGenerator\FurnitureJsonGenerator\obj\Release\FurnitureJsonGenerator.pdb
