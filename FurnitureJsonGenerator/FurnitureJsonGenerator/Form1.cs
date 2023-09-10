@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,8 +19,14 @@ namespace FurnitureJsonGenerator
             URLPrefixTextBox.Text = "http://26.122.221.31:8765/";
         }
 
-        // Reset button click event
-        private void ResetButton_Click(object sender, EventArgs e)
+        // Reset json button click event
+        private void ResetJsonButton_Click(object sender, EventArgs e)
+        {
+            ResultTextBox.Text = "";
+        }
+
+        // Reset fields button click event
+        private void ResetFieldsButton_Click(object sender, EventArgs e)
         {
             IDTextBox.Text = "";
             NameTextBox.Text = "";
@@ -31,11 +38,10 @@ namespace FurnitureJsonGenerator
             ManufacturerTextBox.Text = "";
             ImageURLTextBox.Text = "";
             ModelURLTextBox.Text = "";
-            ResultTextBox.Text = "";
         }
 
-        // Generate button click event
-        private void GenerateButton_Click(object sender, EventArgs e)
+        // Generate Json button click event
+        private void GenerateJsonButton_Click(object sender, EventArgs e)
         {
             string id = IDTextBox.Text;
             string name = NameTextBox.Text;
@@ -49,11 +55,33 @@ namespace FurnitureJsonGenerator
             string modelURL = URLPrefixTextBox.Text + ModelURLTextBox.Text;
             string result = $"{{\r\n\t\"ID\": {id},\r\n\t\"Name\": \"{name}\",\r\n\t\"Price\": {price},\r\n\t\"Size\": \"{size}\",\r\n\t\"Tags\": \"{tags}\",\r\n\t\"Description\": \"{description}\",\r\n\t\"Material\": \"{material}\",\r\n\t\"Manufacturer\": \"{manufacturer}\",\r\n\t\"ImageURL\": \"{imageURL}\",\r\n\t\"ModelURL\": \"{modelURL}\"\r\n}}";
             ResultTextBox.Text = result;
+            DebugLabel.ForeColor = Color.Black;
+            DebugLabel.Text = "Info: No error happened.";
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        // Generate fields button click event
+        private void GenerateFieldsButton_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                FurnitureData furnitureData = JsonConvert.DeserializeObject<FurnitureData>(ResultTextBox.Text);
+                IDTextBox.Text = furnitureData.ID.ToString();
+                NameTextBox.Text = furnitureData.Name;
+                PriceTextBox.Text = furnitureData.Price.ToString();
+                SizeTextBox.Text = furnitureData.Size;
+                TagsTextBox.Text = furnitureData.Tags;
+                DescriptionTextBox.Text = furnitureData.Description;
+                MaterialTextBox.Text = furnitureData.Material;
+                ManufacturerTextBox.Text = furnitureData.Manufacturer;
+                ImageURLTextBox.Text = furnitureData.ImageURL.Replace(URLPrefixTextBox.Text, "");
+                ModelURLTextBox.Text = furnitureData.ModelURL.Replace(URLPrefixTextBox.Text, "");
+                DebugLabel.ForeColor = Color.Black;
+                DebugLabel.Text = "Info: No error happened.";
+            } catch
+            {
+                DebugLabel.ForeColor = Color.Red;
+                DebugLabel.Text = $"ERROR: Json data invalid.";
+            }
         }
     }
 }
