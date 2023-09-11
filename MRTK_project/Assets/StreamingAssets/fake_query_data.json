@@ -1,126 +1,6 @@
 [
   {
     "ID": 1, 
-    "Name": "\u6905\u5b50", 
-    "Price": 1000.0, 
-    "Size": "60x60x80", 
-    "Tags": "", 
-    "Description": "\u8212\u9069\u7684\u5e03\u85dd\u6905\u5b50", 
-    "Material": "\u5e03\u6599\u3001\u6728\u6750", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 2, 
-    "Name": "\u6c99\u767c", 
-    "Price": 5000.0, 
-    "Size": "180x80x70", 
-    "Tags": "", 
-    "Description": "\u73fe\u4ee3\u98a8\u683c\u76ae\u9769\u6c99\u767c", 
-    "Material": "\u76ae\u9769\u3001\u92fc\u67b6", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 3, 
-    "Name": "\u66f8\u684c", 
-    "Price": 800.0, 
-    "Size": "120x60x75", 
-    "Tags": "", 
-    "Description": "\u7c21\u7d04\u98a8\u683c\u66f8\u684c", 
-    "Material": "\u6728\u6750", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 4, 
-    "Name": "\u5e8a\u67b6", 
-    "Price": 3000.0, 
-    "Size": "160x200", 
-    "Tags": "", 
-    "Description": "\u73fe\u4ee3\u98a8\u683c\u5e8a\u67b6", 
-    "Material": "\u6728\u6750\u3001\u91d1\u5c6c", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 5, 
-    "Name": "\u9910\u684c", 
-    "Price": 1500.0, 
-    "Size": "120x80x75", 
-    "Tags": "", 
-    "Description": "\u5be6\u6728\u9910\u684c", 
-    "Material": "\u6728\u6750", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 6, 
-    "Name": "\u8863\u6ac3", 
-    "Price": 2000.0, 
-    "Size": "180x60x200", 
-    "Tags": "", 
-    "Description": "\u73fe\u4ee3\u98a8\u683c\u8863\u6ac3", 
-    "Material": "\u6728\u6750\u3001\u93e1\u5b50", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 7, 
-    "Name": "\u96fb\u8996\u6ac3", 
-    "Price": 1200.0, 
-    "Size": "160x40x50", 
-    "Tags": "", 
-    "Description": "\u7c21\u7d04\u98a8\u683c\u96fb\u8996\u6ac3", 
-    "Material": "\u6728\u6750\u3001\u73bb\u7483", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 8, 
-    "Name": "\u66f8\u67b6", 
-    "Price": 600.0, 
-    "Size": "80x30x180", 
-    "Tags": "", 
-    "Description": "\u7d93\u5178\u6728\u8cea\u66f8\u67b6", 
-    "Material": "\u6728\u6750", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 9, 
-    "Name": "\u6aaf\u71c8", 
-    "Price": 200.0, 
-    "Size": "30x30x50", 
-    "Tags": "", 
-    "Description": "\u73fe\u4ee3\u98a8\u683c\u6aaf\u71c8", 
-    "Material": "\u91d1\u5c6c\u3001\u5851\u81a0", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 10, 
-    "Name": "\u8336\u51e0", 
-    "Price": 800.0, 
-    "Size": "80x80x40", 
-    "Tags": "", 
-    "Description": "\u5be6\u6728\u8336\u51e0", 
-    "Material": "\u6728\u6750", 
-    "Manufacturer": "", 
-    "ImageURL": "", 
-    "ModelURL": ""
-  }, 
-  {
-    "ID": 11, 
     "Name": "\u5178\u96c5\u7a7a\u9593\u6ae5\u6ac3", 
     "Price": 59999.0, 
     "Size": "71.2x196x244", 
@@ -132,7 +12,7 @@
     "ModelURL": "http://26.122.221.31:8765/modern_cabinet_hutch.glb"
   }, 
   {
-    "ID": 12, 
+    "ID": 2, 
     "Name": "\u53e4\u8463\u7acb\u93e1", 
     "Price": 12999.0, 
     "Size": "62.75x89.46x194.12", 
@@ -144,7 +24,7 @@
     "ModelURL": "http://26.122.221.31:8765/antique_standing_mirror.glb"
   },
   {
-    "ID": 13,
+    "ID": 3,
     "Name": "咖啡桌 No-13D",
     "Price": 8999,
     "Size": "72x154x42",
@@ -156,7 +36,7 @@
     "ModelURL": "http://26.122.221.31:8765/Coffee Table No-13D.glb"
   },
   {
-    "ID": 14,
+    "ID": 4,
     "Name": "現代抽屜櫃 C01",
     "Price": 6499,
     "Size": "35.8x138.6x81",
@@ -168,7 +48,7 @@
     "ModelURL": "http://26.122.221.31:8765/accent_chest.glb"
   },
   {
-    "ID": 15,
+    "ID": 5,
     "Name": "高腳固定椅",
     "Price": 299,
     "Size": "38x38x84",
@@ -180,7 +60,7 @@
     "ModelURL": "http://26.122.221.31:8765/bar_stool.glb"
   },
   {
-    "ID": 16,
+    "ID": 6,
     "Name": "埃及圓桌",
     "Price": 359,
     "Size": "110x110x40",
@@ -192,7 +72,7 @@
     "ModelURL": "http://26.122.221.31:8765/Egyptian_table.glb"
   },
   {
-    "ID": 17,
+    "ID": 7,
     "Name": "簡便圓高椅",
     "Price": 129,
     "Size": "50x50x80",
@@ -204,7 +84,7 @@
     "ModelURL": "http://26.122.221.31:8765/Bar_Stool_MACLAINE_by_Cazarina.glb"
   },
   {
-    "ID": 18,
+    "ID": 8,
     "Name": "六角壁掛置物櫃",
     "Price": 499,
     "Size": "50x80x64",
@@ -216,7 +96,7 @@
     "ModelURL": "http://26.122.221.31:8765/Cajonerasarriba.glb"
   },
   {
-    "ID": 19,
+    "ID": 9,
     "Name": "多場合木造長椅",
     "Price": 499,
     "Size": "60x210x90",
@@ -226,5 +106,113 @@
     "Manufacturer": "Lyu Inc.",
     "ImageURL": "http://26.122.221.31:8765/bench.png",
     "ModelURL": "http://26.122.221.31:8765/bench.glb"
+  },
+  {
+    "ID": 10,
+    "Name": "沙發套裝 01",
+    "Price": 1299,
+    "Size": "480x850x140",
+    "Tags": "客廳家具",
+    "Description": "這款沙發套裝提供了舒適的座位，適合客廳或休息室。簡約現代的設計，為您的家居增添了優雅。",
+    "Material": "布料",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Sofa_Set_01.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Sofa_Set_01.glb"
+  },
+  {
+    "ID": 11,
+    "Name": "鏡面圓桌子",
+    "Price": 299,
+    "Size": "150x150x75",
+    "Tags": "書房．辦公家具, 客廳家具",
+    "Description": "這款桌子提供了寬廣的桌面，適合辦公室或家庭使用。現代設計，增強您的工作或休息體驗。",
+    "Material": "木材, 金屬, 玻璃",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Rolling_B.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Rolling_B.glb"
+  },
+  {
+    "ID": 12,
+    "Name": "鏡面雙腳圓桌子",
+    "Price": 499,
+    "Size": "100x240x75",
+    "Tags": "書房．辦公家具, 客廳家具",
+    "Description": "這張桌子具有多功能性，適用於不同用途的空間。現代設計，為您提供了靈活性和便利性。",
+    "Material": "木材, 金屬, 玻璃",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Rolling_2B.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Rolling_2B.glb"
+  },
+  {
+    "ID": 13,
+    "Name": "搖椅",
+    "Price": 349,
+    "Size": "95x67x95",
+    "Tags": "客廳家具",
+    "Description": "這款搖椅非常舒適，適合您在家中放鬆身心。經典的搖擺設計，為您提供舒適的坐姿。",
+    "Material": "木材",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Rocking_Chair.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Rocking_Chair.glb"
+  },
+  {
+    "ID": 14,
+    "Name": "圓吧凳",
+    "Price": 599,
+    "Size": "30x30x65",
+    "Tags": "客廳家具",
+    "Description": "這款旋轉吧凳結合了優雅和功能性，適用於各種場合。獨特的旋轉設計，提供了靈活的座位選擇。",
+    "Material": "金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/REVOLVER_BAR_STOOL__by_Hay.PNG",
+    "ModelURL": "http://26.122.221.31:8765/REVOLVER_BAR_STOOL__by_Hay.glb"
+  },
+  {
+    "ID": 15,
+    "Name": "古舊風格擺設架",
+    "Price": 299,
+    "Size": "55x125x90",
+    "Tags": "客廳家具, 收納用品",
+    "Description": "這款古舊風格擺設架為您的家居增添了復古風情，適合用來陳列您的收藏品和裝飾物品。精緻的古舊風格設計。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/old_rustic_stand.PNG",
+    "ModelURL": "http://26.122.221.31:8765/old_rustic_stand.glb"
+  },
+  {
+    "ID": 16,
+    "Name": "陳舊的書架",
+    "Price": 399,
+    "Size": "40x95x220",
+    "Tags": "書房．辦公家具",
+    "Description": "這個陳舊的塵書架充滿了古老的魅力，適合用來陳列您的書籍和珍藏品。精緻的古老風格設計。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Old_Dusty_Bookshelf.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Old_Dusty_Bookshelf.glb"
+  },
+  {
+    "ID": 17,
+    "Name": "IKEA NILSOLLE 吧凳",
+    "Price": 129,
+    "Size": "40x40x75",
+    "Tags": "廚房家具",
+    "Description": "這款由IKEA設計的NILSOLLE吧凳具有現代風格，適合用於吧台或廚房島。簡潔的設計，易於搭配。",
+    "Material": "金屬, 塑料",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/NILSOLLE_bar_stool_by_IKEA.PNG",
+    "ModelURL": "http://26.122.221.31:8765/NILSOLLE_bar_stool_by_IKEA.glb"
+  },
+  {
+    "ID": 18,
+    "Name": "毛巾架",
+    "Price": 49,
+    "Size": "12x70x12",
+    "Tags": "收納用品",
+    "Description": "這款毛巾架非常實用，適合用來懸掛毛巾和浴巾。簡約的設計，為您的浴室增添了整潔感。",
+    "Material": "金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/MYHandtowelWthRack.PNG",
+    "ModelURL": "http://26.122.221.31:8765/MYHandtowelWthRack.glb"
   }
 ]
