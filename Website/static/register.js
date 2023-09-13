@@ -1,58 +1,39 @@
-$('#register').click(
-    function(){
-        var request_data = new FormData();
-        request_data.append('account',$("#account").val());
-        request_data.append('password',$("#password").val());
-        request_data.append('name',$("#name").val());
-        request_data.append('username',$("#username").val());
-        request_data.append('email',$("#email").val());
-        request_data.append('address',$("#address").val());
-        request_data.append('phone',$("#phone").val());
-        request_data.append('country',$("#country").val());
-        request_data.append('date',$("#date").val());
-        
+const socket = new WebSocket("ws://118.150.125.153:8765");
 
-        if ($("#account").val() === ""){
-            alert("【account】未輸入!")
-        }
-        else if ($("#password").val() === ""){
-            alert("【password】未輸入!")
-        }
-        else if ($("#name").val() === ""){
-            alert("【name】未輸入!")
-        }
-        else if ($("#username").val() === ""){
-            alert("【username】未輸入!")
-        }
-        else if ($("#email").val() === ""){
-            alert("【email】未輸入!")
-        }
-        else if ($("#address").val() === ""){
-            alert("【address】未輸入!")
-        }
-        else if ($("#phone").val() === ""){
-            alert("【phone】未輸入!")
-        }
-        else if ($("#country").val() === ""){
-            alert("【country】未輸入!")
-        }
-        else if ($("#date").val() === ""){
-            alert("【date】未輸入!")
-        }
-        else{
-            $.ajax({
-                type: "POST",
-                url: "register_send",
-                data: request_data,
-                success: function(response_data){
-                    
-                },
-                dataType: "json",
-                contentType: false,
-                processData: false
-            });
-            alert("成功註冊帳號!")
-            window.location.href='/';
-        }
+// 當接收到訊息時更新網頁內容
+socket.onmessage = function (event) {
+  try {
+    const data = JSON.parse(event.data);
+    const message_type = data.type;
+    // 假設 data 是您接收到的物件陣列
+    const dataList = data.message; // 如果 'message' 包含資料物件
+
+    if (message_type == "user_created") {
+      location.href = "/templates/login.html";
     }
-);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+};
+
+// 點擊按鈕時向伺服器發送刪除資料的請求
+function addUser() {
+  console.log("addUser");
+  const account = document.getElementById("account").value;
+  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value;
+  const manufacturer = document.getElementById("manufacturer").value;
+
+  // 建立要傳送的資料物件
+  const requestData = {
+    type: "addUser",
+    id: account,
+    password: password,
+    email: email,
+    Manufacturer: manufacturer,
+  };
+
+  // 將資料物件轉成 JSON 格式
+  const jsonRequestData = JSON.stringify(requestData);
+  socket.send(jsonRequestData);
+}

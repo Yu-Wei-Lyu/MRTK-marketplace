@@ -9,6 +9,7 @@
     />
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <title>Login</title>
   </head>
   <body>
@@ -41,14 +42,14 @@
           <form action="">
             <h3>登入</h3>
             <input
-              id="account"
+              id="Enteraccount"
               type="text"
               class="form-control"
               placeholder="帳號"
               aria-describedby="sizing-addon1"
             />
             <input
-              id="password"
+              id="Enterpassword"
               type="password"
               class="form-control"
               placeholder="密碼"
@@ -58,20 +59,14 @@
               id="member_login"
               type="button"
               class="btn btn-success btn-block"
+              onclick="Login()"
             >
               會員登入
-            </button>
-            <button
-              id="admin_login"
-              type="button"
-              class="btn btn-success btn-block"
-            >
-              管理員登入
             </button>
           </form>
         </div>
       </div>
     </div>
-    <script src="static/login.js"></script>
+    <script src="../static/login.js"></script>
   </body>
 </html>

@@ -1,16 +1,16 @@
 // 把UserID存到LocalStorage
-export function setDataInLocalStorage(userID, Manufacturer) {
+function setDataInLocalStorage(userID, Manufacturer) {
   localStorage.setItem("UserID", userID);
   localStorage.setItem("Manufacturer", Manufacturer);
 }
 
 // 從LocalStorage獲得UserID
-export function getUserIDFromLocalStorage() {
+function getUserIDFromLocalStorage() {
   return localStorage.getItem("UserID");
 }
 
 // 從LocalStorage獲得UserID
-export function getManufacturerFromLocalStorage() {
+function getManufacturerFromLocalStorage() {
   return localStorage.getItem("Manufacturer");
 }
 

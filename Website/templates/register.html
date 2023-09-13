@@ -11,6 +11,7 @@
     <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <!--宣告 JS-->
   </head>
   <body>
@@ -59,20 +60,12 @@
               name="password"
             />
             <input
-              id="name"
+              id="manufacturer"
               type="text"
               class="form-control"
-              placeholder="Name"
+              placeholder="Manufacturer"
               aria-describedby="sizing-addon1"
-              name="name"
-            />
-            <input
-              id="username"
-              type="text"
-              class="form-control"
-              placeholder="User-name"
-              aria-describedby="sizing-addon1"
-              name="username"
+              name="manufacturer"
             />
             <input
               id="email"
@@ -83,14 +76,6 @@
               name="email"
             />
             <input
-              id="address"
-              type="text"
-              class="form-control"
-              placeholder="Address"
-              aria-describedby="sizing-addon1"
-              name="address"
-            />
-            <input
               id="phone"
               type="text"
               class="form-control"
@@ -98,26 +83,11 @@
               aria-describedby="sizing-addon1"
               name="phone"
             />
-            <input
-              id="country"
-              type="text"
-              class="form-control"
-              placeholder="Country"
-              aria-describedby="sizing-addon1"
-              name="country"
-            />
-            <input
-              id="date"
-              type="text"
-              class="form-control"
-              placeholder="Date"
-              aria-describedby="sizing-addon1"
-              name="date"
-            />
             <button
               id="register"
               type="button"
               class="btn btn-success btn-block"
+              onclick="addUser()"
             >
               註冊
             </button>
