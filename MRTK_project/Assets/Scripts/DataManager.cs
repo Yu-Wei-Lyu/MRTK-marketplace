@@ -47,7 +47,7 @@ namespace Assets.Scripts
             if (_isDatabaseOnline)
             {
                 Debug.Log($"[DataManager] Data is in online mode");
-                _ = GetFurnitureDataAsync(_webSocketUri);
+                _ = GetFurnitureDataAsync();
             }
             else
             {
@@ -70,8 +70,78 @@ namespace Assets.Scripts
             }
         }
 
+        // Connect to server by uri
+        private async Task<ClientWebSocket> ConnectToServer(string webSocketUri)
+        {
+            var ws = new ClientWebSocket();
+            var serverUri = new Uri(webSocketUri);
+            await ws.ConnectAsync(serverUri, CancellationToken.None);
+            return ws;
+        }
+
+        // Send message to server request data
+        private async Task SendMessageToServer(ClientWebSocket ws, string data)
+        {
+            var sendBuffer = Encoding.UTF8.GetBytes(data);
+            await ws.SendAsync(new ArraySegment<byte>(sendBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+
+        // Receive message from server
+        private async Task<string> ReceiveMessageFromServer(ClientWebSocket ws)
+        {
+            var memoryStream = new MemoryStream();
+            var receiveBuffer = new byte[1024];
+            WebSocketReceiveResult receiveResult;
+            do
+            {
+                receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
+                memoryStream.Write(receiveBuffer, 0, receiveResult.Count);
+            } while (!receiveResult.EndOfMessage);
+            var resultBuffer = memoryStream.ToArray();
+            return Encoding.UTF8.GetString(resultBuffer);
+        }
+
         // Get furniture datas from database
-        public async Task GetFurnitureDataAsync(string uri)
+        public async Task GetFurnitureDataAsync()
+        {
+            _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
+            try
+            {
+                var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
+                var jsonStr = JsonConvert.SerializeObject(sendData);
+                string receivedMessage;
+                _dialogController.SetTexts(LOADING_DATA_TITLE, "connecting");
+                Debug.Log("[DataManager] Connecting");
+                using (var ws = await ConnectToServer(_webSocketUri))
+                {
+                    _dialogController.SetTexts(LOADING_DATA_TITLE, "sending");
+                    Debug.Log("[DataManager] Sending");
+                    await SendMessageToServer(ws, jsonStr);
+                    _dialogController.SetTexts(LOADING_DATA_TITLE, "receiving");
+                    Debug.Log("[DataManager] Receiving");
+                    receivedMessage = await ReceiveMessageFromServer(ws);
+                }
+                Debug.Log($"[DataManager] Received:\n{receivedMessage}");
+                _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
+                _furnitureDataList.ForEach(data =>
+                {
+                    string modelURL = data.ModelURL;
+                    modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
+                    data.ModelURL = modelURL;
+                });
+                await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
+                await _dialogController.DelayCloseDialog("F");
+                Debug.Log($"[DataManager] Receive data successfully");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[DataManager] {ex.Message}");
+                _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
+            }
+        }
+
+        // Get furniture datas from database
+        /*public async Task GetFurnitureDataAsync(string uri)
         {
             var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
             var jsonStr = JsonConvert.SerializeObject(sendData);
@@ -89,7 +159,7 @@ namespace Assets.Scripts
                 _dialogController.ConfirmDialog(LOADING_DATA_FAILED_TITLE, LOADING_DATA_FAILED_MESSAGE);
                 Debug.LogError($"[DataManager] Error happened when receiving data from websocket");
             }
-        }
+        }*/
 
         // Only for database and website is offline
         public async Task GetFakeData()

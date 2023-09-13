@@ -214,5 +214,113 @@
     "Manufacturer": "Wang Inc.",
     "ImageURL": "http://26.122.221.31:8765/MYHandtowelWthRack.PNG",
     "ModelURL": "http://26.122.221.31:8765/MYHandtowelWthRack.glb"
+  },
+  {
+    "ID": 19,
+    "Name": "Covo的Hoop衣架",
+    "Price": 149,
+    "Size": "50x50x170",
+    "Tags": "家具, 衣架",
+    "Description": "Covo的Hoop衣架結合了實用性和設計感，適用於玄關或衣帽間。簡約的圓環設計，為您的空間增添了現代風格。",
+    "Material": "金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Hoop_Coat_Rack_by_Covo.png",
+    "ModelURL": "http://26.122.221.31:8765/Hoop_Coat_Rack_by_Covo.glb"
+  },
+  {
+    "ID": 20,
+    "Name": "Helsinki Office 35辦公桌",
+    "Price": 1599,
+    "Size": "90x240x75",
+    "Tags": "書房．辦公家具",
+    "Description": "Desalto的Helsinki Office 35辦公桌系統具有現代風格，適用於辦公室或工作空間。多功能的設計，提供了工作所需的靈活性。",
+    "Material": "金屬, 木材",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Helsinki_Office_35_Desk_System_by_Desalto.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Helsinki_Office_35_Desk_System_by_Desalto.glb"
+  },
+  {
+    "ID": 21,
+    "Name": "電競椅",
+    "Price": 299,
+    "Size": "55x55x95",
+    "Tags": "客廳家具",
+    "Description": "這款遊戲椅提供了舒適的座位和支援，適合長時間遊戲。專為遊戲愛好者設計的現代風格。",
+    "Material": "皮革, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/gaming_chair.PNG",
+    "ModelURL": "http://26.122.221.31:8765/gaming_chair.glb"
+  },
+  {
+    "ID": 22,
+    "Name": "原木書櫃",
+    "Price": 599,
+    "Size": "45x115x170",
+    "Tags": "書房．辦公家具",
+    "Description": "這款書櫃是書房或辦公存放空間的理想選擇，適用於各種用途。簡約的設計，增添了空間的靈活性。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Log_bookcase.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Log_bookcase.glb"
+  },
+  {
+    "ID": 23,
+    "Name": "Freistil 154咖啡桌",
+    "Price": 399,
+    "Size": "70x70x38",
+    "Tags": "客廳家具",
+    "Description": "Freistil Rolf Benz的Freistil 154咖啡桌以其簡約和現代的設計而聞名。適用於客廳或休息室，提供了優雅的表面。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Freistil_154_Coffee_Table_by_Freistil_Rolf_Benz.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Freistil_154_Coffee_Table_by_Freistil_Rolf_Benz.glb"
+  },
+  {
+    "ID": 24,
+    "Name": "Fiorile Longe Plisset Long",
+    "Price": 799,
+    "Size": "80x80x90",
+    "Tags": "客廳家具",
+    "Description": "Fiorile Longe Plisset Long具有精緻的設計，適用於休息區或客廳。提供了舒適的座位和優雅的外觀。",
+    "Material": "布料, 木材",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Fiorile_Longe_Plisset_Long.PNG",
+    "ModelURL": "http://26.122.221.31:8765/Fiorile_Longe_Plisset_Long.glb"
+  },
+  {
+    "ID": 25,
+    "Name": "Fiorile Base Bar Gass Plisset",
+    "Price": 899,
+    "Size": "60x60x100",
+    "Tags": "客廳家具, 餐廳家具",
+    "Description": "Fiorile Base Bar Gass Plisset是一款時尚的吧台椅，適用於吧台區域或娛樂區。獨特的設計，提供了舒適的座位和優雅的外觀。",
+    "Material": "布料, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Fiorile_Base_Bar_Gass_Plisset.png",
+    "ModelURL": "http://26.122.221.31:8765/Fiorile_Base_Bar_Gass_Plisset.glb"
+  },
+  {
+    "ID": 26,
+    "Name": "咖啡桌",
+    "Price": 399,
+    "Size": "110x110x45",
+    "Tags": "客廳家具",
+    "Description": "這個咖啡桌具有現代簡約的設計，適用於客廳或休息室。它提供了一個極簡主義的設計，讓您的空間更加整潔和現代。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/coffee_table_for_upload.png",
+    "ModelURL": "http://26.122.221.31:8765/coffee_table_for_upload.glb"
+  },
+  {
+    "ID": 27,
+    "Name": "椅子",
+    "Price": 129,
+    "Size": "50x45x100",
+    "Tags": "客廳家具, 餐廳家具, 書房．辦公家具",
+    "Description": "這款椅子具有簡約的設計，適用於各種場合。它提供了舒適的座位和優雅的外觀。",
+    "Material": "木材, 金屬",
+    "Manufacturer": "Wang Inc.",
+    "ImageURL": "http://26.122.221.31:8765/Chair.png",
+    "ModelURL": "http://26.122.221.31:8765/Chair.glb"
   }
 ]

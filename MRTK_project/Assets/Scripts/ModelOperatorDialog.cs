@@ -61,7 +61,6 @@ namespace Assets.Scripts
                 {
                     _pinchSlider.SliderValue = currentEulerAngles.y / _valueMultiplier;
                 }
-                Debug.Log("" + currentEulerAngles.y + " | " + (currentEulerAngles.y / _valueMultiplier));
             }
         }
 

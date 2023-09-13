@@ -104,8 +104,8 @@ namespace Assets.Scripts
             _cacheFurnitureID = furnitureData.ID;
             _dialogController.AddToBeDeactived(transform.parent.gameObject);
             _dialogController.SetTexts(DELETE_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, furnitureData.Name));
-            _dialogController.WaitingResponseDialog(HandleDeleteRequest, true);
             _dialogController.SetKeepOpen();
+            _dialogController.WaitingResponseDialog(HandleDeleteRequest, true);
         }
 
         // Handling the request for the removal of furniture

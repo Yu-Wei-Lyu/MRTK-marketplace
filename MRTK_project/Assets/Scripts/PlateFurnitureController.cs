@@ -100,8 +100,8 @@ namespace Assets.Scripts
                 _cacheFurnitureID = cacheDataObject.ID;
                 _dialogController.AddToBeDeactived(transform.parent.gameObject);
                 _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
-                _dialogController.WaitingResponseDialog(HandleAddRequest, true);
                 _dialogController.SetKeepOpen();
+                _dialogController.WaitingResponseDialog(HandleAddRequest, true);
             }
         }
 
