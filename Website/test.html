@@ -51,7 +51,6 @@
 
     <div id="userStatus"></div>
 
-    <script src="static/localStorage.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
       const socket = new WebSocket("ws://118.150.125.153:8765");
@@ -100,6 +99,7 @@
 
             // 遍歷資料並顯示每個物件的資料
             dataList.forEach((item) => {
+              console.log(item.ID)
               itemDiv.innerHTML = `
                             <p>ID: ${item.ID}</p>
                             <p>Name: ${item.Name}</p>

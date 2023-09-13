@@ -83,9 +83,6 @@ async def handle_connection(websocket, path):
                     result_data.append(item)
                 response = result_data
         
-                # 將處理後的資料發送回前端網頁
-                await websocket.send(json.dumps(response))
-
             elif message_type == 'query_website':
                 # 執行 SQL 查詢
                 query = "SELECT * FROM furniture;"
@@ -112,10 +109,8 @@ async def handle_connection(websocket, path):
                         'ModelURL': row[9]
                     }
                     result_data.append(item)
-                response = {'type': 'query_webiste', 'message': result_data}
-        
-                # 將處理後的資料發送回前端網頁
-                await websocket.send(json.dumps(response))
+
+                response = {'type': 'query_website', 'message': result_data}
 
             elif message_type == 'query_user':
                 Material = data.get('Material')
@@ -176,6 +171,7 @@ async def handle_connection(websocket, path):
                         }
                         result_data.append(item)
                 response = {'type': 'query_webiste', 'message': result_data}
+
             elif message_type == 'query_ID':
                 ID = data.get('ID')
                 # 執行 SQL 查詢
@@ -204,7 +200,7 @@ async def handle_connection(websocket, path):
                     }
                     result_data.append(item)
                 response = {'type': 'query_webiste', 'message': result_data}
-                
+
             elif message_type == 'add':
                 # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
                 # 因為檔案上傳過程中以下數據也會不停地被重複送來
@@ -305,7 +301,6 @@ async def handle_connection(websocket, path):
                 user = cursor.fetchone()
 
                 if user:
-                    print("Login successful.")
                     # 在這裡加入使用者資料到回應中
                     user_data = {
                         'id': user[0],
@@ -316,10 +311,7 @@ async def handle_connection(websocket, path):
                     }
                     response = {'type': 'LoginSuccess', 'user': user_data}
                 else:
-                    print("Login failed. User not found or incorrect password.")
                     response = {'type': 'LoginFail'}
-
-
             else:
                 response = {'type': 'error', 'message': 'Invalid message type'}
 
