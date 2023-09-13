@@ -1,8 +1,8 @@
 // 引入你的 JavaScript 文件
-import {
-  //   getUserIDFromLocalStorage,
-  getManufacturerFromLocalStorage,
-} from "./localStorage.js";
+// import {
+//   //   getUserIDFromLocalStorage,
+//   getManufacturerFromLocalStorage,
+// } from "./localStorage.js";
 
 const socket = new WebSocket("ws://118.150.125.153:8765");
 
@@ -48,7 +48,7 @@ async function addData() {
 
     const description = document.getElementById("description").value;
     const material = document.getElementById("material").value;
-    const manufacturer = getManufacturerFromLocalStorage();
+    // const manufacturer = getManufacturerFromLocalStorage();
 
     // 上傳圖片到 Imgur
     const formData = new FormData();
@@ -83,7 +83,7 @@ async function addData() {
             Tags: selectedCategories,
             Description: description,
             Material: material,
-            Manufacturer: manufacturer,
+            // Manufacturer: manufacturer,
             ImageUrl: imgurImageUrl, // Add Imgur Image URL
             filename: selectedFile.name,
             content: new Uint8Array(fileData),
