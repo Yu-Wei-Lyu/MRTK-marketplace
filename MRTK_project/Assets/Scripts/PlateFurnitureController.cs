@@ -33,16 +33,14 @@ namespace Assets.Scripts
         private int _cacheFurnitureID = -1;
 
         // Awake is called when the script instance is being loaded.
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             _shoppingCart = _dataManager.GetShoppingCart();
         }
 
         // Update is called once per frame
-        public override void Update()
+        public void Update()
         {
-            base.Update();
             _expandDetailButton.SetActive(_furnitureDetailManager.IsTextOverflowing());
             if (_isLayoutChanged)
             {

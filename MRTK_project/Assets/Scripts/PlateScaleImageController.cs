@@ -10,9 +10,8 @@ namespace Assets.Scripts
         private FurnitureObjectReference _furnitureEntry;
 
         // Awake is called when the script instance is being loaded.
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             _furnitureEntry = GetComponent<FurnitureObjectReference>();
         }
 

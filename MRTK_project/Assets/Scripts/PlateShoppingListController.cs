@@ -29,9 +29,8 @@ namespace Assets.Scripts
         private int _cacheFurnitureID = -1;
 
         // Awake is called when the script instance is being loaded.
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             _shoppingCart = _dataManager.GetShoppingCart();
             _sampleFurnitureEntry.SetActive(false);
         }

@@ -19,8 +19,6 @@ namespace Assets.Scripts
 
         private GlbModelManager _modelManager;
         private PopupDialog _dialogController;
-        private Vector3 _modelSize;
-        private Vector3 _modelCenter;
         private int _cacheFurnitureID;
 
         // Set dialog controller 
@@ -76,8 +74,8 @@ namespace Assets.Scripts
             var targetPosition = playerPosition + playerForward * SAFE_DISTANCE;
             RaycastHit hit;
             if (Physics.Raycast(targetPosition, playerForward, out hit, SAFE_DISTANCE))
-                targetPosition = hit.point - _modelSize.magnitude * OFFSET_MULTIPLIER * playerForward;
-            var finalPosition = targetPosition + Vector3.down * _modelCenter.y;
+                targetPosition = hit.point - OFFSET_MULTIPLIER * playerForward;
+            var finalPosition = targetPosition;
             var modelTransform = model.transform;
             modelTransform.position = finalPosition;
             modelTransform.LookAt(playerPosition);

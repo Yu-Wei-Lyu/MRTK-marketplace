@@ -26,9 +26,8 @@ namespace Assets.Scripts
         private GlbModelManager _modelManager;
 
         // Awake is called when the script instance is being loaded.
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             _modelManager = _dataManager.GetModelManager();
             _sampleFurnitureEntry.SetActive(false);
         }
