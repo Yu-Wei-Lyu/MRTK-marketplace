@@ -18,14 +18,19 @@
         margin: 0;
       }
 
-      .button-container {
-        display: flex;
-        height: 100%;
-      }
-
       .button {
         flex: 1;
         font-size: 5em;
+      }
+
+      .list-group-item.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      .list-group-item:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -104,7 +109,7 @@
       </div>
     </nav>
     <!-- Header-->
-    <header class="bg-dark py-5">
+    <header class="bg-dark py-3">
       <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
           <div class="container-fluid">
@@ -129,65 +134,199 @@
         </div>
       </div>
     </header>
+    <!-- 切換模式按鈕 -->
+    <button
+      id="categoryModeButton"
+      class="btn btn-primary"
+      style="position: relative; bottom: 40px"
+      onclick="toggleCategoryMode()"
+    >
+      分類模式
+    </button>
 
-    <!-- Section-->
-    <section class="py-5">
+    <!-- search Section-->
+    <section id="searchSection" class="py-5" style="display: none">
       <div class="container px-4 px-lg-5 mt-5">
-        <!-- additionalArea -->
+        <h1>搜尋結果</h1>
         <div
-          id="additionalArea"
+          id="searchArea"
           class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-        >
-          <!-- 商品範例一 -->
-          <!-- <div class="col mb-5" id="field${id}">
-            <div class="card h-100">
-              <img
-                class="card-img-top"
-                src="ProductImages/Example1.jpg"
-                alt="..."
-              />
-              <div class="card-body p-4">
-                <div class="text-center">
-                  <h3 id="title${id}" class="fw-bolder">${title}</h3>
-                </div>
-              </div>
-              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                  <a id="reserve${id}" class="btn btn-outline-dark mt-auto" href="product_detail.html"
-                    >詳細資訊
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- 商品範例二 -->
-          <!-- <div class="col mb-5" id="field${id}">
-            <div class="card h-100">
-              <img
-                class="card-img-top"
-                src="ProductImages/Example2.jpg"
-                alt="..."
-              />
-              <div class="card-body p-4">
-                <div class="text-center">
-                  <h3 id="title${id}" class="fw-bolder">${title}</h3>
-                </div>
-              </div>
-
-              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                  <a id="reserve${id}" class="btn btn-outline-dark mt-auto" href="product_detail.html" onclick="reserve_book(this.id)"
-                    >詳細資訊
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div> -->
-        </div>
-        <!-- additionalArea end -->
+        ></div>
       </div>
     </section>
+    <!-- search Section -->
+
+    <div id="productArea">
+      <!-- no Tags Section-->
+      <section id="noTagsSection" class="py-5" style="display: none">
+        <div class="container px-4 px-lg-5 mt-5">
+          <!-- additionalArea -->
+          <div
+            id="noTagsAdditionalArea"
+            class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+          ></div>
+          <!-- additionalArea end -->
+        </div>
+      </section>
+      <!-- no Tags Section -->
+
+      <!-- taggedSections -->
+      <div id="taggedSections" class="container-fluid" style="display: block">
+        <div class="row">
+          <!-- 右側固定欄 -->
+          <div class="col-md-3 order-md-2">
+            <ul id="tagList" class="list-group sticky-top">
+              <li class="list-group-item" data-section="all">
+                顯示所有商品分類
+              </li>
+              <li class="list-group-item" data-section="section1">
+                書房．辦公家具
+              </li>
+              <li class="list-group-item" data-section="section2">客廳家具</li>
+              <li class="list-group-item" data-section="section3">餐廳家具</li>
+              <li class="list-group-item" data-section="section4">廚房家具</li>
+              <li class="list-group-item" data-section="section5">
+                床・化妝台
+              </li>
+              <li class="list-group-item" data-section="section6">收納用品</li>
+              <li class="list-group-item" data-section="section7">
+                窗簾．窗飾用品
+              </li>
+              <li class="list-group-item" data-section="section8">
+                孩童用品．嬰幼兒用品
+              </li>
+              <li class="list-group-item" data-section="section9">
+                衣櫃・鞋櫃
+              </li>
+              <li class="list-group-item" data-section="section10">
+                地毯．地墊
+              </li>
+              <li class="list-group-item" data-section="section11">其他</li>
+              <!-- more -->
+            </ul>
+          </div>
+          <!-- 右側固定欄 -->
+
+          <!-- 左側商品 -->
+          <div class="col-md-9 order-md-1">
+            <section id="section1" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>書房．辦公家具</h1>
+                <div
+                  id="study_office_furniture"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section2" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>客廳家具</h1>
+                <div
+                  id="living_room_furniture"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section3" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>餐廳家具</h1>
+                <div
+                  id="dining_room_furniture"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section4" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>廚房家具</h1>
+                <div
+                  id="kitchen_furniture"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section5" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>床・化妝台</h1>
+                <div
+                  id="beds_dressing_tables"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section6" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>收納用品</h1>
+                <div
+                  id="storage_solutions"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section7" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>窗簾．窗飾用品</h1>
+                <div
+                  id="curtains_window_decor"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section8" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>孩童用品．嬰幼兒用品</h1>
+                <div
+                  id="children_baby_supplies"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section9" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>衣櫃・鞋櫃</h1>
+                <div
+                  id="wardrobes_shoe_cabinets"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section10" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>地毯．地墊</h1>
+                <div
+                  id="carpets_mats"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <section id="section11" class="py-5">
+              <div class="container px-4 px-lg-5 mt-5">
+                <h1>其他</h1>
+                <div
+                  id="other"
+                  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+                ></div>
+              </div>
+            </section>
+
+            <!-- more -->
+          </div>
+          <!-- 左側商品 -->
+        </div>
+      </div>
+      <!-- taggedSections -->
+    </div>
+
     <script src="../static/product_list.js"></script>
   </body>
 </html>
