@@ -63,7 +63,6 @@ namespace Assets.Scripts
         {
             if (_currentPlate.IsSameReference(targetPlate))
             {
-                Debug.Log($"Is same plate: {_currentPlate}: {targetPlate}");
                 return;
             }
             _currentPlate.SetActive(false);

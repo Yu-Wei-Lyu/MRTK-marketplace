@@ -20,6 +20,9 @@ namespace Assets.Scripts
         private GlbModelManager _modelManager;
         private PopupDialog _dialogController;
         private int _cacheFurnitureID;
+        private Vector3 _modelSize;
+        private Vector3 _modelCenter;
+
 
         // Set dialog controller 
         public void SetPopupDialog(PopupDialog dialogController)
@@ -44,14 +47,19 @@ namespace Assets.Scripts
         private void AddColliderToModel(GameObject model)
         {
             var rootCollider = model.AddComponent<MeshCollider>();
-            rootCollider.convex = true;
             var meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
-            var childWithMeshList = meshRenderers.Select(renderer => renderer.gameObject).ToList();
-            childWithMeshList.Remove(model);
-            childWithMeshList.ForEach(meshObject => {
+            var combinedBounds = new Bounds();
+            rootCollider.convex = true;
+            foreach (var meshRenderer in meshRenderers)
+            {
+                var meshObject = meshRenderer.gameObject;
                 var childCollider = meshObject.AddComponent<MeshCollider>();
+                var childBounds = meshRenderer.bounds;
                 childCollider.convex = true;
-            });
+                combinedBounds.Encapsulate(childBounds);
+            }
+            _modelSize = combinedBounds.size;
+            _modelCenter = combinedBounds.center;
         }
 
         // Configure 3D object's components to grabbable and axis constraint
@@ -74,8 +82,8 @@ namespace Assets.Scripts
             var targetPosition = playerPosition + playerForward * SAFE_DISTANCE;
             RaycastHit hit;
             if (Physics.Raycast(targetPosition, playerForward, out hit, SAFE_DISTANCE))
-                targetPosition = hit.point - OFFSET_MULTIPLIER * playerForward;
-            var finalPosition = targetPosition;
+                targetPosition = hit.point - _modelSize.magnitude * OFFSET_MULTIPLIER * playerForward;
+            var finalPosition = targetPosition + Vector3.down * _modelCenter.y;
             var modelTransform = model.transform;
             modelTransform.position = finalPosition;
             modelTransform.LookAt(playerPosition);
@@ -83,9 +91,8 @@ namespace Assets.Scripts
         }
 
         // When the 3D object import finished, configure attribute of the 3D object.
-        private void OnFinishAsync(GameObject model, AnimationClip[] animations)
+        private void OnFinish(GameObject model, AnimationClip[] animations)
         {
-            Debug.LogWarning(model);
             if (model != null)
             {
                 AddColliderToModel(model);
@@ -113,7 +120,7 @@ namespace Assets.Scripts
                     _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
                     return;
                 }
-                Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinishAsync);
+                Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinish);
             }
             catch (Exception e)
             {

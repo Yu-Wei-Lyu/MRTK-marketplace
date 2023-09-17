@@ -33,6 +33,8 @@ namespace Assets.Scripts
         [SerializeField]
         private string _websiteRootUrl;
         [SerializeField]
+        private string _offlineWebsiteRootUrl;
+        [SerializeField]
         private PopupDialog _dialogController;
 
         private readonly GlbModelManager _glbModelList = new GlbModelManager();
@@ -106,6 +108,12 @@ namespace Assets.Scripts
             {
                 var socketContent = File.ReadAllText(filePath);
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(socketContent);
+                _furnitureDataList.ForEach(data =>
+                {
+                    var modelURL = data.ModelURL;
+                    modelURL = _offlineWebsiteRootUrl + modelURL.Replace("\\", "/");
+                    data.ModelURL = modelURL;
+                });
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
                 await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }

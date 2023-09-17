@@ -36,7 +36,7 @@ namespace Assets.Scripts
                 if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
                     webRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Debug.Log($"Error happened when receiving an image request, returned default image\nError message:{webRequest.error}");
+                    Debug.LogWarning($"Error happened when receiving an image request, returned default image\nError message:{webRequest.error}");
                     onImageLoaded?.Invoke(_defaultImage);
                 }
                 else
