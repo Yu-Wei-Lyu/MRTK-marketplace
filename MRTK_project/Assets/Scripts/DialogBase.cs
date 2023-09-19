@@ -26,21 +26,22 @@ namespace Assets.Scripts
         // Set the activation state of this gameObject
         public virtual void SetActive(bool value)
         {
-            if (KeepDeactiveList)
+            if (DeactivatedList.Count == 0)
             {
                 return;
             }
-            if (DeactivatedList.Count != 0)
+            if (value)
             {
-                if (value)
+                DeactivatedList.ForEach(targetObject => targetObject.SetActive(false));
+            }
+            else
+            {
+                if (KeepDeactiveList)
                 {
-                    DeactivatedList.ForEach(targetObject => targetObject.SetActive(false));
+                    return;
                 }
-                else
-                {
-                    DeactivatedList.ForEach(targetObject => targetObject.SetActive(true));
-                    DeactivatedList.Clear();
-                }
+                DeactivatedList.ForEach(targetObject => targetObject.SetActive(true));
+                DeactivatedList.Clear();
             }
         }
 

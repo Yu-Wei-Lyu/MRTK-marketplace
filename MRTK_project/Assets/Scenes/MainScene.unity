@@ -18908,8 +18908,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: BC-870
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: -1480467797938047239, guid: 77a441a4cd96ab94eb1fe44778c7595e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8da418baefe4f9144b55696881c7f53c, type: 2}
+  m_sharedMaterial: {fileID: -1480467797938047239, guid: 8da418baefe4f9144b55696881c7f53c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -18997,7 +18997,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1480467797938047239, guid: 77a441a4cd96ab94eb1fe44778c7595e, type: 2}
+  - {fileID: -1480467797938047239, guid: 8da418baefe4f9144b55696881c7f53c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37535,8 +37535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0
+  rotateLerpTime: 0
   scaleLerpTime: 0
   maintainScaleOnInitialization: 1
   smoothing: 1
@@ -51763,7 +51763,7 @@ MonoBehaviour:
   scrollView: {fileID: 0}
   dynamicItem: {fileID: 455696444}
   numItems: 54
-  lazyLoad: 1
+  lazyLoad: 0
   itemsPerFrame: 1
   loader: {fileID: 7563923819366589716}
   cellWidth: 0.032

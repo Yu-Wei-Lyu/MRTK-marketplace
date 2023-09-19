@@ -48,14 +48,15 @@ namespace Assets.Scripts
             FurnitureData furnitureData;
             string totalPriceFormat;
             double totalPrice = 0;
-            var furnitureIDAndAmountDict = _shoppingCart.GetDictionary();
+            var shoppingIDList = _shoppingCart.GetIDList();
             DestroyAllListEntry();
-            foreach (var keyValuePair in furnitureIDAndAmountDict)
+            shoppingIDList.ForEach(furnitureID =>
             {
-                furnitureData = _dataManager.GetFurnitureDataById(keyValuePair.Key);
-                totalPrice += furnitureData.Price * keyValuePair.Value;
-                ConfigureFurnitureZone(furnitureData, keyValuePair.Value);
-            }
+                var shoppingItem = _shoppingCart.GetQuantityByID(furnitureID);
+                furnitureData = _dataManager.GetFurnitureDataById(furnitureID);
+                totalPrice += furnitureData.Price * shoppingItem;
+                ConfigureFurnitureZone(furnitureData, shoppingItem);
+            });
             totalPriceFormat = totalPrice.ToString(PRICE_FORMAT_TYPE);
             _totalPriceText.text = $"待付款金额 NT$ {totalPriceFormat}";
         }
