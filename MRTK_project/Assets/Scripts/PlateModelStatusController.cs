@@ -24,6 +24,7 @@ namespace Assets.Scripts
         private ModelOperatorDialog _modelDialog;
 
         private GlbModelManager _modelManager;
+        private int _previousStateID = -1;
 
         // Awake is called when the script instance is being loaded.
         public void Awake()
@@ -35,6 +36,15 @@ namespace Assets.Scripts
         // Set the plate activation state
         public override void SetActive(bool value)
         {
+            if (value)
+            {
+                _previousStateID = _dataManager.QueryID;
+            }
+            else
+            {
+                _dataManager.QueryID = _previousStateID;
+                _previousStateID = -1;
+            }
             base.SetActive(value);
             _plateToggleButton.ForceToggle(value);
         }
