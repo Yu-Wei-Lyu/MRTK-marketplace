@@ -191,5 +191,15 @@ namespace Assets.Scripts
         {
             return _dialogController;
         }
+
+        // for test
+        public void LoadModelByUri(string uri)
+        {
+            var glbLoader = new GlbLoader();
+            glbLoader.SetPopupDialog(_dialogController);
+            glbLoader.SetModelManager(GetModelManager());
+            glbLoader.SetFurnitureID(-1);
+            _ = glbLoader.LoadModelUri(uri);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Assets.Scripts
     {
         private const string DELETE_REQUEST_TITLE = "確定要刪除？";
         private const string DELETE_CONFIRM_TITLE = "刪除成功！";
+        private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被刪除";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
         private const string PRICE_FORMAT_TYPE = "N0";
 
@@ -46,7 +47,6 @@ namespace Assets.Scripts
             else
             {
                 _dataManager.QueryID = _previousStateID;
-                _previousStateID = -1;
             }
             base.SetActive(value);
             _plateToggleButton.ForceToggle(value);
@@ -119,13 +119,22 @@ namespace Assets.Scripts
         }
 
         // Handling the request for the removal of furniture
-        private void HandleDeleteRequest(PopupDialog.Response response, int deleteAmount)
+        private void HandleDeleteRequest(PopupDialog.Response response, int deleteQuantity)
         {
             if (response == PopupDialog.Response.Confirm)
             {
-                _shoppingCart.DecreaseFurnitureByID(_cacheFurnitureID, deleteAmount);
+                string reactText;
+                if (deleteQuantity == 0)
+                {
+                    reactText = NO_ACTION_CONFIRM_TITLE;
+                }
+                else
+                {
+                    reactText = DELETE_CONFIRM_TITLE;
+                    _shoppingCart.DecreaseFurnitureByID(_cacheFurnitureID, deleteQuantity);
+                }
                 _cacheFurnitureID = -1;
-                _ = _dialogController.DelayCloseDialog(DELETE_CONFIRM_TITLE);
+                _ = _dialogController.DelayCloseDialog(reactText);
                 Initialize();
             }
         }

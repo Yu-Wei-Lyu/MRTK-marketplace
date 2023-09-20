@@ -7,6 +7,11 @@ namespace Assets.Scripts
     {
         [SerializeField]
         private string _plateTitle;
+        [SerializeField]
+        private bool _recordable;
+
+        // Can be record by slate
+        public bool Recordable => _recordable;
 
         // Get plate title
         public string Title => _plateTitle;

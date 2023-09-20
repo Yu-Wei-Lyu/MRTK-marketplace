@@ -50,5 +50,11 @@ namespace Assets.Scripts
         {
             DeactivatedList.Add(gameObject);
         }
+
+        // Nested dialog
+        public void SetKeepOpen()
+        {
+            KeepDeactiveList = true;
+        }
     }
 }

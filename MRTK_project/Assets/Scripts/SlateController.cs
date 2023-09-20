@@ -66,7 +66,10 @@ namespace Assets.Scripts
                 return;
             }
             _currentPlate.SetActive(false);
-            _previousPlateStack.Push(_currentPlate);
+            if (_currentPlate.Recordable)
+            {
+                _previousPlateStack.Push(_currentPlate);
+            }
             _currentPlate = GetPlateIfContains(targetPlate);
             _currentPlate.SetActive(true);
             _titlebarText.text = _currentPlate.Title;

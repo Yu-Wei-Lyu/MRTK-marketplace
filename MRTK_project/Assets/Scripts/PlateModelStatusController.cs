@@ -43,7 +43,6 @@ namespace Assets.Scripts
             else
             {
                 _dataManager.QueryID = _previousStateID;
-                _previousStateID = -1;
             }
             base.SetActive(value);
             _plateToggleButton.ForceToggle(value);
@@ -90,6 +89,7 @@ namespace Assets.Scripts
             var parent = gameObject.transform.parent;
             _modelManager.CacheIndex = modelIndex;
             _modelDialog.AddToBeDeactived(parent.gameObject);
+            _modelDialog.SetKeepOpen();
             _modelDialog.SetActive(true);
         }
 

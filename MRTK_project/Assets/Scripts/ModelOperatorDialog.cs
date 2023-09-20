@@ -94,7 +94,7 @@ namespace Assets.Scripts
         // Close dialog
         public void CloseDialog()
         {
-            gameObject.SetActive(false);
+            SetActive(false);
         }
     }
 }
