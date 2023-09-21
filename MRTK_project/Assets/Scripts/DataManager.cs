@@ -82,12 +82,14 @@ namespace Assets.Scripts
             if (receivedMessage != null)
             {
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
-                _furnitureDataList.ForEach(data =>
+                foreach (var data in _furnitureDataList)
                 {
                     var modelURL = data.ModelURL;
                     modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                });
+                    await data.SetImageSpriteAsync();
+                    Debug.Log("Passed " + modelURL);
+                }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
                 await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
                 await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
@@ -108,12 +110,14 @@ namespace Assets.Scripts
             {
                 var socketContent = File.ReadAllText(filePath);
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(socketContent);
-                _furnitureDataList.ForEach(data =>
+                foreach (var data in _furnitureDataList)
                 {
                     var modelURL = data.ModelURL;
                     modelURL = _offlineWebsiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                });
+                    await data.SetImageSpriteAsync();
+                    Debug.Log("Passed " + modelURL);
+                }
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
                 await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
