@@ -13,12 +13,6 @@ namespace Assets.Scripts
         [SerializeField]
         private Transform _entryArea;
 
-        // Start is called before the first frame update
-        public override void Start()
-        {
-            UpdateFurnitures();
-        }
-
         // Destroy all the list Entry
         private void DestroyAllListEntry()
         {
@@ -36,7 +30,7 @@ namespace Assets.Scripts
         }
 
         // Update furniture list and display on plate
-        private void UpdateFurnitures()
+        public override void Initialize()
         {
             DestroyAllListEntry();
             _sampleFurnitureEntry.SetActive(true);

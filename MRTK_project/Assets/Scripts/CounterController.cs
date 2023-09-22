@@ -8,39 +8,48 @@ namespace Assets.Scripts
         [SerializeField]
         private TMP_Text _counterTextObject;
         [SerializeField]
-        private GameObject _decreaseButton;
-        [SerializeField]
-        private GameObject _increaseButton;
+        private GameObject _numberInputBox;
 
-        public int Value { get; set; } = 1;
+        private int _counterValue = 0;
 
-        // Update the text of the counter 
-        private void UpdateCounter()
+        public int Value
         {
-            _decreaseButton.SetActive(Value > 1);
-            _counterTextObject.text = Value.ToString();
+            get => _counterValue;
+            set
+            {
+                _counterValue = value;
+                _counterTextObject.text = _counterValue.ToString();
+            }
         }
 
-        // Reset the text of the counter to zero
-        public void ResetCounter()
+        // Initialize the state of counter, and reset the value to 0
+        public void Initialize()
         {
-            Value = 1;
-            UpdateCounter();
+            Value = 0;
         }
 
-        // Increase the counter value
-        public void IncreaseValue()
+        // Enable the number box area
+        public void ActivatedNumberInputBox(bool state)
         {
-            Value += 1;
-            UpdateCounter();
+            _numberInputBox.SetActive(state);
         }
 
-        // Decrease the counter value
-        public void DecreaseValue()
+        // Number button OnPressed event
+        public void NumberButtonClicked(int number)
         {
-            if (Value > 1)
-                Value -= 1;
-            UpdateCounter();
+            Value = Value * 10 + number;
+        }
+
+        // Back button OnPressed event
+        public void DeleteButtonClicked()
+        {
+            Value /= 10;
+        }
+
+        // Reset button OnPress event
+        public void ClearButtonClicked()
+        {
+            Value = 0;
         }
     }
 }

@@ -20,6 +20,18 @@ namespace Assets.Scripts
             return new Dictionary<int, int>(_shoppingDictionary);
         }
 
+        // Get list of ID
+        public List<int> GetIDList()
+        {
+            return new List<int>(_shoppingDictionary.Keys);
+        }
+
+        // Get quantity of shopping item
+        public int GetQuantityByID(int id)
+        {
+            return _shoppingDictionary[id];
+        }
+
         // Add furnitures
         public void AddFurnitures(int id, int amount)
         {

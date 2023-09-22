@@ -5,21 +5,25 @@ socket.onmessage = function (event) {
   try {
     const data = JSON.parse(event.data);
     const message_type = data.type;
+    console.log(data);
+    console.log(data.user);
+    console.log(data.user.id);
     // 假設 data 是您接收到的物件陣列
     const dataList = data.message; // 如果 'message' 包含資料物件
 
     if (message_type == "LoginSuccess") {
       // const account = data.message;
-      const userID = data.id;
-      const Manufacturer = data.Manufacturer;
+      const userID = data.user.id;
+      const Manufacturer = data.user.Manufacturer;
       setDataInLocalStorage(userID, Manufacturer);
       console.log("userid:");
       console.log(getUserIDFromLocalStorage());
       console.log("Manufacturer:");
       console.log(getManufacturerFromLocalStorage());
+
       location.href = "/templates/main_member.html";
-    } else if (message_type == "LoginFall") {
-      console.log("Login Fall");
+    } else if (message_type == "LoginFail") {
+      console.log("Login Fail");
     }
   } catch (error) {
     console.error("Error parsing JSON:", error);

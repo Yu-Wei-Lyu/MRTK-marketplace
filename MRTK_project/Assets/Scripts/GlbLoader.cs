@@ -19,9 +19,10 @@ namespace Assets.Scripts
 
         private GlbModelManager _modelManager;
         private PopupDialog _dialogController;
+        private int _cacheFurnitureID;
         private Vector3 _modelSize;
         private Vector3 _modelCenter;
-        private int _cacheFurnitureID;
+
 
         // Set dialog controller 
         public void SetPopupDialog(PopupDialog dialogController)
@@ -43,30 +44,32 @@ namespace Assets.Scripts
 
         // Using MeshRenderer to calculate 3D object (and its child object) size and center by bounds
 
-        private void CalculateModelSizeAndCenter(GameObject model)
+        private void AddColliderToModel(GameObject model)
         {
+            var rootCollider = model.AddComponent<MeshCollider>();
             var meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
-            var boundsList = meshRenderers.Select(renderer => renderer.bounds).ToList();
-            var combinedBounds = boundsList.Aggregate((combined, nextBounds) => {
-                combined.Encapsulate(nextBounds);
-                return combined;
-            });
+            var combinedBounds = new Bounds();
+            rootCollider.convex = true;
+            foreach (var meshRenderer in meshRenderers)
+            {
+                var meshObject = meshRenderer.gameObject;
+                var childCollider = meshObject.AddComponent<MeshCollider>();
+                var childBounds = meshRenderer.bounds;
+                childCollider.convex = true;
+                combinedBounds.Encapsulate(childBounds);
+            }
             _modelSize = combinedBounds.size;
             _modelCenter = combinedBounds.center;
-
         }
 
         // Configure 3D object's components to grabbable and axis constraint
         private void ConfigureModelComponents(GameObject model)
         {
-            var boxCollider = model.AddComponent<BoxCollider>();
             var objectManipulator = model.AddComponent<ObjectManipulator>();
             var rotationConstraint = model.AddComponent<RotationAxisConstraint>();
             model.AddComponent<NearInteractionGrabbable>();
             rotationConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
             objectManipulator.TwoHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate;
-            boxCollider.size = new Vector3(_modelSize.x, _modelSize.y, _modelSize.z);
-            boxCollider.center = new Vector3(_modelCenter.x, _modelCenter.y, _modelCenter.z);
         }
 
         // Configure 3D object's position to in front of the player
@@ -88,11 +91,11 @@ namespace Assets.Scripts
         }
 
         // When the 3D object import finished, configure attribute of the 3D object.
-        private void OnFinishAsync(GameObject model, AnimationClip[] animations)
+        private void OnFinish(GameObject model, AnimationClip[] animations)
         {
             if (model != null)
             {
-                CalculateModelSizeAndCenter(model);
+                AddColliderToModel(model);
                 ConfigureModelComponents(model);
                 ConfigureModelPosition(model);
                 _modelManager.Add(_cacheFurnitureID, model);
@@ -117,7 +120,7 @@ namespace Assets.Scripts
                     _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
                     return;
                 }
-                Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinishAsync);
+                Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinish);
             }
             catch (Exception e)
             {

@@ -47,10 +47,9 @@ namespace Assets.Scripts
             string receivedMessage = null;
             try
             {
-                var jsonStr = JsonConvert.SerializeObject(data);
                 using (var ws = await ConnectToServer(uri))
                 {
-                    await SendMessageToServer(ws, jsonStr);
+                    await SendMessageToServer(ws, data);
                     receivedMessage = await ReceiveMessageFromServer(ws);
                 }
                 Console.WriteLine($"[DataManager] Received:\n{receivedMessage}");

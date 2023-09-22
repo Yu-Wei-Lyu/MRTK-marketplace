@@ -142,6 +142,7 @@ namespace Assets.Scripts
             }
         }
 
+        // This function is called when the object becomes enabled and active.
         private void OnEnable()
         {
             // Make sure we find a collection
