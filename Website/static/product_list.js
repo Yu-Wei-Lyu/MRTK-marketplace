@@ -139,7 +139,7 @@ function viewDetails(id) {
   var furniture_ID = id.split("_")[1];
   // 把家具ID加入URL的後面，為了傳遞變數給下一個網頁
   var url =
-    "/templates/product_detail.html?variable=" +
+    "/Website/templates/product_detail.html?variable=" +
     encodeURIComponent(furniture_ID);
   window.location.href = url;
   // console.log("Clicked on detail for ID: " + furniture_ID);
