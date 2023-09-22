@@ -1,14 +1,15 @@
                            
-                           || 大檔案請先確認是否在專案內 ||
+                           || 前置作業 ||
 ----------------------------------------------------------
 大檔案連結: https://drive.google.com/drive/folders/1Ip9elEsoMn5WoYW1wTE1oCvLiPaMS-N3?usp=drive_link
 檔案: MSJH.asset
 檔案: MSJH.asset.meta
 放進專案路徑: MRTK_project\Assets\Materials\Fonts
 ----------------------------------------------------------
-大檔案連結: https://drive.google.com/drive/folders/1Ip9elEsoMn5WoYW1wTE1oCvLiPaMS-N3?
-檔案: MRTK2_project_test20230809.mp4
-無須放進專案
+因為GltfImporter有多個引用 所以要屏蔽無需使用的
+Edit > Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbols
+填入參數 MRTK_GLTF_IMPORTER_OFF
+解決多重引用造成的Error
 ----------------------------------------------------------
                            ||||||||||||||||||||||||||||||||
 

@@ -43,27 +43,30 @@ namespace Assets.Scripts
             get; set;
         }
 
-        private Sprite _imageSprite;
-        private string _imageURL;
+        private Sprite _imageSprite = null;
 
         public string ImageURL
         {
-            set
-            {
-                _imageURL = value;
-            }
-            get => _imageURL;
+            set;
+            get;
         }
 
+        // Set image sprite asynchronous
         public async Task SetImageSpriteAsync()
         {
-            if (_imageURL == null)
+            if (ImageURL == null || _imageSprite != null)
             {
                 return;
             }
             var imageDownloader = new ImageDownloader();
-            _imageSprite = await imageDownloader.RequestImageByUriAsync(_imageURL);
-        } 
+            _imageSprite = await imageDownloader.RequestImageByUriAsync(ImageURL);
+        }
+
+        // Return bool of _imageSprite is null
+        public bool IsImageDownloaded()
+        {
+            return _imageSprite != null;
+        }
 
         // Get image sprite
         public Sprite GetImageSprite()
