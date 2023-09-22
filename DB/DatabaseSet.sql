@@ -142,6 +142,8 @@ select * from order_items;
 Select * from history;
 Select * from users;
 
+DELETE FROM furniture;
+
 describe furniture;
 describe order_items;
 describe orders;
