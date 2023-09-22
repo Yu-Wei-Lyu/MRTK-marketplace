@@ -10,6 +10,7 @@ namespace Assets.Scripts
         private const string DETAILFORMAT = "價格：\tNT$ {0}\n尺寸：\t{1}cm\n材料：\t{2}\n供應商：\t{3}\n描述：\t{4}";
         private const string ADD_REQUEST_TITLE = "是否要將下述商品加入購物清單？";
         private const string ADD_SUCCESS_TITLE = "成功加入購物清單";
+        private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被加入";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
 
         [SerializeField]
@@ -104,13 +105,22 @@ namespace Assets.Scripts
         }
 
         // Handling the request for adding furniture to shopping list
-        private void HandleAddRequest(PopupDialog.Response response, int amount)
+        private void HandleAddRequest(PopupDialog.Response response, int addingQuantity)
         {
             if (response == PopupDialog.Response.Confirm)
             {
-                _shoppingCart.AddFurnitures(_cacheFurnitureID, amount);
+                string reactText;
+                if (addingQuantity == 0)
+                {
+                    reactText = NO_ACTION_CONFIRM_TITLE;
+                }
+                else
+                {
+                    reactText = ADD_SUCCESS_TITLE;
+                    _shoppingCart.AddFurnitures(_cacheFurnitureID, addingQuantity);
+                }
                 _cacheFurnitureID = -1;
-                _ = _dialogController.DelayCloseDialog(ADD_SUCCESS_TITLE);
+                _ = _dialogController.DelayCloseDialog(reactText);
             }
         }
 

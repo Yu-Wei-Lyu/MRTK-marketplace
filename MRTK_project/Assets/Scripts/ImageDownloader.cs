@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -28,24 +29,29 @@ namespace Assets.Scripts
         }
 
         // Request image by uri
-        public void RequestImageByUri(string x, Action<Sprite> onImageLoaded)
+        public async Task<Sprite> RequestImageByUriAsync(string imageUrl)
         {
-            var webRequest = UnityWebRequestTexture.GetTexture(x);
-            webRequest.SendWebRequest().completed += operation =>
+            var webRequest = UnityWebRequestTexture.GetTexture(imageUrl);
+            var operation = webRequest.SendWebRequest();
+
+            while (!operation.isDone)
             {
-                if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                    webRequest.result == UnityWebRequest.Result.ProtocolError)
-                {
-                    Debug.Log($"Error happened when receiving an image request, returned default image\nError message:{webRequest.error}");
-                    onImageLoaded?.Invoke(_defaultImage);
-                }
-                else
-                {
-                    var img = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
-                    var sprite = Sprite.Create(img, new Rect(0, 0, img.width, img.height), Vector2.zero);
-                    onImageLoaded?.Invoke(sprite);
-                }
-            };
+                await Task.Delay(100); // 等待100毫秒，然后继续检查是否完成
+            }
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogWarning($"Error happened when receiving an image request, returned default image\nError message:{webRequest.error}");
+                return _defaultImage;
+            }
+            else
+            {
+                var img = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
+                var sprite = Sprite.Create(img, new Rect(0, 0, img.width, img.height), Vector2.zero);
+                Debug.Log("Done " + imageUrl);
+                return sprite;
+            }
         }
     }
 }

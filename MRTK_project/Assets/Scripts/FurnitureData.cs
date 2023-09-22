@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -49,12 +50,20 @@ namespace Assets.Scripts
         {
             set
             {
-                var imageDownloader = new ImageDownloader();
                 _imageURL = value;
-                imageDownloader.RequestImageByUri(value, (loadedSprite) => _imageSprite = loadedSprite);
             }
             get => _imageURL;
         }
+
+        public async Task SetImageSpriteAsync()
+        {
+            if (_imageURL == null)
+            {
+                return;
+            }
+            var imageDownloader = new ImageDownloader();
+            _imageSprite = await imageDownloader.RequestImageByUriAsync(_imageURL);
+        } 
 
         // Get image sprite
         public Sprite GetImageSprite()

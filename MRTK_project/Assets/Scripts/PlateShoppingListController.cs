@@ -9,6 +9,7 @@ namespace Assets.Scripts
     {
         private const string DELETE_REQUEST_TITLE = "確定要刪除？";
         private const string DELETE_CONFIRM_TITLE = "刪除成功！";
+        private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被刪除";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
         private const string PRICE_FORMAT_TYPE = "N0";
 
@@ -27,6 +28,7 @@ namespace Assets.Scripts
 
         private ShoppingCart _shoppingCart;
         private int _cacheFurnitureID = -1;
+        private int _previousStateID = -1;
 
         // Awake is called when the script instance is being loaded.
         public void Awake()
@@ -38,6 +40,14 @@ namespace Assets.Scripts
         // Set the plate activation state
         public override void SetActive(bool value)
         {
+            if (value)
+            {
+                _previousStateID = _dataManager.QueryID;
+            }
+            else
+            {
+                _dataManager.QueryID = _previousStateID;
+            }
             base.SetActive(value);
             _plateToggleButton.ForceToggle(value);
         }
@@ -48,14 +58,15 @@ namespace Assets.Scripts
             FurnitureData furnitureData;
             string totalPriceFormat;
             double totalPrice = 0;
-            var furnitureIDAndAmountDict = _shoppingCart.GetDictionary();
+            var shoppingIDList = _shoppingCart.GetIDList();
             DestroyAllListEntry();
-            foreach (var keyValuePair in furnitureIDAndAmountDict)
+            shoppingIDList.ForEach(furnitureID =>
             {
-                furnitureData = _dataManager.GetFurnitureDataById(keyValuePair.Key);
-                totalPrice += furnitureData.Price * keyValuePair.Value;
-                ConfigureFurnitureZone(furnitureData, keyValuePair.Value);
-            }
+                var shoppingItem = _shoppingCart.GetQuantityByID(furnitureID);
+                furnitureData = _dataManager.GetFurnitureDataById(furnitureID);
+                totalPrice += furnitureData.Price * shoppingItem;
+                ConfigureFurnitureZone(furnitureData, shoppingItem);
+            });
             totalPriceFormat = totalPrice.ToString(PRICE_FORMAT_TYPE);
             _totalPriceText.text = $"待付款金额 NT$ {totalPriceFormat}";
         }
@@ -108,13 +119,22 @@ namespace Assets.Scripts
         }
 
         // Handling the request for the removal of furniture
-        private void HandleDeleteRequest(PopupDialog.Response response, int deleteAmount)
+        private void HandleDeleteRequest(PopupDialog.Response response, int deleteQuantity)
         {
             if (response == PopupDialog.Response.Confirm)
             {
-                _shoppingCart.DecreaseFurnitureByID(_cacheFurnitureID, deleteAmount);
+                string reactText;
+                if (deleteQuantity == 0)
+                {
+                    reactText = NO_ACTION_CONFIRM_TITLE;
+                }
+                else
+                {
+                    reactText = DELETE_CONFIRM_TITLE;
+                    _shoppingCart.DecreaseFurnitureByID(_cacheFurnitureID, deleteQuantity);
+                }
                 _cacheFurnitureID = -1;
-                _ = _dialogController.DelayCloseDialog(DELETE_CONFIRM_TITLE);
+                _ = _dialogController.DelayCloseDialog(reactText);
                 Initialize();
             }
         }

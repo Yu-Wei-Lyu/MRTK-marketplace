@@ -44,7 +44,7 @@ namespace Assets.Scripts
             base.Awake();
             _counter = _counterZone.GetComponent<CounterController>();
             SetDisplayMode(DialogDisplayOptions.Default);
-            _counter.ResetCounter();
+            _counter.Initialize();
             gameObject.SetActive(false);
         }
 
@@ -53,6 +53,7 @@ namespace Assets.Scripts
         {
             _loadingIcon.SetActive(options.ShowLoadingIcon);
             _counterZone.SetActive(options.ShowCounterZone);
+            _counter.ActivatedNumberInputBox(options.ShowCounterZone);
             _confirmButton.SetActive(options.ShowConfirmButton);
             _cancelButton.SetActive(options.ShowCancelButton);
             _responseButtonsParent.SetActive(options.ShowConfirmButton || options.ShowCancelButton);
@@ -87,7 +88,7 @@ namespace Assets.Scripts
             base.SetActive(value);
             if (value)
             {
-                _counter.ResetCounter();
+                _counter.Initialize();
             }
             gameObject.SetActive(value);
             RebuildLayout();
@@ -132,12 +133,6 @@ namespace Assets.Scripts
             _responseCallback = callback;
         }
 
-        // Nested dialog
-        public void SetKeepOpen()
-        {
-            KeepDeactiveList = true;
-        }
-
         // On confirm button click
         public void OnConfirmButtonClicked()
         {
@@ -150,6 +145,7 @@ namespace Assets.Scripts
         // On cancel button click
         public void OnCancelButtonClicked()
         {
+            KeepDeactiveList = false;
             SetActive(false);
             _responseCallback?.Invoke(Response.Cancel, 0);
             _responseCallback = null;

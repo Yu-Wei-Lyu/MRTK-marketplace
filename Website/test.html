@@ -53,7 +53,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
-      const socket = new WebSocket("ws://118.150.125.153:8765");
+      const socket = new WebSocket("ws://118.150.125.153:13666");
 
       const showImageButton = document.getElementById("showImageButton");
       const imageContainer = document.getElementById("imageContainer");
@@ -80,7 +80,7 @@
           const message_type = data.type;
           // 假設 data 是您接收到的物件陣列
           const dataList = data.message; // 如果 'message' 包含資料物件
-
+          console.log(message_type)
           if (message_type == "query_website") {
             // 取得要顯示資料的容器
             const resultsContainer = document.getElementById("results"); // 這是您的HTML容器的ID
@@ -115,6 +115,7 @@
               resultsContainer.appendChild(itemDiv);
             });
           } else if (message_type == "LoginSuccess") {
+            console.log('success')
             // const account = data.message;
             const userID = data.id;
             const Manufacturer = data.Manufacturer;

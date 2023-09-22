@@ -32,8 +32,8 @@ def get_imgur_image_url(image_url):
 config = {
     'user': '109590037',
     'password': '109590037',
-    'host': '118.150.125.153',
-    'port': 8888,  # 預設 MySQL 連接埠
+    'host': '127.0.0.1',
+    'port': 3306,  # 預設 MySQL 連接埠
     'database': 'mydatabase',
     'auth_plugin': 'mysql_native_password'
 }
@@ -44,7 +44,7 @@ conn = mysql.connector.connect(**config)
 # 建立遊標物件
 cursor = conn.cursor()
 
-# 定義 WebSocket 連線的處理函式
+  # 定義 WebSocket 連線的處理函式
 async def handle_connection(websocket, path):
     filename = None
     # 接收檔案分段內容的list
@@ -291,6 +291,7 @@ async def handle_connection(websocket, path):
 
             elif message_type == 'Login':
                 # 登入使用者資料
+                print('test')
                 username = data['id']
                 password = data['password']
 
