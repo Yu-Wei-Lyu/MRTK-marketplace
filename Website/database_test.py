@@ -175,31 +175,35 @@ async def handle_connection(websocket, path):
             elif message_type == 'query_ID':
                 ID = data.get('ID')
                 # 執行 SQL 查詢
-                query = "SELECT * FROM furniture WHERE Material = %s;"
+                query = "SELECT * FROM furniture WHERE ID = %s;"
                 cursor.execute(query, ID)
 
                 # 取得查詢結果
                 result = cursor.fetchall()
+        
+                if result:
+                    # 如果 result 包含數據，則進行相應的處理
+                    result_data = []
 
-                result_data = []
-        
-                for row in result:  # 假設您有一個 result 包含查詢結果
-        
-                    # 將資料整理成字典，包括 ImageUrl
-                    item = {
-                        'ID': row[0],
-                        'Name': row[1],
-                        'Price': float(row[2]),
-                        'Size': row[3],
-                        'Tags': row[4],
-                        'Description': row[5],
-                        'Material': row[6],
-                        'Manufacturer': row[7],
-                        'ImageURL': row[8],
-                        'ModelURL': row[9]
-                    }
-                    result_data.append(item)
-                response = {'type': 'query_webiste', 'message': result_data}
+                    for row in result:  
+                        # 將資料整理成字典，包括 ImageUrl
+                        item = {
+                            'ID': row[0],
+                            'Name': row[1],
+                            'Price': float(row[2]),
+                            'Size': row[3],
+                            'Tags': row[4],
+                            'Description': row[5],
+                            'Material': row[6],
+                            'Manufacturer': row[7],
+                            'ImageURL': row[8],
+                            'ModelURL': row[9]
+                        }
+                        result_data.append(item)
+                    response = {'type': 'query_ID', 'message': result_data}
+                else:
+                    response = {'type': 'query_ID_Error', 'message': "ID isn't exist"}
+                
 
             elif message_type == 'add':
                 # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
@@ -273,6 +277,15 @@ async def handle_connection(websocket, path):
                 cursor.execute(query)
                 conn.commit()
                 response = {'type': 'delete', 'message': 'Data deleted successfully'}
+
+            elif message_type == 'click_Version':
+
+                # 執行 SQL 查詢版本
+                query = f"SELECT MAX(id) FROM audit_log"
+                cursor.execute(query)
+                conn.commit()
+                latest_id = cursor.fetchone()[0]
+                response = {'type': 'Check', 'message': latest_id}
 
             elif message_type == 'addUser':
                 #新增使用者

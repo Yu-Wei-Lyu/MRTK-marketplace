@@ -101,6 +101,79 @@ CREATE TABLE Order_Items (
   FOREIGN KEY (FurnitureID) REFERENCES Furniture(id)
 );
 
+CREATE TABLE audit_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    table_name VARCHAR(255) NOT NULL,
+    action VARCHAR(10) NOT NULL,
+    record_id INT NOT NULL,
+    changed_data JSON,
+    change_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 创建 INSERT 触发器
+DELIMITER //
+CREATE TRIGGER log_furniture_insert
+AFTER INSERT ON Furniture
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, action, record_id, changed_data)
+    VALUES ('Furniture', 'INSERT', NEW.ID, JSON_OBJECT(
+        'Name', NEW.Name,
+        'Price', NEW.Price,
+        'Size', NEW.Size,
+        'Tags', NEW.Tags,
+        'Description', NEW.Description,
+        'Material', NEW.Material,
+        'Manufacturer', NEW.Manufacturer,
+        'ImageURL', NEW.ImageURL,
+        'ModelURL', NEW.ModelURL
+    ));
+END;
+//
+
+-- 创建 UPDATE 触发器
+DELIMITER //
+CREATE TRIGGER log_furniture_update
+AFTER UPDATE ON Furniture
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, action, record_id, changed_data)
+    VALUES ('Furniture', 'UPDATE', NEW.ID, JSON_OBJECT(
+        'Name', NEW.Name,
+        'Price', NEW.Price,
+        'Size', NEW.Size,
+        'Tags', NEW.Tags,
+        'Description', NEW.Description,
+        'Material', NEW.Material,
+        'Manufacturer', NEW.Manufacturer,
+        'ImageURL', NEW.ImageURL,
+        'ModelURL', NEW.ModelURL
+    ));
+END;
+//
+
+-- 创建 DELETE 触发器
+DELIMITER //
+CREATE TRIGGER log_furniture_delete
+AFTER DELETE ON Furniture
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (table_name, action, record_id, changed_data)
+    VALUES ('Furniture', 'DELETE', OLD.ID, JSON_OBJECT(
+        'Name', OLD.Name,
+        'Price', OLD.Price,
+        'Size', OLD.Size,
+        'Tags', OLD.Tags,
+        'Description', OLD.Description,
+        'Material', OLD.Material,
+        'Manufacturer', OLD.Manufacturer,
+        'ImageURL', OLD.ImageURL,
+        'ModelURL', OLD.ModelURL
+    ));
+END;
+//
+DELIMITER ;
+
 
 DELIMITER //
 CREATE TRIGGER limit_history
@@ -137,10 +210,11 @@ VALUES  ('109590037', '109590037', 'admin'),
 		('DavidLee', 'password5', 'member');
 
 Select * from Furniture;
-SELECT * FROM furniture;
+SELECT * FROM furniture where id = 35;
 select * from order_items;
 Select * from history;
 Select * from users;
+Select * from audit_log;
 
 DELETE FROM furniture;
 
@@ -155,7 +229,7 @@ WHERE ID = 12;
 DELETE FROM furniture WHERE id = 13;
 
 SHOW PROCESSLIST;
-Kill 55;
+Kill 5;
 
 INSERT INTO Furniture (Name, Price, Size, Tags, Description, Material, Manufacturer, ImageURL, ModelURL)
 VALUES ('典雅空間櫥櫃', 59999, '71.2x196x244', '廚房家具', '現代櫥櫃廚具，簡約設計融合實用功能，高品質材料與創新設計完美結合，為現代生活注入風格與便利。', '大理石、高壓塑膠板、金屬', 'Unreal Factory', 'http://26.122.221.31:8765/modern_cabinet_hutch.jpg', 'http://26.122.221.31:8765/modern_cabinet_hutch.glb');
