@@ -87,8 +87,6 @@ namespace Assets.Scripts
                     var modelURL = data.ModelURL;
                     modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                    await data.SetImageSpriteAsync();
-                    Debug.Log("Passed " + modelURL);
                 }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
                 await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
@@ -115,8 +113,6 @@ namespace Assets.Scripts
                     var modelURL = data.ModelURL;
                     modelURL = _offlineWebsiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                    await data.SetImageSpriteAsync();
-                    Debug.Log("Passed " + modelURL);
                 }
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
                 await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);

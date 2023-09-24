@@ -43,18 +43,17 @@ namespace Assets.Scripts
             get; set;
         }
 
-        private Sprite _imageSprite = null;
-
         public string ImageURL
         {
-            set;
-            get;
+            set; get;
         }
+
+        private Sprite _imageSprite = null;
 
         // Set image sprite asynchronous
         public async Task SetImageSpriteAsync()
         {
-            if (ImageURL == null || _imageSprite != null)
+            if (ImageURL == null)
             {
                 return;
             }
