@@ -14,16 +14,20 @@ namespace Assets.Scripts
         [SerializeField]
         private GameObject _sampleFurnitureEntry;
         [SerializeField]
-        private Transform _entryArea;
+        private GameObject _furnitureArea;
         [SerializeField]
         private TMP_Text _pageLabel;
         [SerializeField]
         private GameObject _previousPageButton;
         [SerializeField]
         private GameObject _nextPageButton;
+        [SerializeField]
+        private GameObject _loadingIcon;
 
         private const int itemPerPage = 12;
         private int _currentPage = 0;
+        private int _currentLoaded = 0;
+        private int _loadCompletedAmount = 0;
 
         // Update furniture list and display on plate
         public override void Initialize()
@@ -32,56 +36,47 @@ namespace Assets.Scripts
             UpdateListByPage(_currentPage);
         }
 
-        // Previous page button OnClick event
-        public void PreviousPageOnClick()
+        // Destroy all item in the list 
+        private void DestroyAllListItem()
         {
-            _currentPage -= 1;
-            UpdateListByPage(_currentPage);
-        }
-
-        // Next page button OnClick event
-        public void NextPageOnClick()
-        {
-            _currentPage += 1;
-            UpdateListByPage(_currentPage);
-        }
-
-        // Page button activated configure
-        public void ConfigurePageButton(bool isFirstPage, bool isLastPage)
-        {
-            _previousPageButton.SetActive(!isFirstPage);
-            _nextPageButton.SetActive(!isLastPage);
-        }
-
-        // Update by page
-        public void UpdateListByPage(int page)
-        {
-            DestroyAllListEntry();
-            var startIndex = page * itemPerPage;
-            var endIndex = (page + 1) * itemPerPage;
-            var isLastPage = endIndex > _dataManager.GetFurnitureCount();
-            _pageLabel.text = $"頁面 {page + 1}/{_dataManager.GetFurnitureCount() / itemPerPage + 1}";
-            ConfigurePageButton(page == 0, isLastPage);
-            if (isLastPage)
+            foreach (Transform childTransform in _furnitureArea.transform)
             {
-                endIndex = _dataManager.GetFurnitureCount();
+                var childObject = childTransform.gameObject;
+                childObject.SetActive(false);
+                Destroy(childObject);
             }
-            for (var index = startIndex; index < endIndex; ++index)
-            {
-                var furnitureData = _dataManager.GetFurnitureDataByIndex(index);
-                _ = ConfigureFurnitureZone(furnitureData);
-            }
-            _dataManager.ResetRecentlyQueriedIndex();
         }
 
-        // Destroy all the list Entry
-        private void DestroyAllListEntry()
+        // Start configureZones
+        private void SetFurnitureAreaVisible(bool isImageAllLoaded)
         {
-            foreach (Transform childTransform in _entryArea)
+            _furnitureArea.SetActive(isImageAllLoaded);
+            _loadingIcon.SetActive(!isImageAllLoaded);
+        }
+
+        // Loaded procesor
+        private void ConfigureZoneFinished()
+        {
+            _currentLoaded += 1;
+            if (_currentLoaded == _loadCompletedAmount)
             {
-                childTransform.gameObject.SetActive(false);
-                Destroy(childTransform.gameObject);
+                _currentLoaded = 0;
+                _loadCompletedAmount = 0;
+                SetFurnitureAreaVisible(true);
             }
+        }
+
+        // On button pressed, tell DataManager the ID of furniture
+        private void OnButtonPressed(int referenceID)
+        {
+            _dataManager.QueryID = referenceID;
+        }
+
+        // Copy object with children
+        private GameObject CopyObjectWithChildren()
+        {
+            var copiedObject = Instantiate(_sampleFurnitureEntry, _furnitureArea.transform);
+            return copiedObject;
         }
 
         // Configure furniture item zone
@@ -98,20 +93,54 @@ namespace Assets.Scripts
             furnitureEntry.SetImage(furnitureData.GetImageSprite());
             entryButton.ButtonPressed.AddListener(() => OnButtonPressed(furnitureData.ID));
             copiedObject.SetActive(true);
+            ConfigureZoneFinished();
         }
 
-
-        // Copy object with children
-        private GameObject CopyObjectWithChildren()
+        // Page button activated configure
+        public void ConfigurePageButton(bool isFirstPage, bool isLastPage)
         {
-            var copiedObject = Instantiate(_sampleFurnitureEntry, _entryArea);
-            return copiedObject;
+            _previousPageButton.SetActive(!isFirstPage);
+            _nextPageButton.SetActive(!isLastPage);
         }
 
-        // On button pressed, tell DataManager the ID of furniture
-        private void OnButtonPressed(int referenceID)
+        // Update by page
+        public void UpdateListByPage(int page)
         {
-            _dataManager.QueryID = referenceID;
+            DestroyAllListItem();
+            var startIndex = page * itemPerPage;
+            var endIndex = (page + 1) * itemPerPage;
+            var isFirstPage = page == 0;
+            var isLastPage = endIndex > _dataManager.GetFurnitureCount();
+            var currentPageLabel = page + 1;
+            var lastPageLabel = _dataManager.GetFurnitureCount() / itemPerPage + 1;
+            _pageLabel.text = $"頁面 {currentPageLabel}/{lastPageLabel}";
+            ConfigurePageButton(isFirstPage, isLastPage);
+            if (isLastPage)
+            {
+                endIndex = _dataManager.GetFurnitureCount();
+            }
+            _loadCompletedAmount = endIndex - startIndex;
+            SetFurnitureAreaVisible(false);
+            for (var index = startIndex; index < endIndex; ++index)
+            {
+                var furnitureData = _dataManager.GetFurnitureDataByIndex(index);
+                _ = ConfigureFurnitureZone(furnitureData);
+            }
+            _dataManager.ResetRecentlyQueriedIndex();
+        }
+
+        // Previous page button OnClick event
+        public void PreviousPageOnClick()
+        {
+            _currentPage -= 1;
+            UpdateListByPage(_currentPage);
+        }
+
+        // Next page button OnClick event
+        public void NextPageOnClick()
+        {
+            _currentPage += 1;
+            UpdateListByPage(_currentPage);
         }
     }
 }
