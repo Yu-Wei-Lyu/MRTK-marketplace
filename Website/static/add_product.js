@@ -1,9 +1,3 @@
-// 引入你的 JavaScript 文件
-// import {
-//   //   getUserIDFromLocalStorage,
-//   getManufacturerFromLocalStorage,
-// } from "./localStorage.js";
-
 const socket = new WebSocket("ws://118.150.125.153:8765");
 
 // 點擊按鈕時發送訊息給伺服器
@@ -55,6 +49,8 @@ async function addData() {
     formData.append("image", selectedImage);
 
     try {
+      const pictureProgressContainer = document.getElementById("pictureProgressContainer");
+      pictureProgressContainer.style.display = "block";
       const imgurResponse = await fetch("https://api.imgur.com/3/image", {
         method: "POST",
         headers: {
@@ -64,6 +60,7 @@ async function addData() {
       });
 
       if (imgurResponse.ok) {
+        pictureProgressContainer.style.display = "none";
         const imgurData = await imgurResponse.json();
         const imgurImageUrl = imgurData.data.link;
         console.log("Imgur Image URL:", imgurImageUrl);
@@ -92,11 +89,11 @@ async function addData() {
           const chunkSize = 8192; // 設定每個塊的大小（可以根據需要調整）
 
           // 顯示進度條
-          const progressContainer =
-            document.getElementById("progressContainer");
-          const progressBar = document.getElementById("progressBar");
-          const progressLabel = document.getElementById("progressLabel");
-          progressContainer.style.display = "block";
+          const modelProgressContainer =
+            document.getElementById("modelProgressContainer");
+          const modelProgressBar = document.getElementById("modelProgressBar");
+          const modelProgressLabel = document.getElementById("modelProgressLabel");
+          modelProgressContainer.style.display = "block";
 
           // 將content分割傳送
           for (let i = 0; i < dataToSend.content.length; i += chunkSize) {
@@ -106,15 +103,15 @@ async function addData() {
 
             // 更新進度條的值和標籤
             const progress = (i / dataToSend.content.length) * 100;
-            progressBar.value = progress;
-            progressLabel.textContent = `Uploading... ${progress.toFixed(2)}%`;
+            modelProgressBar.value = progress;
+            modelProgressLabel.textContent = `Uploading... ${progress.toFixed(2)}%`;
 
             await new Promise((resolve) => setTimeout(resolve, 10));
           }
 
           console.log("檔案已上傳成功");
           // 修改顯示的文字
-          progressLabel.textContent = `5秒後將刷新頁面並上傳至伺服器`;
+          modelProgressLabel.textContent = `5秒後將刷新頁面並上傳至伺服器`;
 
           setTimeout(() => {
             console.log("Waiting for 5 seconds...");
@@ -133,6 +130,16 @@ async function addData() {
 
   // 讀取文件為二進制數據
   reader.readAsArrayBuffer(selectedImage);
+}
+
+// 從LocalStorage獲得UserID
+function getUserIDFromLocalStorage() {
+  return localStorage.getItem("UserID");
+}
+
+// 從LocalStorage獲得Manufacturer
+function getManufacturerFromLocalStorage() {
+  return localStorage.getItem("Manufacturer");
 }
 
 function myFunction() {

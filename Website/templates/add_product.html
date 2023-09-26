@@ -133,7 +133,6 @@
     <div class="position-absolute top-50 start-50 translate-middle">
       <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: 450px; height: auto">
-          <form action="">
             <h3>商品新增</h3>
             <input
               id="title"
@@ -210,6 +209,9 @@
               onchange="displayPictureName()"
             />
             <span id="pictureName"></span>
+            <div id="pictureProgressContainer" style="display: none">
+              <span id="pictureProgressLabel">Uploading...</span>
+            </div>
             <br />
             <!-- 模型 -->
             <label for="model" class="custom-file-upload">
@@ -225,9 +227,9 @@
               accept=".glb"
             />
             <span id="modelName"></span>
-            <div id="progressContainer" style="display: none">
-              <progress id="progressBar" value="0" max="100"></progress>
-              <span id="progressLabel">Uploading...</span>
+            <div id="modelProgressContainer" style="display: none">
+              <progress id="modelProgressBar" value="0" max="100"></progress>
+              <span id="modelProgressLabel">Uploading...</span>
             </div>
             <h5>選擇分類：</h5>
             <div class="checkbox-group">
@@ -316,7 +318,6 @@
                 上架
               </button>
             </div>
-          </form>
         </div>
       </div>
     </div>

@@ -1,13 +1,33 @@
 const socket = new WebSocket("ws://118.150.125.153:8765");
 
+let dataList = [];
+let isCategoryMode = true;
+
 socket.addEventListener("open", function (event) {
   // 連接成功發送消息
   socket.send('{"type":"query_website"}');
   // 預備功能，get廠商localstorage，然後send消息，然後拿資料。
+  // const manufacturer = getManufacturerFromLocalStorage();
+  // 建立要傳送的資料物件
+  // const requestData = {
+  //   type: "query_Manufacturer",
+  //   Manufacturer: manufacturer,
+  // };
+  
+  // 將資料物件轉成 JSON 格式
+  // const jsonRequestData = JSON.stringify(requestData);
+  // socket.send(jsonRequestData);
 });
 
-let dataList = [];
-let isCategoryMode = true;
+// 從LocalStorage獲得UserID
+function getUserIDFromLocalStorage() {
+  return localStorage.getItem("UserID");
+}
+
+// 從LocalStorage獲得Manufacturer
+function getManufacturerFromLocalStorage() {
+  return localStorage.getItem("Manufacturer");
+}
 
 // 當接收到訊息時更新網頁內容
 socket.onmessage = function (event) {
@@ -26,18 +46,6 @@ socket.onmessage = function (event) {
     console.error("Error parsing JSON:", error);
   }
 };
-
-// 假設你有一個包含商品資料的陣列，每個元素都是一個商品物件
-// const products = [
-//   { id: 1, title: "商品名稱1", imageUrl: "ProductImages/Example1.jpg" },
-//   { id: 2, title: "商品名稱2", imageUrl: "ProductImages/Example2.jpg" },
-//   { id: 3, title: "商品名稱3", imageUrl: "ProductImages/Example3.jpg" },
-//   { id: 4, title: "商品名稱4", imageUrl: "ProductImages/Example4.jpg" },
-//   { id: 5, title: "商品名稱5", imageUrl: "ProductImages/Example5.jpg" },
-//   { id: 6, title: "商品名稱6", imageUrl: "ProductImages/Example6.jpg" },
-//   { id: 7, title: "商品名稱7", imageUrl: "ProductImages/Example7.jpg" },
-//   // ...更多商品資料...
-// ];
 
 function showProductList(products) {
   // 找到需要加入商品範例的區塊
@@ -95,36 +103,47 @@ function showProductList(products) {
       switch (tag) {
         case "書房．辦公家具":
           study_office_furniture.innerHTML += productHtml;
+          study_office_furniture.querySelector("h2").style.display = "none"
           break;
         case "客廳家具":
           living_room_furniture.innerHTML += productHtml;
+          living_room_furniture.querySelector("h2").style.display = "none"
           break;
         case "餐廳家具":
           dining_room_furniture.innerHTML += productHtml;
+          dining_room_furniture.querySelector("h2").style.display = "none"
           break;
         case "廚房家具":
           kitchen_furniture.innerHTML += productHtml;
+          kitchen_furniture.querySelector("h2").style.display = "none"
           break;
         case "床・化妝台":
           beds_dressing_tables.innerHTML += productHtml;
+          beds_dressing_tables.querySelector("h2").style.display = "none"
           break;
         case "收納用品":
           storage_solutions.innerHTML += productHtml;
+          storage_solutions.querySelector("h2").style.display = "none"
           break;
         case "窗簾．窗飾用品":
           curtains_window_decor.innerHTML += productHtml;
+          curtains_window_decor.querySelector("h2").style.display = "none"
           break;
         case "孩童用品．嬰幼兒用品":
           children_baby_supplies.innerHTML += productHtml;
+          children_baby_supplies.querySelector("h2").style.display = "none"
           break;
         case "衣櫃・鞋櫃":
           wardrobes_shoe_cabinets.innerHTML += productHtml;
+          wardrobes_shoe_cabinets.querySelector("h2").style.display = "none"
           break;
         case "地毯．地墊":
           carpets_mats.innerHTML += productHtml;
+          carpets_mats.querySelector("h2").style.display = "none"
           break;
         case "其他":
           other.innerHTML += productHtml;
+          other.querySelector("h2").style.display = "none"
           break;
         // ...more
         default:

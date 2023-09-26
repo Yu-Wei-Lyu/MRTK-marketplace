@@ -65,9 +65,9 @@ async def handle_connection(websocket, path):
 
                 result_data = []
         
-                for row in result:  # 假設您有一個 result 包含查詢結果
+                for row in result:  
         
-                    # 將資料整理成字典，包括 ImageUrl
+                    # 將資料整理成字典
                     item = {
                         'ID': row[0],
                         'Name': row[1],
@@ -82,7 +82,7 @@ async def handle_connection(websocket, path):
                     }
                     result_data.append(item)
                 response = result_data
-        
+            # 查詢所有家具
             elif message_type == 'query_website':
                 # 執行 SQL 查詢
                 query = "SELECT * FROM furniture;"
@@ -93,9 +93,9 @@ async def handle_connection(websocket, path):
 
                 result_data = []
         
-                for row in result:  # 假設您有一個 result 包含查詢結果
+                for row in result:  
         
-                    # 將資料整理成字典，包括 ImageUrl
+                    # 將資料整理成字典
                     item = {
                         'ID': row[0],
                         'Name': row[1],
@@ -111,7 +111,7 @@ async def handle_connection(websocket, path):
                     result_data.append(item)
 
                 response = {'type': 'query_website', 'message': result_data}
-
+            # 不知道這啥，應該是要寫以廠商查詢家具的地方
             elif message_type == 'query_user':
                 Material = data.get('Material')
                 # 執行 SQL 查詢
@@ -123,9 +123,9 @@ async def handle_connection(websocket, path):
 
                 result_data = []
         
-                for row in result:  # 假設您有一個 result 包含查詢結果
+                for row in result:
         
-                    # 將資料整理成字典，包括 ImageUrl
+                    # 將資料整理成字典
                     item = {
                         'ID': row[0],
                         'Name': row[1],
@@ -140,7 +140,7 @@ async def handle_connection(websocket, path):
                     }
                     result_data.append(item)
                 response = {'type': 'query_webiste', 'message': result_data}
-
+            # 以Tags查詢家具
             elif message_type == 'query_tags':
                 Material = data.get('Material')
                 Tags = data.get('Tags').split('、')
@@ -153,10 +153,10 @@ async def handle_connection(websocket, path):
 
                 result_data = []
         
-                for row in result:  # 假設您有一個 result 包含查詢結果
+                for row in result:  
                     isallow = row[4].split('、')
                     if (has_common_element(isallow, Tags)):
-                        # 將資料整理成字典，包括 ImageUrl
+                        # 將資料整理成字典
                         item = {
                             'ID': row[0],
                             'Name': row[1],
@@ -171,7 +171,7 @@ async def handle_connection(websocket, path):
                         }
                         result_data.append(item)
                 response = {'type': 'query_webiste', 'message': result_data}
-
+            # 以家具ID查詢家具
             elif message_type == 'query_ID':
                 ID = data.get('ID')
                 # 執行 SQL 查詢
@@ -186,7 +186,7 @@ async def handle_connection(websocket, path):
                     result_data = []
 
                     for row in result:  
-                        # 將資料整理成字典，包括 ImageUrl
+                        # 將資料整理成字典
                         item = {
                             'ID': row[0],
                             'Name': row[1],
@@ -204,7 +204,7 @@ async def handle_connection(websocket, path):
                 else:
                     response = {'type': 'query_ID_Error', 'message': "ID isn't exist"}
                 
-
+            # 添加家具資料
             elif message_type == 'add':
                 # 如果filename當下不存在，才會接收資料，並且防止多次儲存。
                 # 因為檔案上傳過程中以下數據也會不停地被重複送來
@@ -243,11 +243,11 @@ async def handle_connection(websocket, path):
                         filename = None
                         content_chunks = []
                 response = {'type': 'add', 'message': 'Data added successfully'}
-
+            # 更新家具資料
             elif message_type == 'update':
                 
                 # 取得要更新的資料的 ID
-                update_id = int(data.get('id'))
+                update_id = int(data.get('ID'))
                 name = data.get('Name')
                 number = int(data.get('Number'))
                 price = data.get('Price')
@@ -267,17 +267,17 @@ async def handle_connection(websocket, path):
                 conn.commit()
 
                 response = {'type': 'update', 'message': 'Data updated successfully'}
-
+            # 刪除家具資料
             elif message_type == 'delete':
                  # 取得要刪除的資料的 ID
-                delete_id = data.get('id')
+                delete_id = data.get('ID')
 
                 # 執行 SQL 刪除資料
                 query = f"DELETE FROM furniture WHERE ID = {delete_id};"
                 cursor.execute(query)
                 conn.commit()
                 response = {'type': 'delete', 'message': 'Data deleted successfully'}
-
+            # 查詢當前版本
             elif message_type == 'click_Version':
 
                 # 執行 SQL 查詢版本
@@ -286,29 +286,28 @@ async def handle_connection(websocket, path):
                 conn.commit()
                 latest_id = cursor.fetchone()[0]
                 response = {'type': 'Check', 'message': latest_id}
-
+            # 新增廠商(使用者)
             elif message_type == 'addUser':
-                #新增使用者
                 username = data['id']
                 password = data['password']
                 email = data['email']
                 Manufacturer = data['Manufacturer']
 
-                 # 插入用户数据到 MySQL 数据库
+                 # 插入使用者資料到資料庫
                 query = "INSERT INTO Users (Username, Password, Email, Manufacturer) VALUES (%s, %s, %s, %s)"
                 values = (username, password, email, Manufacturer)
                 cursor.execute(query, values)
                 conn.commit()
 
                 response = {'type': 'user_created', 'message': 'User created successfully'}
-
+            # 廠商登入
             elif message_type == 'Login':
                 # 登入使用者資料
                 print('test')
                 username = data['id']
                 password = data['password']
 
-                # 查询数据库以验证用户名和密码
+                # 查詢資料庫驗證使用者名稱及密碼
                 query = "SELECT * FROM Users WHERE Username = %s AND Password = %s"
                 values = (username, password)
                 cursor.execute(query, values)
