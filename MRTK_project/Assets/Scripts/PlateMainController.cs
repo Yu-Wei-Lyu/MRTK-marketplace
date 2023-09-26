@@ -25,14 +25,17 @@ namespace Assets.Scripts
         private GameObject _loadingIcon;
 
         private const int itemPerPage = 12;
-        private int _currentPage = 0;
+        private int _currentPage = -1;
         private int _currentLoaded = 0;
         private int _loadCompletedAmount = 0;
 
         // Update furniture list and display on plate
         public override void Initialize()
         {
-            _currentPage = 0;
+            if (_currentPage == -1)
+            {
+                _currentPage = 0;
+            }
             UpdateListByPage(_currentPage);
         }
 

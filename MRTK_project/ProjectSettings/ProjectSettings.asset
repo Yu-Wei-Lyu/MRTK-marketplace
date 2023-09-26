@@ -160,6 +160,10 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -613,6 +617,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: MRTK_GLTF_IMPORTER_OFF
+    14: MRTK_GLTF_IMPORTER_OFF
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -639,7 +644,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 0028f2d45f0bdb01
+  metroCertificateNotAfter: 00f36dc44d0fdb01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: MRTK Test

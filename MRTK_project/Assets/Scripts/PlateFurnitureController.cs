@@ -138,7 +138,7 @@ namespace Assets.Scripts
             glbLoader.SetModelManager(_dataManager.GetModelManager());
             glbLoader.SetFurnitureID(_cacheFurnitureID);
             _dialogController.AddToBeDeactived(gameObject.transform.parent.gameObject);
-            _ = glbLoader.LoadModelUri(_furnitureModelUri);
+            _ = glbLoader.LoadModelMRTKUri(_furnitureModelUri);
         }
     }
 }

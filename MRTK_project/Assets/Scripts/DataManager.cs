@@ -145,7 +145,6 @@ namespace Assets.Scripts
                 return null;
             }
             var furnitureData = _furnitureDataList[index];
-            QueryID = furnitureData.ID;
             return furnitureData;
         }
 
@@ -158,7 +157,6 @@ namespace Assets.Scripts
                 Debug.LogError($"[DataManager] No furniture data has id {id}");
                 return null;
             }
-            QueryID = furnitureData.ID;
             return furnitureData;
         }
 
@@ -192,7 +190,7 @@ namespace Assets.Scripts
             return _dialogController;
         }
 
-        // for test
+        // for test (but failed)
         public void LoadModelByUri(string uri)
         {
             var glbLoader = new GlbLoader();
@@ -200,6 +198,16 @@ namespace Assets.Scripts
             glbLoader.SetModelManager(GetModelManager());
             glbLoader.SetFurnitureID(-1);
             _ = glbLoader.LoadModelUri(uri);
+        }
+
+        // for test
+        public void LoadModelByUriInMRTK(string uri)
+        {
+            var glbLoader = new GlbLoader();
+            glbLoader.SetPopupDialog(_dialogController);
+            glbLoader.SetModelManager(GetModelManager());
+            glbLoader.SetFurnitureID(-1);
+            _ = glbLoader.LoadModelMRTKUri(uri);
         }
     }
 }

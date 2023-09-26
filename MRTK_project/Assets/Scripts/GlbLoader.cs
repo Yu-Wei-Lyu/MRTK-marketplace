@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using Siccity.GLTFUtility;
 using UnityEngine;
 
@@ -93,6 +94,7 @@ namespace Assets.Scripts
         // When the 3D object import finished, configure attribute of the 3D object.
         private void OnFinish(GameObject model, AnimationClip[] animations)
         {
+            _dialogController.LoadingDialog(LOADING_TITLE + " OnFinish");
             if (model != null)
             {
                 AddColliderToModel(model);
@@ -114,18 +116,83 @@ namespace Assets.Scripts
             _dialogController.LoadingDialog(LOADING_TITLE);
             try
             {
+                _dialogController.LoadingDialog(LOADING_TITLE + " await Rest.GetAsync()");
                 var response = await Rest.GetAsync(uri, readResponseData: true);
+                _dialogController.LoadingDialog(LOADING_TITLE + " done Rest.GetAsync()");
                 if (!response.Successful)
                 {
                     _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
                     return;
                 }
+                _dialogController.LoadingDialog(LOADING_TITLE + " Importer.ImportGLBAsync");
                 Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinish);
             }
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
                 _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
+            }
+        }
+
+        public async Task LoadModelMRTKUri(string uri)
+        {
+            _dialogController.LoadingDialog(LOADING_TITLE);
+            Response response = new Response();
+
+            try
+            {
+                _dialogController.LoadingDialog(LOADING_TITLE + " Rest.GetAsync");
+                response = await Rest.GetAsync(uri, readResponseData: true);
+            }
+            catch (Exception e)
+            {
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed Rest.GetAsync\n{e.Message}");
+                Debug.LogError(e.Message);
+            }
+
+            if (!response.Successful)
+            {
+                Debug.LogError($"Failed to get glb model from {uri}");
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed to get glb model from {uri}");
+                return;
+            }
+
+            var gltfObject = GltfUtility.GetGltfObjectFromGlb(response.ResponseData);
+
+            try
+            {
+                _dialogController.LoadingDialog(LOADING_TITLE + " gltfObject.ConstructAsync");
+                await gltfObject.ConstructAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed gltfObject.ConstructAsync\n{e.Message}\n{e.StackTrace}");
+                return;
+            }
+
+            if (gltfObject != null)
+            {
+                GameObject model = gltfObject.GameObjectReference;
+                Debug.Log("Import successful");
+                _dialogController.LoadingDialog(LOADING_TITLE + " OnFinish");
+                if (model != null)
+                {
+                    AddColliderToModel(model);
+                    ConfigureModelComponents(model);
+                    ConfigureModelPosition(model);
+                    _modelManager.Add(_cacheFurnitureID, model);
+                    _ = _dialogController.DelayCloseDialog(LOADING_SUCCESS_TITLE);
+                }
+                else
+                {
+                    Debug.LogError("Failed to import model.");
+                    _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
+                }
+            }
+            else
+            {
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE);
             }
         }
     }
