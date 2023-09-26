@@ -112,7 +112,7 @@ async def handle_connection(websocket, path):
 
                 response = {'type': 'query_website', 'message': result_data}
 
-            elif message_type == 'query_user':
+            elif message_type == 'query_Material':
                 Material = data.get('Material')
                 # 執行 SQL 查詢
                 query = "SELECT * FROM furniture WHERE Material = %s;"
