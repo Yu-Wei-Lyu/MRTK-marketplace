@@ -112,11 +112,40 @@ async def handle_connection(websocket, path):
 
                 response = {'type': 'query_website', 'message': result_data}
 
-            elif message_type == 'query_Material':
+            elif message_type == 'query_user':
                 Material = data.get('Material')
                 # 執行 SQL 查詢
                 query = "SELECT * FROM furniture WHERE Material = %s;"
                 cursor.execute(query, Material)
+
+                # 取得查詢結果
+                result = cursor.fetchall()
+
+                result_data = []
+        
+                for row in result:  # 假設您有一個 result 包含查詢結果
+        
+                    # 將資料整理成字典，包括 ImageUrl
+                    item = {
+                        'ID': row[0],
+                        'Name': row[1],
+                        'Price': float(row[2]),
+                        'Size': row[3],
+                        'Tags': row[4],
+                        'Description': row[5],
+                        'Material': row[6],
+                        'Manufacturer': row[7],
+                        'ImageURL': row[8],
+                        'ModelURL': row[9]
+                    }
+                    result_data.append(item)
+                response = {'type': 'query_webiste', 'message': result_data}
+
+            elif message_type == 'query_Manufacturer':
+                Manufacturer = data.get('Manufacturer')
+                # 執行 SQL 查詢
+                query = "SELECT * FROM furniture WHERE Manufacturer = %s;"
+                cursor.execute(query, Manufacturer)
 
                 # 取得查詢結果
                 result = cursor.fetchall()
