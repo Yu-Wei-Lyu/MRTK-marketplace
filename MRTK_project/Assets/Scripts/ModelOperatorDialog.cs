@@ -25,6 +25,7 @@ namespace Assets.Scripts
         private GlbModelManager _modelManager;
         private GameObject _referenceObject = null;
         private bool _isInitFinished = false;
+        private int _previousStateID = -1;
 
         // Awake is called when the script instance is being loaded.
         public override void Awake()
@@ -46,6 +47,11 @@ namespace Assets.Scripts
                 _referenceObject = model.ModelObject;
                 var currentEulerAngles = _referenceObject.transform.eulerAngles;
                 _pinchSlider.SliderValue = currentEulerAngles.y / _valueMultiplier;
+                _previousStateID = _dataManager.QueryID;
+            }
+            else
+            {
+                _dataManager.QueryID = _previousStateID;
             }
             _isInitFinished = value;
             gameObject.SetActive(value);
@@ -86,15 +92,15 @@ namespace Assets.Scripts
             var removeIndex = _modelManager.CacheIndex;
             var popupDialog = _dataManager.GetDialogController();
             _modelManager.Remove(removeIndex);
-            _callbackPlate.Initialize();
             _ = popupDialog.DelayCloseDialog(DELETE_SUCCESS_TITLE);
-            SetActive(false);
+            CloseDialog();
         }
 
         // Close dialog
         public void CloseDialog()
         {
             SetActive(false);
+            _callbackPlate.SetActive(true);
         }
     }
 }

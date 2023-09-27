@@ -26,6 +26,8 @@ namespace Assets.Scripts
             {
                 Initialize();
             }
+            GameObject parentObject = gameObject.transform.parent.gameObject;
+            parentObject.SetActive(true);
             gameObject.SetActive(value);
         }
 

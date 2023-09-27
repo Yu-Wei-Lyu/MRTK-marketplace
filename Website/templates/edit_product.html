@@ -112,32 +112,11 @@
     </nav>
     <div class="position-absolute top-50 start-50 translate-middle">
       <div class="d-flex justify-content-center">
-        <div class="container-fluid" style="width: auto; height: auto">
-          
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">名稱</th>
-                <th scope="col">售價</th>
-                <th scope="col">大小</th>
-                <th scope="col">材質</th>
-                <th scope="col">描述</th>
-                <th scope="col">圖片</th>
-                <th scope="col">模型</th>
-                <th scope="col">分類</th>
-              </tr>
-            </thead>
-            <tbody id="product_field"></tbody>
-          </table>
-        </div>
-      </div>
-      <h3>上面這條表格部分不知道需不需要ㄟ</h3>
-      <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: 450px; height: auto">
           <form action="">
-            <h3>商品新增</h3>
+            <h3>商品編輯</h3>
             <input
-              id="title"
+              id="productTitle"
               type="text"
               class="form-control"
               placeholder="名稱"
@@ -219,41 +198,27 @@
             />
             <span id="pictureName"></span>
             <br />
-            <!-- 模型 -->
-            <label for="model" class="custom-file-upload">
-              <i class="fas fa-upload"></i> 重新選擇模型
-            </label>
-            <input
-              id="model"
-              type="file"
-              class="form-control"
-              aria-describedby="sizing-addon1"
-              name="productPicture"
-              onchange="displayModelName()"
-              accept=".glb"
-            />
-            <span id="modelName"></span>
             <h5>選擇分類：</h5>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="study-office-furniture"> 書房．辦公家具</label>
-              <label><input type="checkbox" name="category" value="bed-dressing-table"> 床・化妝台</label>
-              <label><input type="checkbox" name="category" value="wardrobe-shoe-cabinet"> 衣櫃・鞋櫃</label>
+              <label><input type="checkbox" name="category" value="書房．辦公家具"> 書房．辦公家具</label>
+              <label><input type="checkbox" name="category" value="床・化妝台"> 床・化妝台</label>
+              <label><input type="checkbox" name="category" value="衣櫃・鞋櫃"> 衣櫃・鞋櫃</label>
             </div><br>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="living-room-furniture"> 客廳家具</label>
-              <label><input type="checkbox" name="category" value="storage-products"> 收納用品</label>
-              <label><input type="checkbox" name="category" value="carpet-mats"> 地毯．地墊</label>
+              <label><input type="checkbox" name="category" value="客廳家具"> 客廳家具</label>
+              <label><input type="checkbox" name="category" value="收納用品"> 收納用品</label>
+              <label><input type="checkbox" name="category" value="地毯．地墊"> 地毯．地墊</label>
             </div><br>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="dining-room-furniture"> 餐廳家具</label>
-              <label><input type="checkbox" name="category" value="curtains-window-accessories"> 窗簾．窗飾用品</label>
+              <label><input type="checkbox" name="category" value="餐廳家具"> 餐廳家具</label>
+              <label><input type="checkbox" name="category" value="窗簾．窗飾用品"> 窗簾．窗飾用品</label>
             </div><br>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="kitchen-furniture"> 廚房家具</label>
-              <label><input type="checkbox" name="category" value="children-baby-products"> 孩童用品．嬰幼兒用品</label>
+              <label><input type="checkbox" name="category" value="廚房家具"> 廚房家具</label>
+              <label><input type="checkbox" name="category" value="孩童用品．嬰幼兒用品"> 孩童用品．嬰幼兒用品</label>
             </div><br>
             <div class="checkbox-group">
-              <label><input type="checkbox" name="category" value="other"> 其他</label>
+              <label><input type="checkbox" name="category" value="其他"> 其他</label>
             </div><br>
             <div class="d-flex justify-content-between align-items-center">
               <small id="inputError" class="text-danger" style="display: none"
@@ -262,7 +227,7 @@
             <button id="save" type="button" class="btn btn-success btn-block" onclick="handleAddClick()">
               儲存
             </button>
-            <button id="remove" type="button" class="btn btn-success btn-block">
+            <button id="remove" type="button" class="btn btn-danger btn-block" onclick="deleteData()">
               下架
             </button>
           </form>

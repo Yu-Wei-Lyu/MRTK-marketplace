@@ -49,7 +49,6 @@ namespace Assets.Scripts
             {
                 var img = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
                 var sprite = Sprite.Create(img, new Rect(0, 0, img.width, img.height), Vector2.zero);
-                Debug.Log("Done " + imageUrl);
                 return sprite;
             }
         }

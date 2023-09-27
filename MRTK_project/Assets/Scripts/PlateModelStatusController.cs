@@ -38,11 +38,11 @@ namespace Assets.Scripts
         {
             if (value)
             {
-                _previousStateID = _dataManager.QueryID;
+                StorePreivousID();
             }
             else
             {
-                _dataManager.QueryID = _previousStateID;
+                RestorePreviousID();
             }
             base.SetActive(value);
             _plateToggleButton.ForceToggle(value);
@@ -55,13 +55,27 @@ namespace Assets.Scripts
             var modelQuantity = _modelManager.Count;
             _quantityDisplay.text = string.Format(QUANTITY_FORMAT, modelQuantity);
             _sampleFurnitureEntry.SetActive(true);
+            StorePreivousID();
             for (var index = 0; index < modelQuantity; ++index)
             {
                 var modelData = _modelManager.GetModelAt(index);
                 var furnitureData = _dataManager.GetFurnitureDataById(modelData.FurnitureID);
                 ConfigureFurnitureZone(furnitureData, index);
             }
+            RestorePreviousID();
             _sampleFurnitureEntry.SetActive(false);
+        }
+
+        // Store previous state queried ID
+        private void StorePreivousID()
+        {
+            _previousStateID = _dataManager.QueryID;
+        }
+
+        // Restore previous state queried ID
+        private void RestorePreviousID()
+        {
+            _dataManager.QueryID = _previousStateID;
         }
 
         // Destroy all the list Entry

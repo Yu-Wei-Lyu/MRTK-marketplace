@@ -14,16 +14,12 @@ namespace Assets.Scripts
 
         public int Count => _shoppingDictionary.Count;
 
-        // Get list of ID
-        public Dictionary<int, int> GetDictionary()
-        {
-            return new Dictionary<int, int>(_shoppingDictionary);
-        }
-
-        // Get list of ID
+        // Get the reversed list of ID 
         public List<int> GetIDList()
         {
-            return new List<int>(_shoppingDictionary.Keys);
+            List<int> reversedIDList = new List<int>(_shoppingDictionary.Keys);
+            reversedIDList.Reverse();
+            return reversedIDList;
         }
 
         // Get quantity of shopping item

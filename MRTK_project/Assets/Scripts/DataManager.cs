@@ -87,8 +87,6 @@ namespace Assets.Scripts
                     var modelURL = data.ModelURL;
                     modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                    await data.SetImageSpriteAsync();
-                    Debug.Log("Passed " + modelURL);
                 }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
                 await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
@@ -115,8 +113,6 @@ namespace Assets.Scripts
                     var modelURL = data.ModelURL;
                     modelURL = _offlineWebsiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
-                    await data.SetImageSpriteAsync();
-                    Debug.Log("Passed " + modelURL);
                 }
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
                 await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
@@ -149,7 +145,6 @@ namespace Assets.Scripts
                 return null;
             }
             var furnitureData = _furnitureDataList[index];
-            QueryID = furnitureData.ID;
             return furnitureData;
         }
 
@@ -162,7 +157,6 @@ namespace Assets.Scripts
                 Debug.LogError($"[DataManager] No furniture data has id {id}");
                 return null;
             }
-            QueryID = furnitureData.ID;
             return furnitureData;
         }
 
@@ -196,7 +190,7 @@ namespace Assets.Scripts
             return _dialogController;
         }
 
-        // for test
+        // for test (but failed)
         public void LoadModelByUri(string uri)
         {
             var glbLoader = new GlbLoader();
@@ -204,6 +198,16 @@ namespace Assets.Scripts
             glbLoader.SetModelManager(GetModelManager());
             glbLoader.SetFurnitureID(-1);
             _ = glbLoader.LoadModelUri(uri);
+        }
+
+        // for test
+        public void LoadModelByUriInMRTK(string uri)
+        {
+            var glbLoader = new GlbLoader();
+            glbLoader.SetPopupDialog(_dialogController);
+            glbLoader.SetModelManager(GetModelManager());
+            glbLoader.SetFurnitureID(-1);
+            _ = glbLoader.LoadModelMRTKUri(uri);
         }
     }
 }
