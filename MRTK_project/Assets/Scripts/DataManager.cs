@@ -189,25 +189,5 @@ namespace Assets.Scripts
         {
             return _dialogController;
         }
-
-        // for test (but failed)
-        public void LoadModelByUri(string uri)
-        {
-            var glbLoader = new GlbLoader();
-            glbLoader.SetPopupDialog(_dialogController);
-            glbLoader.SetModelManager(GetModelManager());
-            glbLoader.SetFurnitureID(-1);
-            _ = glbLoader.LoadModelUri(uri);
-        }
-
-        // for test
-        public void LoadModelByUriInMRTK(string uri)
-        {
-            var glbLoader = new GlbLoader();
-            glbLoader.SetPopupDialog(_dialogController);
-            glbLoader.SetModelManager(GetModelManager());
-            glbLoader.SetFurnitureID(-1);
-            _ = glbLoader.LoadModelMRTKUri(uri);
-        }
     }
 }
