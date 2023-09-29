@@ -12,6 +12,3 @@ old_rustic_stand
 Rocking_Chair
 Rolling_2B
 Rolling_B
-
-
-

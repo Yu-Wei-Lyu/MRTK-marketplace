@@ -87,6 +87,7 @@ namespace Assets.Scripts
                     var modelURL = data.ModelURL;
                     modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
                     data.ModelURL = modelURL;
+                    data.SetImageSpriteAsync();
                 }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
                 await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
