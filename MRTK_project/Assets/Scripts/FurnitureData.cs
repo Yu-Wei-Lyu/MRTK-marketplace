@@ -51,7 +51,7 @@ namespace Assets.Scripts
         private Sprite _imageSprite = null;
 
         // Set image sprite asynchronous
-        public async Task SetImageSpriteAsync()
+        public async Task DownloadImageAsync()
         {
             if (ImageURL == null)
             {
@@ -71,6 +71,12 @@ namespace Assets.Scripts
         public Sprite GetImageSprite()
         {
             return _imageSprite;
+        }
+
+        // Merge website IP and model URL
+        public void MergePrefixIP(string ip)
+        {
+            ModelURL = ip + ModelURL.Replace("\\", "/");
         }
     }
 }
