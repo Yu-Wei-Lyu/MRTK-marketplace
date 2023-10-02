@@ -1,11 +1,5 @@
 const socket = new WebSocket("ws://118.150.125.153:8765");
 
-// 點擊按鈕時發送訊息給伺服器
-function sendQuery() {
-  console.log("SendQuery");
-  socket.send('{"type":"query"}');
-}
-
 // 點擊按鈕時將新資料加入伺服器
 async function addData() {
   console.log("SendAdd");
@@ -42,7 +36,7 @@ async function addData() {
 
     const description = document.getElementById("description").value;
     const material = document.getElementById("material").value;
-    // const manufacturer = getManufacturerFromLocalStorage();
+    const manufacturer = getManufacturerFromLocalStorage();
 
     // 上傳圖片到 Imgur
     const formData = new FormData();
@@ -80,7 +74,7 @@ async function addData() {
             Tags: selectedCategories,
             Description: description,
             Material: material,
-            // Manufacturer: manufacturer,
+            Manufacturer: manufacturer,
             ImageUrl: imgurImageUrl, // Add Imgur Image URL
             filename: selectedFile.name,
             content: new Uint8Array(fileData),
