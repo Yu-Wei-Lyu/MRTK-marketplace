@@ -68,6 +68,7 @@ namespace Assets.Scripts
                     _pinchSlider.SliderValue = currentEulerAngles.y / _valueMultiplier;
                 }
             }
+            Debug.Log("Model Operator Updating.");
         }
 
         // Slider updated event handler

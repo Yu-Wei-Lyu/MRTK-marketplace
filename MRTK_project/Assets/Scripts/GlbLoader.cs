@@ -13,7 +13,13 @@ namespace Assets.Scripts
 {
     public class GlbLoader
     {
-        private const string LOADING_TITLE = "載入模型中...";
+        private const string LOADING_TITLE = "模型載入流程";
+        private const string LOADING_REQUEST_DATA = "向遠端主機請求模型資料...";
+        private const string LOADING_REQUEST_FAILED = "遠端主機沒有回應";
+        private const string LOADING_RESPONSE_FAILED = "資料請求時發生錯誤";
+        private const string LOADING_MODEL = "模型建構中...";
+        private const string LOADING_MODEL_FAILED = "模型建構失敗";
+        private const string LOADING_MODEL_NULL = "模型不存在";
         private const string LOADING_SUCCESS_TITLE = "模型載入成功";
         private const string LOADING_FAILED_TITLE = "模型載入失敗";
         private const string LOADING_FAILED_MESSAGE = "請檢查網路連線或聯絡管理員修正錯誤\nexample@gmail.com";
@@ -92,7 +98,7 @@ namespace Assets.Scripts
         }
 
         // When the 3D object import finished, configure attribute of the 3D object.
-        private void OnFinish(GameObject model, AnimationClip[] animations)
+        private void ConfigureModelBehavior(GameObject model)
         {
             _dialogController.LoadingDialog(LOADING_TITLE + " OnFinish");
             if (model != null)
@@ -110,89 +116,46 @@ namespace Assets.Scripts
             }
         }
 
-        // Load 3D object to scene by uri
+        // Load model by uri
         public async Task LoadModelUri(string uri)
         {
-            _dialogController.LoadingDialog(LOADING_TITLE);
+            var response = new Response();
             try
             {
-                _dialogController.LoadingDialog(LOADING_TITLE + " await Rest.GetAsync()");
-                var response = await Rest.GetAsync(uri, readResponseData: true);
-                _dialogController.LoadingDialog(LOADING_TITLE + " done Rest.GetAsync()");
-                if (!response.Successful)
-                {
-                    _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
-                    return;
-                }
-                _dialogController.LoadingDialog(LOADING_TITLE + " Importer.ImportGLBAsync");
-                Importer.ImportGLBAsync(response.ResponseData, new ImportSettings(), OnFinish);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e.Message);
-                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
-            }
-        }
-
-        public async Task LoadModelMRTKUri(string uri)
-        {
-            _dialogController.LoadingDialog(LOADING_TITLE);
-            Response response = new Response();
-
-            try
-            {
-                _dialogController.LoadingDialog(LOADING_TITLE + " Rest.GetAsync");
+                _dialogController.LoadingDialog(LOADING_TITLE, LOADING_REQUEST_DATA);
                 response = await Rest.GetAsync(uri, readResponseData: true);
             }
             catch (Exception e)
             {
-                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed Rest.GetAsync\n{e.Message}");
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_REQUEST_FAILED);
                 Debug.LogError(e.Message);
             }
-
             if (!response.Successful)
             {
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_RESPONSE_FAILED);
                 Debug.LogError($"Failed to get glb model from {uri}");
-                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed to get glb model from {uri}");
                 return;
             }
-
             var gltfObject = GltfUtility.GetGltfObjectFromGlb(response.ResponseData);
-
             try
             {
-                _dialogController.LoadingDialog(LOADING_TITLE + " gltfObject.ConstructAsync");
+                _dialogController.LoadingDialog(LOADING_TITLE, LOADING_MODEL);
                 await gltfObject.ConstructAsync();
             }
             catch (Exception e)
             {
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
-                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, $"Failed gltfObject.ConstructAsync\n{e.Message}\n{e.StackTrace}");
+                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_MODEL_FAILED);
                 return;
             }
-
             if (gltfObject != null)
             {
-                GameObject model = gltfObject.GameObjectReference;
-                Debug.Log("Import successful");
-                _dialogController.LoadingDialog(LOADING_TITLE + " OnFinish");
-                if (model != null)
-                {
-                    AddColliderToModel(model);
-                    ConfigureModelComponents(model);
-                    ConfigureModelPosition(model);
-                    _modelManager.Add(_cacheFurnitureID, model);
-                    _ = _dialogController.DelayCloseDialog(LOADING_SUCCESS_TITLE);
-                }
-                else
-                {
-                    Debug.LogError("Failed to import model.");
-                    _dialogController.ConfirmDialog(LOADING_FAILED_TITLE, LOADING_FAILED_MESSAGE);
-                }
+                var model = gltfObject.GameObjectReference;
+                ConfigureModelBehavior(model);
             }
             else
             {
-                _dialogController.ConfirmDialog(LOADING_FAILED_TITLE);
+                _dialogController.ConfirmDialog(LOADING_MODEL_NULL);
             }
         }
     }

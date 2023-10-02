@@ -26,8 +26,6 @@ namespace Assets.Scripts
 
         private const int itemPerPage = 12;
         private int _currentPage = -1;
-        private int _currentLoaded = 0;
-        private int _loadCompletedAmount = 0;
 
         // Update furniture list and display on plate
         public override void Initialize()
@@ -47,25 +45,6 @@ namespace Assets.Scripts
                 var childObject = childTransform.gameObject;
                 childObject.SetActive(false);
                 Destroy(childObject);
-            }
-        }
-
-        // Start configureZones
-        private void SetFurnitureAreaVisible(bool isImageAllLoaded)
-        {
-            _furnitureArea.SetActive(isImageAllLoaded);
-            _loadingIcon.SetActive(!isImageAllLoaded);
-        }
-
-        // Loaded procesor
-        private void ConfigureZoneFinished()
-        {
-            _currentLoaded += 1;
-            if (_currentLoaded == _loadCompletedAmount)
-            {
-                _currentLoaded = 0;
-                _loadCompletedAmount = 0;
-                SetFurnitureAreaVisible(true);
             }
         }
 
@@ -90,13 +69,12 @@ namespace Assets.Scripts
             var entryButton = furnitureEntry.Button;
             if (!furnitureData.IsImageDownloaded())
             {
-                await furnitureData.SetImageSpriteAsync();
+                await furnitureData.DownloadImageAsync();
             }
             furnitureEntry.SetName(furnitureData.Name);
             furnitureEntry.SetImage(furnitureData.GetImageSprite());
             entryButton.ButtonPressed.AddListener(() => OnButtonPressed(furnitureData.ID));
             copiedObject.SetActive(true);
-            ConfigureZoneFinished();
         }
 
         // Page button activated configure
@@ -122,8 +100,6 @@ namespace Assets.Scripts
             {
                 endIndex = _dataManager.GetFurnitureCount();
             }
-            _loadCompletedAmount = endIndex - startIndex;
-            SetFurnitureAreaVisible(false);
             for (var index = startIndex; index < endIndex; ++index)
             {
                 var furnitureData = _dataManager.GetFurnitureDataByIndex(index);

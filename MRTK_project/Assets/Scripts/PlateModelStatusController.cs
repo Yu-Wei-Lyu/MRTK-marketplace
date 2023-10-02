@@ -11,17 +11,15 @@ namespace Assets.Scripts
         [SerializeField]
         private DataManager _dataManager;
         [SerializeField]
-        private PopupDialog _dialogController;
-        [SerializeField]
         private ButtonIconController _plateToggleButton;
+        [SerializeField]
+        private ModelOperatorDialog _modelDialog;
         [SerializeField]
         private GameObject _sampleFurnitureEntry;
         [SerializeField]
         private Transform _entryArea;
         [SerializeField]
         private TMP_Text _quantityDisplay;
-        [SerializeField]
-        private ModelOperatorDialog _modelDialog;
 
         private GlbModelManager _modelManager;
         private int _previousStateID = -1;

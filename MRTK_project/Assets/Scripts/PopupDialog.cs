@@ -138,6 +138,7 @@ namespace Assets.Scripts
         {
             SetActive(false);
             var quantity = _counter.Value;
+            Debug.Log("Counter value : " + quantity);
             _responseCallback?.Invoke(Response.Confirm, quantity);
             _responseCallback = null;
         }
