@@ -57,7 +57,7 @@ namespace Assets.Scripts
             {
                 return;
             }
-            var imageDownloader = new ImageDownloader();
+            ImageDownloader imageDownloader = new ImageDownloader();
             _imageSprite = await imageDownloader.RequestImageByUriAsync(ImageURL);
         }
 

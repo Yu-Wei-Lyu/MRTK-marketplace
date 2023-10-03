@@ -67,7 +67,7 @@ namespace Assets.Scripts
         {
             try
             {
-                using var writer = new StreamWriter(filePath);
+                using StreamWriter writer = new StreamWriter(filePath);
                 await writer.WriteAsync(content);
             }
             catch (Exception ex)
@@ -80,13 +80,13 @@ namespace Assets.Scripts
         public async Task GetFurnitureDataAsync(string uri)
         {
             var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
-            var jsonStr = JsonConvert.SerializeObject(sendData);
+            string jsonStr = JsonConvert.SerializeObject(sendData);
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
-            var receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
+            string receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
             if (receivedMessage != null)
             {
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
-                foreach (var data in _furnitureDataList)
+                foreach (FurnitureData data in _furnitureDataList)
                 {
                     data.MergePrefixIP(_offlineWebsiteRootUrl);
                     _ = LoadingImageAsync(data);
@@ -106,13 +106,13 @@ namespace Assets.Scripts
         public void GetFakeData()
         {
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
-            var filePath = Path.Combine(Application.streamingAssetsPath, FAKE_DATA_FILE);
+            string filePath = Path.Combine(Application.streamingAssetsPath, FAKE_DATA_FILE);
             if (File.Exists(filePath))
             {
-                var socketContent = File.ReadAllText(filePath);
+                string socketContent = File.ReadAllText(filePath);
                 _imageLoadedAmount = 0;
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(socketContent);
-                foreach (var data in _furnitureDataList)
+                foreach (FurnitureData data in _furnitureDataList)
                 {
                     data.MergePrefixIP(_offlineWebsiteRootUrl);
                     _ = LoadingImageAsync(data);
@@ -146,14 +146,14 @@ namespace Assets.Scripts
                 Debug.LogError($"[DataManager] No furniture data has index {index}");
                 return null;
             }
-            var furnitureData = _furnitureDataList[index];
+            FurnitureData furnitureData = _furnitureDataList[index];
             return furnitureData;
         }
 
         // Get furniture data by index
         public FurnitureData GetFurnitureDataById(int id)
         {
-            var furnitureData = IsExistingFurnitureID(id);
+            FurnitureData furnitureData = IsExistingFurnitureID(id);
             if (furnitureData == null)
             {
                 Debug.LogError($"[DataManager] No furniture data has id {id}");

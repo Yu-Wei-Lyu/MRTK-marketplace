@@ -41,11 +41,11 @@ namespace Assets.Scripts
             base.SetActive(value);
             if (value)
             {
-                var model = _modelManager.GetCacheModel();
-                var furnitureData = _dataManager.GetFurnitureDataById(model.FurnitureID);
+                GlbModel model = _modelManager.GetCacheModel();
+                FurnitureData furnitureData = _dataManager.GetFurnitureDataById(model.FurnitureID);
                 _furnitureNameObject.text = furnitureData.Name;
                 _referenceObject = model.ModelObject;
-                var currentEulerAngles = _referenceObject.transform.eulerAngles;
+                Vector3 currentEulerAngles = _referenceObject.transform.eulerAngles;
                 _pinchSlider.SliderValue = currentEulerAngles.y / _valueMultiplier;
                 _previousStateID = _dataManager.QueryID;
             }
@@ -62,7 +62,7 @@ namespace Assets.Scripts
         {
             if (_isInitFinished)
             {
-                var currentEulerAngles = _referenceObject.transform.eulerAngles;
+                Vector3 currentEulerAngles = _referenceObject.transform.eulerAngles;
                 if (_pinchSlider.SliderValue != 1)
                 {
                     _pinchSlider.SliderValue = currentEulerAngles.y / _valueMultiplier;
@@ -78,10 +78,10 @@ namespace Assets.Scripts
             {
                 return;
             }
-            var newAngle = eventData.NewValue * _valueMultiplier;
+            float newAngle = eventData.NewValue * _valueMultiplier;
             _sliderValueObject.text = $"{newAngle:F0}";
-            var transform = _referenceObject.transform;
-            var currentEulerAngles = transform.eulerAngles;
+            Transform transform = _referenceObject.transform;
+            Vector3 currentEulerAngles = transform.eulerAngles;
             currentEulerAngles.y = newAngle;
             _referenceObject.transform.rotation = Quaternion.Euler(currentEulerAngles);
         }
@@ -90,8 +90,8 @@ namespace Assets.Scripts
         public void RemoveObjectFromScene()
         {
             Destroy(_referenceObject);
-            var removeIndex = _modelManager.CacheIndex;
-            var popupDialog = _dataManager.GetDialogController();
+            int removeIndex = _modelManager.CacheIndex;
+            PopupDialog popupDialog = _dataManager.GetDialogController();
             _modelManager.Remove(removeIndex);
             _ = popupDialog.DelayCloseDialog(DELETE_SUCCESS_TITLE);
             CloseDialog();

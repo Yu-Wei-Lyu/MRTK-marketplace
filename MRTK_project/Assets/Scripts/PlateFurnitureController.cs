@@ -67,7 +67,7 @@ namespace Assets.Scripts
         // Set product data to cache
         private void UpdateFurnitureDisplay()
         {
-            var cacheFurnitureData = _dataManager.GetCacheFurnitureData();
+            FurnitureData cacheFurnitureData = _dataManager.GetCacheFurnitureData();
             _cacheFurnitureID = _dataManager.QueryID;
             if (cacheFurnitureData != null)
             {
@@ -93,7 +93,7 @@ namespace Assets.Scripts
         // Trigger request of adding furniture to shopping list dialog
         public void AddingToListDialog()
         {
-            var cacheDataObject = _dataManager.GetCacheFurnitureData();
+            FurnitureData cacheDataObject = _dataManager.GetCacheFurnitureData();
             if (cacheDataObject != null)
             {
                 _cacheFurnitureID = cacheDataObject.ID;
@@ -133,7 +133,7 @@ namespace Assets.Scripts
         // Call model to scene, activated only when clicking the "Display model" button
         public void CallModelToScene()
         {
-            var glbLoader = new GlbLoader();
+            GlbLoader glbLoader = new GlbLoader();
             glbLoader.SetPopupDialog(_dialogController);
             glbLoader.SetModelManager(_dataManager.GetModelManager());
             glbLoader.SetFurnitureID(_cacheFurnitureID);

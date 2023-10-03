@@ -13,8 +13,8 @@ namespace Assets.Scripts
         // Connect to server by uri
         private static async Task<ClientWebSocket> ConnectToServer(string webSocketUri)
         {
-            var ws = new ClientWebSocket();
-            var serverUri = new Uri(webSocketUri);
+            ClientWebSocket ws = new ClientWebSocket();
+            Uri serverUri = new Uri(webSocketUri);
             await ws.ConnectAsync(serverUri, CancellationToken.None);
             return ws;
         }
@@ -22,22 +22,22 @@ namespace Assets.Scripts
         // Send message to server request data
         private static async Task SendMessageToServer(ClientWebSocket ws, string data)
         {
-            var sendBuffer = Encoding.UTF8.GetBytes(data);
+            byte[] sendBuffer = Encoding.UTF8.GetBytes(data);
             await ws.SendAsync(new ArraySegment<byte>(sendBuffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
         // Receive message from server
         private static async Task<string> ReceiveMessageFromServer(ClientWebSocket ws)
         {
-            var memoryStream = new MemoryStream();
-            var receiveBuffer = new byte[1024];
+            MemoryStream memoryStream = new MemoryStream();
+            byte[] receiveBuffer = new byte[1024];
             WebSocketReceiveResult receiveResult;
             do
             {
                 receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
                 memoryStream.Write(receiveBuffer, 0, receiveResult.Count);
             } while (!receiveResult.EndOfMessage);
-            var resultBuffer = memoryStream.ToArray();
+            byte[] resultBuffer = memoryStream.ToArray();
             return Encoding.UTF8.GetString(resultBuffer);
         }
 
@@ -47,7 +47,7 @@ namespace Assets.Scripts
             string receivedMessage = null;
             try
             {
-                using (var ws = await ConnectToServer(uri))
+                using (ClientWebSocket ws = await ConnectToServer(uri))
                 {
                     await SendMessageToServer(ws, data);
                     receivedMessage = await ReceiveMessageFromServer(ws);

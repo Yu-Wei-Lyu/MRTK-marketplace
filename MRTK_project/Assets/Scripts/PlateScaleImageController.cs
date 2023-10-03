@@ -18,7 +18,7 @@ namespace Assets.Scripts
         // Contains the plate's elements which need to be initialized
         public override void Initialize()
         {
-            var furnitureData = _databaseManager.GetCacheFurnitureData();
+            FurnitureData furnitureData = _databaseManager.GetCacheFurnitureData();
             _furnitureEntry.SetName(furnitureData.Name);
             _furnitureEntry.SetImage(furnitureData.GetImageSprite());
         }

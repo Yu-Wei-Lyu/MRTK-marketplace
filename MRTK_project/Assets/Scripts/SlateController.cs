@@ -48,7 +48,7 @@ namespace Assets.Scripts
             _titlebarText.text = _primaryPlate.Title;
             _currentPlate = _primaryPlate;
             _followButton.ForceToggle(true);
-            for (var index = SECONDARY_PLATE_BEGIN_INDEX; index < _plates.Count; ++index)
+            for (int index = SECONDARY_PLATE_BEGIN_INDEX; index < _plates.Count; ++index)
                 _plates[index].SetActive(false);
         }
 

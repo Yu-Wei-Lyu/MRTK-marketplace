@@ -68,7 +68,7 @@ namespace Assets.Scripts
         // Set title and message
         public void SetTexts(string titleString, string messageString = null)
         {
-            var messageTextObject = _messageTextLabel.gameObject;
+            GameObject messageTextObject = _messageTextLabel.gameObject;
             _titleTextLabel.text = titleString;
             if (messageString == null)
             {
@@ -137,8 +137,7 @@ namespace Assets.Scripts
         public void OnConfirmButtonClicked()
         {
             SetActive(false);
-            var quantity = _counter.Value;
-            Debug.Log("Counter value : " + quantity);
+            int quantity = _counter.Value;
             _responseCallback?.Invoke(Response.Confirm, quantity);
             _responseCallback = null;
         }
