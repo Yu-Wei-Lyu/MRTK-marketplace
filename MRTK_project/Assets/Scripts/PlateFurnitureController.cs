@@ -93,15 +93,14 @@ namespace Assets.Scripts
         // Trigger request of adding furniture to shopping list dialog
         public void AddingToListDialog()
         {
-            FurnitureData cacheDataObject = _dataManager.GetCacheFurnitureData();
-            if (cacheDataObject != null)
-            {
-                _cacheFurnitureID = cacheDataObject.ID;
-                _dialogController.AddToBeDeactived(transform.parent.gameObject);
-                _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
-                _dialogController.SetKeepOpen();
-                _dialogController.WaitingResponseDialog(HandleAddRequest, true);
-            }
+            FurnitureData cacheDataObject = _dataManager.GetFurnitureDataById(_cacheFurnitureID);
+            SceneViewer sceneViewer = _dataManager.GetSceneViewer();
+            GameObject mainSlate = sceneViewer.GetMainSlate();
+            _cacheFurnitureID = cacheDataObject.ID;
+            _dialogController.AddToBeDeactived(mainSlate);
+            _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
+            _dialogController.SetKeepOpen();
+            _dialogController.WaitingResponseDialog(HandleAddRequest, true);
         }
 
         // Handling the request for adding furniture to shopping list

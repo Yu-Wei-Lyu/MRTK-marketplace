@@ -22,6 +22,24 @@ namespace Assets.Scripts
         private int _cacheFurnitureID = -1;
         private string _totalPrice;
 
+        // Awake is called when the script instance is being loaded.
+        public void Awake()
+        {
+            _shoppingCart = _dataManager.GetShoppingCart();
+            _dialogController = _dataManager.GetDialogController();
+            DynamicItem.SetActive(false);
+        }
+
+        // Initliaze list
+        public void Initialize()
+        {
+            if (ItemCollection != null)
+            {
+                DestroyScrollView();
+            }
+            MakeScrollingList();
+        }
+
         // Generate list items
         public override void GenerateListItems()
         {
@@ -65,8 +83,10 @@ namespace Assets.Scripts
         public void OnDeleteButtonReleased(int furnitureID)
         {
             FurnitureData furnitureData = _dataManager.GetFurnitureDataById(furnitureID);
+            SceneViewer sceneViewer = _dataManager.GetSceneViewer();
+            GameObject mainSlate = sceneViewer.GetMainSlate();
             _cacheFurnitureID = furnitureData.ID;
-            _dialogController.AddToBeDeactived(transform.parent.gameObject);
+            _dialogController.AddToBeDeactived(mainSlate);
             _dialogController.SetTexts(DELETE_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, furnitureData.Name));
             _dialogController.SetKeepOpen();
             _dialogController.WaitingResponseDialog(HandleDeleteRequest, true);
@@ -91,24 +111,6 @@ namespace Assets.Scripts
                 _ = _dialogController.DelayCloseDialog(reactText);
                 Initialize();
             }
-        }
-
-        // Awake is called when the script instance is being loaded.
-        public void Awake()
-        {
-            _shoppingCart = _dataManager.GetShoppingCart();
-            _dialogController = _dataManager.GetDialogController();
-            DynamicItem.SetActive(false);
-        }
-
-        // Initliaze list
-        public void Initialize()
-        {
-            if (ItemCollection != null)
-            {
-                DestroyScrollView();
-            }
-            MakeScrollingList();
         }
 
         // Destroy all the list Entry

@@ -8,6 +8,8 @@ namespace Assets.Scripts
     {
         [SerializeField]
         private GameObject _handMenu;
+        [SerializeField]
+        private GameObject _mainSlate;
 
         private readonly List<GameObject> _childList = new List<GameObject>();
 
@@ -39,6 +41,12 @@ namespace Assets.Scripts
         public void ActivateHandMenu()
         {
             _handMenu.SetActive(true);
+        }
+
+        // Get main slate object
+        public GameObject GetMainSlate()
+        {
+            return _mainSlate;
         }
     }
 }

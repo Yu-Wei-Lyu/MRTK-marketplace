@@ -37,7 +37,7 @@ namespace Assets.Scripts
         [SerializeField]
         private PopupDialog _dialogController;
         [SerializeField]
-        private SceneViewer _sceneContent;
+        private SceneViewer _sceneViewer;
 
         private readonly GlbModelManager _glbModelList = new GlbModelManager();
         private readonly ShoppingCart _shoppingCart = new ShoppingCart();
@@ -49,7 +49,7 @@ namespace Assets.Scripts
         // Start is called before the first frame update
         public void Start()
         {
-            _sceneContent.DeactiveAll();
+            _sceneViewer.DeactiveAll();
             if (_isDatabaseOnline)
             {
                 Debug.Log($"[DataManager] Data is in online mode");
@@ -174,6 +174,12 @@ namespace Assets.Scripts
             QueryID = -1;
         }
 
+        // Get Scene viewer
+        public SceneViewer GetSceneViewer()
+        {
+            return _sceneViewer;
+        }
+
         // Get shopping cart
         public ShoppingCart GetShoppingCart()
         {
@@ -206,7 +212,7 @@ namespace Assets.Scripts
             if (_imageLoadedAmount == _furnitureDataList.Count)
             {
                 _imageLoadedAmount = 0;
-                _sceneContent.ActivateHandMenu();
+                _sceneViewer.ActivateHandMenu();
                 _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
                 Debug.Log("[DataManager] All images have processed.");
             }
