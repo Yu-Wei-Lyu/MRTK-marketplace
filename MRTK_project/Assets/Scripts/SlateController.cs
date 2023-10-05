@@ -31,6 +31,7 @@ namespace Assets.Scripts
         {
             _previousPlateStack = new Stack<Plate>();
             _radialView = GetComponentInChildren<RadialView>();
+            _radialView.enabled = true;
         }
 
         // Start is called before the first frame updates
@@ -61,6 +62,7 @@ namespace Assets.Scripts
         // Activate target plate and deactivate other plates
         public void SwitchToPlate(GameObject targetPlate)
         {
+            gameObject.SetActive(true);
             if (_currentPlate.IsSameReference(targetPlate))
             {
                 return;

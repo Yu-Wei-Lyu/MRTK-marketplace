@@ -213,6 +213,7 @@ namespace Assets.Scripts
             {
                 _imageLoadedAmount = 0;
                 _sceneViewer.ActivateHandMenu();
+                _sceneViewer.ActivateMainSlate();
                 _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
                 Debug.Log("[DataManager] All images have processed.");
             }

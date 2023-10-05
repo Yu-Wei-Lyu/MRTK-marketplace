@@ -48,6 +48,7 @@ namespace Assets.Scripts
             set; get;
         }
 
+        private const string PRICE_FORMAT_TYPE = "N0";
         private Sprite _imageSprite = null;
 
         // Set image sprite asynchronous
@@ -77,6 +78,12 @@ namespace Assets.Scripts
         public void MergePrefixIP(string ip)
         {
             ModelURL = ip + ModelURL.Replace("\\", "/");
+        }
+
+        // Set number to string by format "N0"
+        public string GetPriceFormat()
+        {
+            return "$ " + Price.ToString(PRICE_FORMAT_TYPE);
         }
     }
 }

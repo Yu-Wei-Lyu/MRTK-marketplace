@@ -43,6 +43,13 @@ namespace Assets.Scripts
             _handMenu.SetActive(true);
         }
 
+        // Activate hand menu
+        public void ActivateMainSlate()
+        {
+            _mainSlate.SetActive(true);
+
+        }
+
         // Get main slate object
         public GameObject GetMainSlate()
         {

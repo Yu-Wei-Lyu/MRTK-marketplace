@@ -12,6 +12,7 @@ namespace Assets.Scripts
         private const string ADD_SUCCESS_TITLE = "成功加入購物清單";
         private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被加入";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
+        private const string DIALOG_QUANTITY_HINT = "加入數量";
 
         [SerializeField]
         private DataManager _dataManager;
@@ -100,7 +101,7 @@ namespace Assets.Scripts
             _dialogController.AddToBeDeactived(mainSlate);
             _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
             _dialogController.SetKeepOpen();
-            _dialogController.WaitingResponseDialog(HandleAddRequest, true);
+            _dialogController.ResponseQuantityDialog(HandleAddRequest, DIALOG_QUANTITY_HINT);
         }
 
         // Handling the request for adding furniture to shopping list

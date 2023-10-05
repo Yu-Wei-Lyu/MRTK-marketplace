@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -11,16 +12,18 @@ namespace Assets.Scripts
         private const string DELETE_REQUEST_TITLE = "確定要刪除？";
         private const string DELETE_CONFIRM_TITLE = "刪除成功！";
         private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被刪除";
-        private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
+        private const string FURNITURE_MESSAGE = "商品：\n\t{0}\n目前數量：{1}";
         private const string PRICE_FORMAT_TYPE = "N0";
+        private const string DELETE_QUANTITY_HINT = "刪除數量";
 
         [SerializeField]
         private DataManager _dataManager;
+        [SerializeField]
+        private TMP_Text _totalPriceText;
 
         private PopupDialog _dialogController;
         private ShoppingCart _shoppingCart;
         private int _cacheFurnitureID = -1;
-        private string _totalPrice;
 
         // Awake is called when the script instance is being loaded.
         public void Awake()
@@ -49,13 +52,13 @@ namespace Assets.Scripts
             List<int> shoppingIDList = _shoppingCart.GetIDList();
             shoppingIDList.ForEach(furnitureID =>
             {
-                int shoppingItem = _shoppingCart.GetQuantityByID(furnitureID);
+                int quantity = _shoppingCart.GetQuantityByID(furnitureID);
                 furnitureData = _dataManager.GetFurnitureDataById(furnitureID);
-                totalPrice += furnitureData.Price * shoppingItem;
-                ConfigureFurnitureZone(furnitureData, shoppingItem);
+                totalPrice += furnitureData.Price * quantity;
+                ConfigureFurnitureZone(furnitureData, quantity);
             });
             totalPriceFormat = totalPrice.ToString(PRICE_FORMAT_TYPE);
-            _totalPrice = TOTAL_PRICE_PREFIX + totalPriceFormat;
+            _totalPriceText.text = TOTAL_PRICE_PREFIX + totalPriceFormat;
         }
 
         // Configure shopping item zone
@@ -70,7 +73,7 @@ namespace Assets.Scripts
             furnitureEntry.SetQuantity(quantity.ToString());
             furnitureEntry.SetUnitPrice(unitPrice);
             furnitureEntry.SetPrice(furniturePriceFormat);
-            entryButton.ButtonReleased.AddListener(() => OnDeleteButtonReleased(furnitureData.ID));
+            entryButton.ButtonReleased.AddListener(() => OnDeleteButtonReleased(furnitureData.ID, quantity));
         }
 
         // Set number to string by format "N0"
@@ -80,16 +83,16 @@ namespace Assets.Scripts
         }
 
         // Handling the Delete Furniture button released event
-        public void OnDeleteButtonReleased(int furnitureID)
+        public void OnDeleteButtonReleased(int furnitureID, int shoppingQuantity)
         {
             FurnitureData furnitureData = _dataManager.GetFurnitureDataById(furnitureID);
             SceneViewer sceneViewer = _dataManager.GetSceneViewer();
             GameObject mainSlate = sceneViewer.GetMainSlate();
             _cacheFurnitureID = furnitureData.ID;
             _dialogController.AddToBeDeactived(mainSlate);
-            _dialogController.SetTexts(DELETE_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, furnitureData.Name));
+            _dialogController.SetTexts(DELETE_REQUEST_TITLE, string.Format(FURNITURE_MESSAGE, furnitureData.Name, shoppingQuantity));
             _dialogController.SetKeepOpen();
-            _dialogController.WaitingResponseDialog(HandleDeleteRequest, true);
+            _dialogController.ResponseQuantityDialog(HandleDeleteRequest, DELETE_QUANTITY_HINT);
         }
 
         // Handling the request for the removal of furniture
@@ -119,12 +122,6 @@ namespace Assets.Scripts
             ScrollView.gameObject.SetActive(false);
             Destroy(ScrollView.gameObject);
             ScrollView = null;
-        }
-
-        // Get total price text
-        public string GetTotalPrice()
-        {
-            return _totalPrice;
         }
     }
 }

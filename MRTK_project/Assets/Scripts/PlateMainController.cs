@@ -73,6 +73,7 @@ namespace Assets.Scripts
             }
             furnitureEntry.SetName(furnitureData.Name);
             furnitureEntry.SetImage(furnitureData.GetImageSprite());
+            furnitureEntry.SetPrice(furnitureData.GetPriceFormat());
             entryButton.ButtonPressed.AddListener(() => OnButtonPressed(furnitureData.ID));
             copiedObject.SetActive(true);
         }

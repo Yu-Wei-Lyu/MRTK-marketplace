@@ -119,16 +119,10 @@ namespace Assets.Scripts
         }
 
         // Invoking the callback function when the dialog is confirmed or canceled
-        public void WaitingResponseDialog(Action<Response, int> callback, bool enabledCounter = false)
+        public void ResponseQuantityDialog(Action<Response, int> callback, string quantityHint)
         {
-            if (enabledCounter)
-            {
-                SetDisplayMode(DialogDisplayOptions.CounterReturnOrCancel);
-            }
-            else
-            {
-                SetDisplayMode(DialogDisplayOptions.ConfirmOrCancel);
-            }
+            SetDisplayMode(DialogDisplayOptions.CounterReturnOrCancel);
+            _counter.SetHint(quantityHint);
             SetActive(true);
             _responseCallback = callback;
         }

@@ -13,8 +13,6 @@ namespace Assets.Scripts
         private ButtonIconController _plateToggleButton;
         [SerializeField]
         private ShoppingScrollableList _shoppingScrollableList;
-        [SerializeField]
-        private TMP_Text _totalPriceText;
 
         private int _previousStateID = -1;
 
@@ -37,7 +35,6 @@ namespace Assets.Scripts
         public override void Initialize()
         {
             _shoppingScrollableList.Initialize();
-            _totalPriceText.text = _shoppingScrollableList.GetTotalPrice();
         }
     }
 }
