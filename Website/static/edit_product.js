@@ -49,11 +49,11 @@ function showdetails(productData) {
   document.getElementById("productTitle").value = productData.Name;
   document.getElementById("price").value = `售價：NT$ ${productData.Price}`;
   var sizeParts = productData.Size.split("x");
-  var depth = sizeParts[0];
-  var width = sizeParts[1];
+  var width = sizeParts[0];
+  var depth = sizeParts[1];
   var height = sizeParts[2];
-  document.getElementById("depth").value = `深度：${depth} cm`;
   document.getElementById("width").value = `寬度：${width} cm`;
+  document.getElementById("depth").value = `深度：${depth} cm`;
   document.getElementById("height").value = `高度：${height} cm`;
   document.getElementById("material").value = `材質：${productData.Material}`;
   document.getElementById(
@@ -88,7 +88,7 @@ async function updateData() {
   const depth = document.getElementById("depth").value;
   const width = document.getElementById("width").value;
   const height = document.getElementById("height").value;
-  const size = depth + "x" + width + "x" + height;
+  const size = width + "x" + depth + "x" + height;
   // 取得分類標籤
   const selectedCategories = [];
   const checkboxes = document.querySelectorAll(

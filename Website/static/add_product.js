@@ -22,7 +22,7 @@ async function addData() {
     const depth = document.getElementById("depth").value;
     const width = document.getElementById("width").value;
     const height = document.getElementById("height").value;
-    const size = depth + "x" + width + "x" + height;
+    const size = width + "x" + depth + "x" + height;
 
     // 取得分類標籤
     const selectedCategories = [];

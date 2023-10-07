@@ -54,11 +54,11 @@ function showdetails(productData) {
   document.getElementById("Tags").textContent = `分類：${productData.Tags}`;
   document.getElementById("price").textContent = `售價：NT$ ${productData.Price}`;
   var sizeParts = productData.Size.split("x");
-  var depth = sizeParts[0];
-  var width = sizeParts[1];
+  var width = sizeParts[0];
+  var depth = sizeParts[1];
   var height = sizeParts[2];
-  document.getElementById("depth").textContent = `深度：${depth} cm`;
   document.getElementById("width").textContent = `寬度：${width} cm`;
+  document.getElementById("depth").textContent = `深度：${depth} cm`;
   document.getElementById("height").textContent = `高度：${height} cm`;
   document.getElementById("material").textContent = `材質：${productData.Material}`;
   document.getElementById("description").textContent = `描述：${productData.Description}`;
