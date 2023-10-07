@@ -15,15 +15,15 @@ namespace Assets.Scripts
 
         public ImageDownloader()
         {
-            var defaultImageFilePath = Path.Combine(Application.streamingAssetsPath, DEFAULT_IMAGE_FILE_NAME);
+            string defaultImageFilePath = Path.Combine(Application.streamingAssetsPath, DEFAULT_IMAGE_FILE_NAME);
             SetDefaultImage(defaultImageFilePath);
         }
 
         // Set default image by reading image file
         private void SetDefaultImage(string defaultImagePath)
         {
-            var fileData = File.ReadAllBytes(defaultImagePath);
-            var defaultTexture = new Texture2D(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
+            byte[] fileData = File.ReadAllBytes(defaultImagePath);
+            Texture2D defaultTexture = new Texture2D(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
             defaultTexture.LoadImage(fileData);
             _defaultImage = Sprite.Create(defaultTexture, new Rect(0, 0, defaultTexture.width, defaultTexture.height), Vector2.zero);
         }
@@ -31,8 +31,8 @@ namespace Assets.Scripts
         // Request image by uri
         public async Task<Sprite> RequestImageByUriAsync(string imageUrl)
         {
-            var webRequest = UnityWebRequestTexture.GetTexture(imageUrl);
-            var operation = webRequest.SendWebRequest();
+            UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl);
+            UnityWebRequestAsyncOperation operation = webRequest.SendWebRequest();
 
             while (!operation.isDone)
             {
@@ -47,8 +47,8 @@ namespace Assets.Scripts
             }
             else
             {
-                var img = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
-                var sprite = Sprite.Create(img, new Rect(0, 0, img.width, img.height), Vector2.zero);
+                Texture2D img = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
+                Sprite sprite = Sprite.Create(img, new Rect(0, 0, img.width, img.height), Vector2.zero);
                 return sprite;
             }
         }

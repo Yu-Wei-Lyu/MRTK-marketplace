@@ -6,6 +6,8 @@ namespace Assets.Scripts
     public class CounterController : MonoBehaviour
     {
         [SerializeField]
+        private TMP_Text _counterHint;
+        [SerializeField]
         private TMP_Text _counterTextObject;
         [SerializeField]
         private GameObject _numberInputBox;
@@ -27,6 +29,13 @@ namespace Assets.Scripts
         {
             Value = 0;
         }
+
+        // Set hint text
+        public void SetHint(string hint)
+        {
+            _counterHint.text = hint;
+        }
+
 
         // Enable the number box area
         public void ActivatedNumberInputBox(bool state)

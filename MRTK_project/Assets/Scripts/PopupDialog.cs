@@ -68,7 +68,7 @@ namespace Assets.Scripts
         // Set title and message
         public void SetTexts(string titleString, string messageString = null)
         {
-            var messageTextObject = _messageTextLabel.gameObject;
+            GameObject messageTextObject = _messageTextLabel.gameObject;
             _titleTextLabel.text = titleString;
             if (messageString == null)
             {
@@ -119,16 +119,10 @@ namespace Assets.Scripts
         }
 
         // Invoking the callback function when the dialog is confirmed or canceled
-        public void WaitingResponseDialog(Action<Response, int> callback, bool enabledCounter = false)
+        public void ResponseQuantityDialog(Action<Response, int> callback, string quantityHint)
         {
-            if (enabledCounter)
-            {
-                SetDisplayMode(DialogDisplayOptions.CounterReturnOrCancel);
-            }
-            else
-            {
-                SetDisplayMode(DialogDisplayOptions.ConfirmOrCancel);
-            }
+            SetDisplayMode(DialogDisplayOptions.CounterReturnOrCancel);
+            _counter.SetHint(quantityHint);
             SetActive(true);
             _responseCallback = callback;
         }
@@ -137,8 +131,7 @@ namespace Assets.Scripts
         public void OnConfirmButtonClicked()
         {
             SetActive(false);
-            var quantity = _counter.Value;
-            Debug.Log("Counter value : " + quantity);
+            int quantity = _counter.Value;
             _responseCallback?.Invoke(Response.Confirm, quantity);
             _responseCallback = null;
         }

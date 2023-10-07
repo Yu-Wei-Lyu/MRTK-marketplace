@@ -9,11 +9,11 @@ namespace Assets.Scripts
         public static void RebuildLayoutsWithContentSizeFitter(RectTransform parentRectTransform)
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
-            for (var index = 0; index < parentRectTransform.childCount; index++)
+            for (int index = 0; index < parentRectTransform.childCount; index++)
             {
-                var child = parentRectTransform.GetChild(index);
-                var contentSizeFitter = child.GetComponent<ContentSizeFitter>();
-                var rectTransform = child.GetComponent<RectTransform>();
+                Transform child = parentRectTransform.GetChild(index);
+                ContentSizeFitter contentSizeFitter = child.GetComponent<ContentSizeFitter>();
+                RectTransform rectTransform = child.GetComponent<RectTransform>();
                 if (contentSizeFitter != null && rectTransform != null)
                     LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
             }

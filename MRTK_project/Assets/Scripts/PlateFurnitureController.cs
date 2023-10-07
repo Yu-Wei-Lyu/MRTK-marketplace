@@ -12,6 +12,7 @@ namespace Assets.Scripts
         private const string ADD_SUCCESS_TITLE = "成功加入購物清單";
         private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被加入";
         private const string FURNITURE_NAME_MESSAGE = "商品：\n\t{0}";
+        private const string DIALOG_QUANTITY_HINT = "加入數量";
 
         [SerializeField]
         private DataManager _dataManager;
@@ -67,7 +68,7 @@ namespace Assets.Scripts
         // Set product data to cache
         private void UpdateFurnitureDisplay()
         {
-            var cacheFurnitureData = _dataManager.GetCacheFurnitureData();
+            FurnitureData cacheFurnitureData = _dataManager.GetCacheFurnitureData();
             _cacheFurnitureID = _dataManager.QueryID;
             if (cacheFurnitureData != null)
             {
@@ -93,15 +94,14 @@ namespace Assets.Scripts
         // Trigger request of adding furniture to shopping list dialog
         public void AddingToListDialog()
         {
-            var cacheDataObject = _dataManager.GetCacheFurnitureData();
-            if (cacheDataObject != null)
-            {
-                _cacheFurnitureID = cacheDataObject.ID;
-                _dialogController.AddToBeDeactived(transform.parent.gameObject);
-                _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
-                _dialogController.SetKeepOpen();
-                _dialogController.WaitingResponseDialog(HandleAddRequest, true);
-            }
+            FurnitureData cacheDataObject = _dataManager.GetFurnitureDataById(_cacheFurnitureID);
+            SceneViewer sceneViewer = _dataManager.GetSceneViewer();
+            GameObject mainSlate = sceneViewer.GetMainSlate();
+            _cacheFurnitureID = cacheDataObject.ID;
+            _dialogController.AddToBeDeactived(mainSlate);
+            _dialogController.SetTexts(ADD_REQUEST_TITLE, string.Format(FURNITURE_NAME_MESSAGE, cacheDataObject.Name));
+            _dialogController.SetKeepOpen();
+            _dialogController.ResponseQuantityDialog(HandleAddRequest, DIALOG_QUANTITY_HINT);
         }
 
         // Handling the request for adding furniture to shopping list
@@ -133,7 +133,7 @@ namespace Assets.Scripts
         // Call model to scene, activated only when clicking the "Display model" button
         public void CallModelToScene()
         {
-            var glbLoader = new GlbLoader();
+            GlbLoader glbLoader = new GlbLoader();
             glbLoader.SetPopupDialog(_dialogController);
             glbLoader.SetModelManager(_dataManager.GetModelManager());
             glbLoader.SetFurnitureID(_cacheFurnitureID);

@@ -42,7 +42,7 @@ namespace Assets.Scripts
         {
             foreach (Transform childTransform in _furnitureArea.transform)
             {
-                var childObject = childTransform.gameObject;
+                GameObject childObject = childTransform.gameObject;
                 childObject.SetActive(false);
                 Destroy(childObject);
             }
@@ -57,22 +57,23 @@ namespace Assets.Scripts
         // Copy object with children
         private GameObject CopyObjectWithChildren()
         {
-            var copiedObject = Instantiate(_sampleFurnitureEntry, _furnitureArea.transform);
+            GameObject copiedObject = Instantiate(_sampleFurnitureEntry, _furnitureArea.transform);
             return copiedObject;
         }
 
         // Configure furniture item zone
         private async Task ConfigureFurnitureZone(FurnitureData furnitureData)
         {
-            var copiedObject = CopyObjectWithChildren();
-            var furnitureEntry = copiedObject.GetComponent<FurnitureObjectReference>();
-            var entryButton = furnitureEntry.Button;
+            GameObject copiedObject = CopyObjectWithChildren();
+            FurnitureObjectReference furnitureEntry = copiedObject.GetComponent<FurnitureObjectReference>();
+            PressableButtonHoloLens2 entryButton = furnitureEntry.Button;
             if (!furnitureData.IsImageDownloaded())
             {
                 await furnitureData.DownloadImageAsync();
             }
             furnitureEntry.SetName(furnitureData.Name);
             furnitureEntry.SetImage(furnitureData.GetImageSprite());
+            furnitureEntry.SetPrice(furnitureData.GetPriceFormat());
             entryButton.ButtonPressed.AddListener(() => OnButtonPressed(furnitureData.ID));
             copiedObject.SetActive(true);
         }
@@ -88,21 +89,21 @@ namespace Assets.Scripts
         public void UpdateListByPage(int page)
         {
             DestroyAllListItem();
-            var startIndex = page * itemPerPage;
-            var endIndex = (page + 1) * itemPerPage;
-            var isFirstPage = page == 0;
-            var isLastPage = endIndex > _dataManager.GetFurnitureCount();
-            var currentPageLabel = page + 1;
-            var lastPageLabel = _dataManager.GetFurnitureCount() / itemPerPage + 1;
+            int startIndex = page * itemPerPage;
+            int endIndex = (page + 1) * itemPerPage;
+            bool isFirstPage = page == 0;
+            bool isLastPage = endIndex > _dataManager.GetFurnitureCount();
+            int currentPageLabel = page + 1;
+            int lastPageLabel = _dataManager.GetFurnitureCount() / itemPerPage + 1;
             _pageLabel.text = $"頁面 {currentPageLabel}/{lastPageLabel}";
             ConfigurePageButton(isFirstPage, isLastPage);
             if (isLastPage)
             {
                 endIndex = _dataManager.GetFurnitureCount();
             }
-            for (var index = startIndex; index < endIndex; ++index)
+            for (int index = startIndex; index < endIndex; ++index)
             {
-                var furnitureData = _dataManager.GetFurnitureDataByIndex(index);
+                FurnitureData furnitureData = _dataManager.GetFurnitureDataByIndex(index);
                 _ = ConfigureFurnitureZone(furnitureData);
             }
             _dataManager.ResetRecentlyQueriedIndex();

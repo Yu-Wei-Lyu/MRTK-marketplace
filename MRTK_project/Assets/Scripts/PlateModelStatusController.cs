@@ -50,14 +50,14 @@ namespace Assets.Scripts
         public override void Initialize()
         {
             DestroyAllListEntry();
-            var modelQuantity = _modelManager.Count;
+            int modelQuantity = _modelManager.Count;
             _quantityDisplay.text = string.Format(QUANTITY_FORMAT, modelQuantity);
             _sampleFurnitureEntry.SetActive(true);
             StorePreivousID();
-            for (var index = 0; index < modelQuantity; ++index)
+            for (int index = 0; index < modelQuantity; ++index)
             {
-                var modelData = _modelManager.GetModelAt(index);
-                var furnitureData = _dataManager.GetFurnitureDataById(modelData.FurnitureID);
+                GlbModel modelData = _modelManager.GetModelAt(index);
+                FurnitureData furnitureData = _dataManager.GetFurnitureDataById(modelData.FurnitureID);
                 ConfigureFurnitureZone(furnitureData, index);
             }
             RestorePreviousID();
@@ -86,9 +86,9 @@ namespace Assets.Scripts
         // Configure shopping item zone
         private void ConfigureFurnitureZone(FurnitureData furnitureData, int modelIndex)
         {
-            var copiedObject = CopyObjectWithChildren();
-            var furnitureEntry = copiedObject.GetComponent<FurnitureObjectReference>();
-            var entryButton = furnitureEntry.Button;
+            GameObject copiedObject = CopyObjectWithChildren();
+            FurnitureObjectReference furnitureEntry = copiedObject.GetComponent<FurnitureObjectReference>();
+            PressableButtonHoloLens2 entryButton = furnitureEntry.Button;
             furnitureEntry.SetName(furnitureData.Name);
             furnitureEntry.SetImage(furnitureData.GetImageSprite());
             entryButton.ButtonPressed.AddListener(() => OnButtonPressed(modelIndex));
@@ -98,7 +98,7 @@ namespace Assets.Scripts
         // On button pressed, tell DataManager the ID of furniture
         private void OnButtonPressed(int modelIndex)
         {
-            var parent = gameObject.transform.parent;
+            Transform parent = gameObject.transform.parent;
             _modelManager.CacheIndex = modelIndex;
             _modelDialog.AddToBeDeactived(parent.gameObject);
             _modelDialog.SetKeepOpen();
@@ -108,7 +108,7 @@ namespace Assets.Scripts
         // Copy object with children
         public GameObject CopyObjectWithChildren()
         {
-            var copiedObject = Instantiate(_sampleFurnitureEntry, _entryArea);
+            GameObject copiedObject = Instantiate(_sampleFurnitureEntry, _entryArea);
             return copiedObject;
         }
     }

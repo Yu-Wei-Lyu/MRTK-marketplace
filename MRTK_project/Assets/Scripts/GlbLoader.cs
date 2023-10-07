@@ -53,15 +53,15 @@ namespace Assets.Scripts
 
         private void AddColliderToModel(GameObject model)
         {
-            var rootCollider = model.AddComponent<MeshCollider>();
-            var meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
-            var combinedBounds = new Bounds();
+            MeshCollider rootCollider = model.AddComponent<MeshCollider>();
+            MeshRenderer[] meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
+            Bounds combinedBounds = new Bounds();
             rootCollider.convex = true;
-            foreach (var meshRenderer in meshRenderers)
+            foreach (MeshRenderer meshRenderer in meshRenderers)
             {
-                var meshObject = meshRenderer.gameObject;
-                var childCollider = meshObject.AddComponent<MeshCollider>();
-                var childBounds = meshRenderer.bounds;
+                GameObject meshObject = meshRenderer.gameObject;
+                MeshCollider childCollider = meshObject.AddComponent<MeshCollider>();
+                Bounds childBounds = meshRenderer.bounds;
                 childCollider.convex = true;
                 combinedBounds.Encapsulate(childBounds);
             }
@@ -72,8 +72,8 @@ namespace Assets.Scripts
         // Configure 3D object's components to grabbable and axis constraint
         private void ConfigureModelComponents(GameObject model)
         {
-            var objectManipulator = model.AddComponent<ObjectManipulator>();
-            var rotationConstraint = model.AddComponent<RotationAxisConstraint>();
+            ObjectManipulator objectManipulator = model.AddComponent<ObjectManipulator>();
+            RotationAxisConstraint rotationConstraint = model.AddComponent<RotationAxisConstraint>();
             model.AddComponent<NearInteractionGrabbable>();
             rotationConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
             objectManipulator.TwoHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate;
@@ -84,14 +84,14 @@ namespace Assets.Scripts
         {
             const float SAFE_DISTANCE = 3.0f;
             const float OFFSET_MULTIPLIER = 0.5f;
-            var playerPosition = Camera.main.transform.position;
-            var playerForward = Camera.main.transform.forward;
-            var targetPosition = playerPosition + playerForward * SAFE_DISTANCE;
+            Vector3 playerPosition = Camera.main.transform.position;
+            Vector3 playerForward = Camera.main.transform.forward;
+            Vector3 targetPosition = playerPosition + playerForward * SAFE_DISTANCE;
             RaycastHit hit;
             if (Physics.Raycast(targetPosition, playerForward, out hit, SAFE_DISTANCE))
                 targetPosition = hit.point - _modelSize.magnitude * OFFSET_MULTIPLIER * playerForward;
-            var finalPosition = targetPosition + Vector3.down * _modelCenter.y;
-            var modelTransform = model.transform;
+            Vector3 finalPosition = targetPosition + Vector3.down * _modelCenter.y;
+            Transform modelTransform = model.transform;
             modelTransform.position = finalPosition;
             modelTransform.LookAt(playerPosition);
             modelTransform.rotation = Quaternion.Euler(0f, modelTransform.rotation.eulerAngles.y, 0f);
@@ -119,7 +119,7 @@ namespace Assets.Scripts
         // Load model by uri
         public async Task LoadModelUri(string uri)
         {
-            var response = new Response();
+            Response response = new Response();
             try
             {
                 _dialogController.LoadingDialog(LOADING_TITLE, LOADING_REQUEST_DATA);
@@ -150,7 +150,7 @@ namespace Assets.Scripts
             }
             if (gltfObject != null)
             {
-                var model = gltfObject.GameObjectReference;
+                GameObject model = gltfObject.GameObjectReference;
                 ConfigureModelBehavior(model);
             }
             else

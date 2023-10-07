@@ -8,6 +8,8 @@ namespace Assets.Scripts
     {
         [SerializeField]
         private GameObject _handMenu;
+        [SerializeField]
+        private GameObject _mainSlate;
 
         private readonly List<GameObject> _childList = new List<GameObject>();
 
@@ -20,11 +22,11 @@ namespace Assets.Scripts
         // Initialize child list
         private void Initialize()
         {
-            var childCount = transform.childCount;
+            int childCount = transform.childCount;
             _childList.Clear();
-            for (var index = 0; index < childCount; ++index)
+            for (int index = 0; index < childCount; ++index)
             {
-                var childTransform = transform.GetChild(index);
+                Transform childTransform = transform.GetChild(index);
                 _childList.Add(childTransform.gameObject);
             }
         }
@@ -39,6 +41,19 @@ namespace Assets.Scripts
         public void ActivateHandMenu()
         {
             _handMenu.SetActive(true);
+        }
+
+        // Activate hand menu
+        public void ActivateMainSlate()
+        {
+            _mainSlate.SetActive(true);
+
+        }
+
+        // Get main slate object
+        public GameObject GetMainSlate()
+        {
+            return _mainSlate;
         }
     }
 }

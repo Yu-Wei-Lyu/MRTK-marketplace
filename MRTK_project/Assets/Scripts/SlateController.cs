@@ -31,6 +31,7 @@ namespace Assets.Scripts
         {
             _previousPlateStack = new Stack<Plate>();
             _radialView = GetComponentInChildren<RadialView>();
+            _radialView.enabled = true;
         }
 
         // Start is called before the first frame updates
@@ -48,7 +49,7 @@ namespace Assets.Scripts
             _titlebarText.text = _primaryPlate.Title;
             _currentPlate = _primaryPlate;
             _followButton.ForceToggle(true);
-            for (var index = SECONDARY_PLATE_BEGIN_INDEX; index < _plates.Count; ++index)
+            for (int index = SECONDARY_PLATE_BEGIN_INDEX; index < _plates.Count; ++index)
                 _plates[index].SetActive(false);
         }
 
@@ -61,6 +62,7 @@ namespace Assets.Scripts
         // Activate target plate and deactivate other plates
         public void SwitchToPlate(GameObject targetPlate)
         {
+            gameObject.SetActive(true);
             if (_currentPlate.IsSameReference(targetPlate))
             {
                 return;
