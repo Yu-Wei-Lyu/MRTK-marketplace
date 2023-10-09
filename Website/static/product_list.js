@@ -6,6 +6,7 @@ let isCategoryMode = true;
 socket.addEventListener("open", function (event) {
 
   const manufacturer = getManufacturerFromLocalStorage();
+  console.log(manufacturer);
   // 建立要傳送的資料物件
   const requestData = {
     type: "query_Manufacturer",
@@ -15,6 +16,8 @@ socket.addEventListener("open", function (event) {
   // 將資料物件轉成 JSON 格式
   const jsonRequestData = JSON.stringify(requestData);
   socket.send(jsonRequestData);
+  console.log('1');
+  // socket.send('{"type":"query_website"}');
 });
 
 // 從LocalStorage獲得UserID
@@ -33,8 +36,7 @@ socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
     const message_type = data.type;
     dataList = data.message; 
-
-    if (message_type == "query_website") {
+    if (message_type == "query_Manufacturer") {
       // 取得要顯示資料的容器
       console.log(dataList);
       showProductList(dataList);
