@@ -139,21 +139,21 @@ async def handle_connection(websocket, path):
                         'ModelURL': row[9]
                     }
                     result_data.append(item)
-                response = {'type': 'query_webiste', 'message': result_data}
+                response = {'type': 'query_user', 'message': result_data}
 
             elif message_type == 'query_Manufacturer':
                 Manufacturer = data.get('Manufacturer')
                 # 執行 SQL 查詢
-                query = "SELECT * FROM furniture WHERE Manufacturer = %s;"
-                cursor.execute(query, Manufacturer)
+                query = "SELECT * FROM furniture WHERE Manufacturer = '"+Manufacturer +"';"
+                print(query)
+                cursor.execute(query)
 
                 # 取得查詢結果
                 result = cursor.fetchall()
 
                 result_data = []
-        
+
                 for row in result:  # 假設您有一個 result 包含查詢結果
-        
                     # 將資料整理成字典，包括 ImageUrl
                     item = {
                         'ID': row[0],
@@ -168,7 +168,7 @@ async def handle_connection(websocket, path):
                         'ModelURL': row[9]
                     }
                     result_data.append(item)
-                response = {'type': 'query_webiste', 'message': result_data}
+                response = {'type': 'query_Manufacturer', 'message': result_data}
             elif message_type == 'query_tags':
                 Material = data.get('Material')
                 Tags = data.get('Tags').split('、')

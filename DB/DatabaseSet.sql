@@ -211,6 +211,8 @@ VALUES  ('109590037', '109590037', 'admin'),
 
 Select * from Furniture;
 SELECT * FROM furniture where id = 35;
+SELECT * FROM furniture WHERE Manufacturer = 'test';
+SELECT * FROM furniture WHERE Manufacturer = 'test';
 select * from order_items;
 Select * from history;
 Select * from users;
