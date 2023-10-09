@@ -218,5 +218,12 @@ namespace Assets.Scripts
                 Debug.Log("[DataManager] All images have processed.");
             }
         }
+
+        // Send gmail
+        public async void SendGmail()
+        {
+            MailSender.sendGmail();
+            _ = _dialogController.DelayCloseDialog("已發送信件");
+        }
     }
 }
