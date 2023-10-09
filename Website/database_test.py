@@ -203,7 +203,7 @@ async def handle_connection(websocket, path):
             elif message_type == 'query_ID':
                 ID = data.get('ID')
                 # 執行 SQL 查詢
-                query = "SELECT * FROM furniture WHERE ID = %s;"
+                query = "SELECT * FROM furniture WHERE ID = "+ ID +";"
                 cursor.execute(query, ID)
 
                 # 取得查詢結果
