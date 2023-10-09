@@ -6,7 +6,7 @@ namespace Assets.Scripts
 {
     public class TextDisplayController : MonoBehaviour
     {
-        private const float DETAILHEIGHT = 0.19F;
+        private const float DETAILHEIGHT = 0.156F;
         private TextMeshProUGUI _textMeshProUGUI;
         private ContentSizeFitter _contentSizeFitter;
         private RectTransform _rectTransform;

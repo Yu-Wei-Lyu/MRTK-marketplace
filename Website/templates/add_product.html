@@ -10,7 +10,6 @@
     />
     <!--宣告 CSS-->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <!--宣告 JS-->
     <style>
@@ -125,11 +124,6 @@
         </div>
       </div>
     </nav>
-    <!-- websocket test section -->
-    <!-- <h1>WebSocket Query Test</h1>
-    <button onclick="sendQuery()">Send Query</button>
-    <ul id="results"></ul> -->
-    <!-- websocket test section end -->
     <div class="position-absolute top-50 start-50 translate-middle">
       <div class="d-flex justify-content-center">
         <div class="container-fluid" style="width: 450px; height: auto">
@@ -153,21 +147,21 @@
 
             <div>
               <input
-                id="depth"
-                type="text"
-                class="form-control"
-                placeholder="深度(cm)"
-                aria-describedby="sizing-addon1"
-                name="productDepth"
-                style="display: inline-block; width: 32.5%"
-              />
-              <input
                 id="width"
                 type="text"
                 class="form-control"
                 placeholder="寬度(cm)"
                 aria-describedby="sizing-addon1"
                 name="productWidth"
+                style="display: inline-block; width: 32.5%"
+              />
+              <input
+                id="depth"
+                type="text"
+                class="form-control"
+                placeholder="深度(cm)"
+                aria-describedby="sizing-addon1"
+                name="productDepth"
                 style="display: inline-block; width: 32.5%"
               />
               <input

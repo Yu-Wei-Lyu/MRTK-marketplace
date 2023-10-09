@@ -31,8 +31,7 @@ socket.onmessage = function (event) {
   try {
     const data = JSON.parse(event.data);
     const message_type = data.type;
-    // 假設 data 是您接收到的物件陣列
-    const dataList = data.message; // 如果 'message' 包含資料物件
+    const dataList = data.message;
 
     if (message_type == "query_ID") {
       // 取得要顯示資料的容器
@@ -50,14 +49,16 @@ function showdetails(productData) {
   document.getElementById("productTitle").value = productData.Name;
   document.getElementById("price").value = `售價：NT$ ${productData.Price}`;
   var sizeParts = productData.Size.split("x");
-  var depth = sizeParts[0];
-  var width = sizeParts[1];
+  var width = sizeParts[0];
+  var depth = sizeParts[1];
   var height = sizeParts[2];
-  document.getElementById("depth").value = `深度：${depth} cm`;
   document.getElementById("width").value = `寬度：${width} cm`;
+  document.getElementById("depth").value = `深度：${depth} cm`;
   document.getElementById("height").value = `高度：${height} cm`;
   document.getElementById("material").value = `材質：${productData.Material}`;
-  document.getElementById("description").value = `描述：${productData.Description}`;
+  document.getElementById(
+    "description"
+  ).value = `描述：${productData.Description}`;
   imageURL = productData.ImageURL;
   document.getElementById("pictureName").textContent = imageURL;
   // 從後端取得的標籤資料，這是一個包含標籤的陣列
@@ -87,7 +88,7 @@ async function updateData() {
   const depth = document.getElementById("depth").value;
   const width = document.getElementById("width").value;
   const height = document.getElementById("height").value;
-  const size = depth + "x" + width + "x" + height;
+  const size = width + "x" + depth + "x" + height;
   // 取得分類標籤
   const selectedCategories = [];
   const checkboxes = document.querySelectorAll(
@@ -99,7 +100,7 @@ async function updateData() {
   // console.log("選中的分類：", selectedCategories);
   const description = document.getElementById("description").value;
   const material = document.getElementById("material").value;
-  // const manufacturer = getManufacturerFromLocalStorage();
+  const manufacturer = getManufacturerFromLocalStorage();
   if (isFileChange) {
     const imageInput = document.getElementById("picture");
     const selectedImage = imageInput.files[0];
@@ -131,7 +132,7 @@ async function updateData() {
             Tags: selectedCategories,
             Description: description,
             Material: material,
-            // Manufacturer: manufacturer,
+            Manufacturer: manufacturer,
             ImageUrl: imgurImageUrl, // Add Imgur Image URL
           };
           // 將資料物件轉成 JSON 格式
@@ -158,7 +159,7 @@ async function updateData() {
       Tags: selectedCategories,
       Description: description,
       Material: material,
-      // Manufacturer: manufacturer,
+      Manufacturer: manufacturer,
       ImageUrl: imageURL,
     };
     // 將資料物件轉成 JSON 格式
@@ -206,7 +207,7 @@ function displayPictureName() {
   const PictureInput = document.getElementById("picture");
   const PictureNameSpan = document.getElementById("pictureName");
   PictureNameSpan.textContent = PictureInput.files[0]?.name || "";
-  if (!isFileChange){
+  if (!isFileChange) {
     isFileChange = !isFileChange;
   }
 }

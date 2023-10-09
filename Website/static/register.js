@@ -5,11 +5,10 @@ socket.onmessage = function (event) {
   try {
     const data = JSON.parse(event.data);
     const message_type = data.type;
-    // 假設 data 是您接收到的物件陣列
-    const dataList = data.message; // 如果 'message' 包含資料物件
+    const dataList = data.message; 
 
     if (message_type == "user_created") {
-      location.href = "/templates/login.html";
+      location.href = "/Website/templates/login.html";
     }
   } catch (error) {
     console.error("Error parsing JSON:", error);

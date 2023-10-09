@@ -36,16 +36,20 @@ namespace Assets.Scripts
         private string _offlineWebsiteRootUrl;
         [SerializeField]
         private PopupDialog _dialogController;
+        [SerializeField]
+        private SceneViewer _sceneViewer;
 
         private readonly GlbModelManager _glbModelList = new GlbModelManager();
         private readonly ShoppingCart _shoppingCart = new ShoppingCart();
         private List<FurnitureData> _furnitureDataList;
+        private int _imageLoadedAmount = 0;
 
         public int QueryID { get; set; } = -1;
 
         // Start is called before the first frame update
         public void Start()
         {
+            _sceneViewer.DeactiveAll();
             if (_isDatabaseOnline)
             {
                 Debug.Log($"[DataManager] Data is in online mode");
@@ -54,7 +58,7 @@ namespace Assets.Scripts
             else
             {
                 Debug.Log($"[DataManager] Data is in offline mode");
-                _ = GetFakeData();
+                GetFakeData();
             }
         }
 
@@ -63,7 +67,7 @@ namespace Assets.Scripts
         {
             try
             {
-                using var writer = new StreamWriter(filePath);
+                using StreamWriter writer = new StreamWriter(filePath);
                 await writer.WriteAsync(content);
             }
             catch (Exception ex)
@@ -76,21 +80,20 @@ namespace Assets.Scripts
         public async Task GetFurnitureDataAsync(string uri)
         {
             var sendData = new { type = WEBSOCKET_QUERY_TYPE, message = WEBSOCKET_QUERY_MESSAGE };
-            var jsonStr = JsonConvert.SerializeObject(sendData);
+            string jsonStr = JsonConvert.SerializeObject(sendData);
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
-            var receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
+            string receivedMessage = await WebSocketHandler.SendAndListenAsync(uri, jsonStr);
             if (receivedMessage != null)
             {
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
-                foreach (var data in _furnitureDataList)
+                foreach (FurnitureData data in _furnitureDataList)
                 {
-                    var modelURL = data.ModelURL;
-                    modelURL = _websiteRootUrl + modelURL.Replace("\\", "/");
-                    data.ModelURL = modelURL;
+                    data.MergePrefixIP(_offlineWebsiteRootUrl);
+                    _ = LoadingImageAsync(data);
                 }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
-                await WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
-                await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
+                _ = WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
+                _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
             else
             {
@@ -100,22 +103,21 @@ namespace Assets.Scripts
         }
 
         // Only for database and website is offline
-        public async Task GetFakeData()
+        public void GetFakeData()
         {
             _dialogController.LoadingDialog(LOADING_DATA_TITLE, LOADING_DATA_MESSAGE);
-            var filePath = Path.Combine(Application.streamingAssetsPath, FAKE_DATA_FILE);
+            string filePath = Path.Combine(Application.streamingAssetsPath, FAKE_DATA_FILE);
             if (File.Exists(filePath))
             {
-                var socketContent = File.ReadAllText(filePath);
+                string socketContent = File.ReadAllText(filePath);
+                _imageLoadedAmount = 0;
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(socketContent);
-                foreach (var data in _furnitureDataList)
+                foreach (FurnitureData data in _furnitureDataList)
                 {
-                    var modelURL = data.ModelURL;
-                    modelURL = _offlineWebsiteRootUrl + modelURL.Replace("\\", "/");
-                    data.ModelURL = modelURL;
+                    data.MergePrefixIP(_offlineWebsiteRootUrl);
+                    _ = LoadingImageAsync(data);
                 }
                 Debug.Log("[DataManager] Read file successfully\n" + socketContent);
-                await _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
             else
             {
@@ -144,14 +146,14 @@ namespace Assets.Scripts
                 Debug.LogError($"[DataManager] No furniture data has index {index}");
                 return null;
             }
-            var furnitureData = _furnitureDataList[index];
+            FurnitureData furnitureData = _furnitureDataList[index];
             return furnitureData;
         }
 
         // Get furniture data by index
         public FurnitureData GetFurnitureDataById(int id)
         {
-            var furnitureData = IsExistingFurnitureID(id);
+            FurnitureData furnitureData = IsExistingFurnitureID(id);
             if (furnitureData == null)
             {
                 Debug.LogError($"[DataManager] No furniture data has id {id}");
@@ -172,6 +174,12 @@ namespace Assets.Scripts
             QueryID = -1;
         }
 
+        // Get Scene viewer
+        public SceneViewer GetSceneViewer()
+        {
+            return _sceneViewer;
+        }
+
         // Get shopping cart
         public ShoppingCart GetShoppingCart()
         {
@@ -190,24 +198,32 @@ namespace Assets.Scripts
             return _dialogController;
         }
 
-        // for test (but failed)
-        public void LoadModelByUri(string uri)
+        // Loading furniture image asynchronous
+        private async Task LoadingImageAsync(FurnitureData data)
         {
-            var glbLoader = new GlbLoader();
-            glbLoader.SetPopupDialog(_dialogController);
-            glbLoader.SetModelManager(GetModelManager());
-            glbLoader.SetFurnitureID(-1);
-            _ = glbLoader.LoadModelUri(uri);
+            await data.DownloadImageAsync();
+            ImageLoadFinish();
+        } 
+
+        // Image loaded processor
+        public void ImageLoadFinish()
+        {
+            _imageLoadedAmount += 1;
+            if (_imageLoadedAmount == _furnitureDataList.Count)
+            {
+                _imageLoadedAmount = 0;
+                _sceneViewer.ActivateHandMenu();
+                _sceneViewer.ActivateMainSlate();
+                _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
+                Debug.Log("[DataManager] All images have processed.");
+            }
         }
 
-        // for test
-        public void LoadModelByUriInMRTK(string uri)
+        // Send gmail
+        public async void SendGmail()
         {
-            var glbLoader = new GlbLoader();
-            glbLoader.SetPopupDialog(_dialogController);
-            glbLoader.SetModelManager(GetModelManager());
-            glbLoader.SetFurnitureID(-1);
-            _ = glbLoader.LoadModelMRTKUri(uri);
+            MailSender.sendGmail();
+            _ = _dialogController.DelayCloseDialog("已發送信件");
         }
     }
 }

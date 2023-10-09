@@ -4,19 +4,17 @@ let dataList = [];
 let isCategoryMode = true;
 
 socket.addEventListener("open", function (event) {
-  // 連接成功發送消息
-  socket.send('{"type":"query_website"}');
-  // 預備功能，get廠商localstorage，然後send消息，然後拿資料。
-  // const manufacturer = getManufacturerFromLocalStorage();
+
+  const manufacturer = getManufacturerFromLocalStorage();
   // 建立要傳送的資料物件
-  // const requestData = {
-  //   type: "query_Manufacturer",
-  //   Manufacturer: manufacturer,
-  // };
+  const requestData = {
+    type: "query_Manufacturer",
+    Manufacturer: manufacturer,
+  };
   
   // 將資料物件轉成 JSON 格式
-  // const jsonRequestData = JSON.stringify(requestData);
-  // socket.send(jsonRequestData);
+  const jsonRequestData = JSON.stringify(requestData);
+  socket.send(jsonRequestData);
 });
 
 // 從LocalStorage獲得UserID
@@ -34,8 +32,7 @@ socket.onmessage = function (event) {
   try {
     const data = JSON.parse(event.data);
     const message_type = data.type;
-    // 假設 data 是您接收到的物件陣列
-    dataList = data.message; // 如果 'message' 包含資料物件
+    dataList = data.message; 
 
     if (message_type == "query_website") {
       // 取得要顯示資料的容器

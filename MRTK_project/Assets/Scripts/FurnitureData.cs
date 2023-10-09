@@ -48,16 +48,17 @@ namespace Assets.Scripts
             set; get;
         }
 
+        private const string PRICE_FORMAT_TYPE = "N0";
         private Sprite _imageSprite = null;
 
         // Set image sprite asynchronous
-        public async Task SetImageSpriteAsync()
+        public async Task DownloadImageAsync()
         {
             if (ImageURL == null)
             {
                 return;
             }
-            var imageDownloader = new ImageDownloader();
+            ImageDownloader imageDownloader = new ImageDownloader();
             _imageSprite = await imageDownloader.RequestImageByUriAsync(ImageURL);
         }
 
@@ -71,6 +72,18 @@ namespace Assets.Scripts
         public Sprite GetImageSprite()
         {
             return _imageSprite;
+        }
+
+        // Merge website IP and model URL
+        public void MergePrefixIP(string ip)
+        {
+            ModelURL = ip + ModelURL.Replace("\\", "/");
+        }
+
+        // Set number to string by format "N0"
+        public string GetPriceFormat()
+        {
+            return "$ " + Price.ToString(PRICE_FORMAT_TYPE);
         }
     }
 }

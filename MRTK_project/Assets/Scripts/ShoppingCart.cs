@@ -40,7 +40,7 @@ namespace Assets.Scripts
         // Decrease or delete furniture
         public void DecreaseFurnitureByID(int id, int quantity)
         {
-            if (_shoppingDictionary.TryGetValue(id, out var currentQuantity))
+            if (_shoppingDictionary.TryGetValue(id, out int currentQuantity))
             {
                 currentQuantity -= quantity;
                 if (currentQuantity <= 0)

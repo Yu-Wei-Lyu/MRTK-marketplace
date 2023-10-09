@@ -8,11 +8,8 @@ socket.onmessage = function (event) {
     console.log(data);
     console.log(data.user);
     console.log(data.user.id);
-    // 假設 data 是您接收到的物件陣列
-    const dataList = data.message; // 如果 'message' 包含資料物件
 
     if (message_type == "LoginSuccess") {
-      // const account = data.message;
       const userID = data.user.id;
       const Manufacturer = data.user.Manufacturer;
       setDataInLocalStorage(userID, Manufacturer);
@@ -21,7 +18,7 @@ socket.onmessage = function (event) {
       console.log("Manufacturer:");
       console.log(getManufacturerFromLocalStorage());
 
-      location.href = "/templates/main_member.html";
+      location.href = "/Website/templates/main_member.html";
     } else if (message_type == "LoginFail") {
       console.log("Login Fail");
     }

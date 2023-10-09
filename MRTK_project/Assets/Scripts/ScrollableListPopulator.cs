@@ -47,67 +47,6 @@ namespace Assets.Scripts
         }
 
         [SerializeField]
-        [Tooltip("Number of items to generate")]
-        private int numItems;
-
-        /// <summary>
-        /// Number of items to generate
-        /// </summary>
-        public int NumItems
-        {
-            get
-            {
-                return numItems;
-            }
-            set
-            {
-                numItems = value;
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Demonstrate lazy loading")]
-        private bool lazyLoad;
-
-        /// <summary>
-        /// Demonstrate lazy loading 
-        /// </summary>
-        public bool LazyLoad
-        {
-            get
-            {
-                return lazyLoad;
-            }
-            set
-            {
-                lazyLoad = value;
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Number of items to load each frame during lazy load")]
-        private int itemsPerFrame = 3;
-
-        /// <summary>
-        /// Number of items to load each frame during lazy load 
-        /// </summary>
-        public int ItemsPerFrame
-        {
-            get
-            {
-                return itemsPerFrame;
-            }
-            set
-            {
-                itemsPerFrame = value;
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Indeterminate loader to hide / show for LazyLoad")]
-        private GameObject loader;
-
-        [SerializeField]
         private float cellWidth = 0.032f;
 
         [SerializeField]
@@ -125,21 +64,10 @@ namespace Assets.Scripts
         [SerializeField]
         private Transform scrollPositionRef = null;
 
-        private GridObjectCollection gridObjectCollection;
-
-        /// <summary>
-        /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
-        /// </summary>
-        public GameObject Loader
-        {
-            get
-            {
-                return loader;
-            }
-            set
-            {
-                loader = value;
-            }
+        public GridObjectCollection ItemCollection 
+        { 
+            get;
+            set; 
         }
 
         // This function is called when the object becomes enabled and active.
@@ -152,6 +80,7 @@ namespace Assets.Scripts
             }
         }
 
+        // Generate scrolling list dynamically
         public void MakeScrollingList()
         {
             if (scrollView == null)
@@ -171,68 +100,44 @@ namespace Assets.Scripts
                 scrollView.TiersPerPage = tiersPerPage;
             }
 
-            gridObjectCollection = scrollView.GetComponentInChildren<GridObjectCollection>();
+            ItemCollection = scrollView.GetComponentInChildren<GridObjectCollection>();
 
-            if (gridObjectCollection == null)
+            if (ItemCollection == null)
             {
                 GameObject collectionGameObject = new GameObject("Grid Object Collection");
-                collectionGameObject.transform.position = scrollView.transform.position;
-                collectionGameObject.transform.rotation = scrollView.transform.rotation;
+                collectionGameObject.transform.SetPositionAndRotation(scrollView.transform.position, scrollView.transform.rotation);
 
-                gridObjectCollection = collectionGameObject.AddComponent<GridObjectCollection>();
-                gridObjectCollection.CellWidth = cellWidth;
-                gridObjectCollection.CellHeight = cellHeight;
-                gridObjectCollection.SurfaceType = ObjectOrientationSurfaceType.Plane;
-                gridObjectCollection.Layout = LayoutOrder.ColumnThenRow;
-                gridObjectCollection.Columns = cellsPerTier;
-                gridObjectCollection.Anchor = LayoutAnchor.UpperLeft;
+                ItemCollection = collectionGameObject.AddComponent<GridObjectCollection>();
+                ItemCollection.CellWidth = cellWidth;
+                ItemCollection.CellHeight = cellHeight;
+                ItemCollection.SurfaceType = ObjectOrientationSurfaceType.Plane;
+                ItemCollection.Layout = LayoutOrder.ColumnThenRow;
+                ItemCollection.Columns = cellsPerTier;
+                ItemCollection.Anchor = LayoutAnchor.UpperLeft;
 
                 scrollView.AddContent(collectionGameObject);
             }
 
-            if (!lazyLoad)
-            {
-                for (int i = 0; i < numItems; i++)
-                {
-                    MakeItem(dynamicItem);
-                }
-                scrollView.gameObject.SetActive(true);
-                gridObjectCollection.UpdateCollection();
-            }
-            else
-            {
-                if (loader != null)
-                {
-                    loader.SetActive(true);
-                }
-
-                StartCoroutine(UpdateListOverTime(loader, itemsPerFrame));
-            }
-        }
-
-        private IEnumerator UpdateListOverTime(GameObject loaderViz, int instancesPerFrame)
-        {
-            for (int currItemCount = 0; currItemCount < numItems; currItemCount++)
-            {
-                for (int i = 0; i < instancesPerFrame; i++)
-                {
-                    MakeItem(dynamicItem);
-                }
-                yield return null;
-            }
-
-            // Now that the list is populated, hide the loader and show the list
-            loaderViz.SetActive(false);
+            GenerateListItems();
             scrollView.gameObject.SetActive(true);
-
-            // Finally, manually call UpdateCollection to set up the collection
-            gridObjectCollection.UpdateCollection();
+            ItemCollection.UpdateCollection();
         }
 
-        private void MakeItem(GameObject item)
+        // Make item
+        public GameObject MakeItem(GameObject item)
         {
-            GameObject itemInstance = Instantiate(item, gridObjectCollection.transform);
+            GameObject itemInstance = Instantiate(item, ItemCollection.transform);
             itemInstance.SetActive(true);
+            return itemInstance;
+        }
+
+        // Make list of item
+        public virtual void GenerateListItems()
+        {
+            for (int i = 0; i < 12; ++i)
+            {
+                MakeItem(dynamicItem);
+            }
         }
     }
 }
