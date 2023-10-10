@@ -88,12 +88,11 @@ namespace Assets.Scripts
                 _furnitureDataList = JsonConvert.DeserializeObject<List<FurnitureData>>(receivedMessage);
                 foreach (FurnitureData data in _furnitureDataList)
                 {
-                    data.MergePrefixIP(_offlineWebsiteRootUrl);
+                    data.MergePrefixIP(_websiteRootUrl);
                     _ = LoadingImageAsync(data);
                 }
                 Debug.Log($"[DataManager] Received:\n{receivedMessage}");
                 _ = WriteToFileAsync(Path.Combine(Application.streamingAssetsPath, BACKUP_FILE), receivedMessage);
-                _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
             }
             else
             {
@@ -217,13 +216,6 @@ namespace Assets.Scripts
                 _ = _dialogController.DelayCloseDialog(LOADING_DATA_SUCCESS_TITLE);
                 Debug.Log("[DataManager] All images have processed.");
             }
-        }
-
-        // Send gmail
-        public async void SendGmail()
-        {
-            MailSender.sendGmail();
-            _ = _dialogController.DelayCloseDialog("已發送信件");
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Assets.Scripts
         [SerializeField]
         private ButtonIconController _followButton;
         [SerializeField]
+        private ButtonIconController _modelStateButton;
+        [SerializeField]
         private GameObject _backButton;
         [SerializeField]
         private List<Plate> _plates;
@@ -114,6 +116,13 @@ namespace Assets.Scripts
         public void ToggleRadialViewState()
         {
             _radialView.enabled = !_radialView.enabled;
+        }
+
+        // Activate back button
+        public void ActivateBackButton(bool activate)
+        {
+            _backButton.SetActive(activate);
+            _modelStateButton.gameObject.SetActive(activate);
         }
     }
 }
