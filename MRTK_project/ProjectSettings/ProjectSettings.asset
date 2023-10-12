@@ -164,6 +164,7 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -644,7 +645,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00f36dc44d0fdb01
+  metroCertificateNotAfter: 004d0128eb1bdb01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: MRTK Test

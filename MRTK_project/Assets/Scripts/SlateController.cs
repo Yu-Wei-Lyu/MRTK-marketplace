@@ -119,10 +119,17 @@ namespace Assets.Scripts
         }
 
         // Activate back button
-        public void ActivateBackButton(bool activate)
+        public void SetTitleBarRegularMode()
         {
-            _backButton.SetActive(activate);
-            _modelStateButton.gameObject.SetActive(activate);
+            _backButton.SetActive(true);
+            _modelStateButton.gameObject.SetActive(true);
+        }
+
+        // Order information title bar mode
+        public void SetTitleBarOrderMode()
+        {
+            _backButton.SetActive(false);
+            _modelStateButton.gameObject.SetActive(false);
         }
     }
 }

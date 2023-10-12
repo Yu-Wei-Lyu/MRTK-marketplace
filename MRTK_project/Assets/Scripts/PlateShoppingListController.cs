@@ -13,7 +13,9 @@ namespace Assets.Scripts
         private ButtonIconController _plateToggleButton;
         [SerializeField]
         private ShoppingScrollableList _shoppingScrollableList;
-
+        [SerializeField]
+        private GameObject _plateOrderInfo;
+        
         private int _previousStateID = -1;
 
         // Set the plate activation state
@@ -35,6 +37,20 @@ namespace Assets.Scripts
         public override void Initialize()
         {
             _shoppingScrollableList.Initialize();
+        }
+
+        // Switch to order infomation plate
+        public void SwitchToOrderPlate()
+        {
+            gameObject.SetActive(false);
+            _plateOrderInfo.SetActive(true);
+        }
+
+        // Switch to this plate
+        public void SwitchToShoppingListPlate()
+        {
+            gameObject.SetActive(true);
+            _plateOrderInfo.SetActive(false);
         }
     }
 }
