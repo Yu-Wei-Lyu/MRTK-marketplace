@@ -316,13 +316,14 @@ async def handle_connection(websocket, path):
                 response = {'type': 'Check', 'message': latest_id}
             # 新增廠商(使用者)
             elif message_type == 'addUser':
+                print(data)
                 username = data['id']
                 password = data['password']
                 email = data['email']
                 Manufacturer = data['Manufacturer']
-
+                print(Manufacturer)
                  # 插入使用者資料到資料庫
-                query = "INSERT INTO Users (Username, Password, Email, Manufacturer) VALUES (%s, %s, %s, %s)"
+                query = "INSERT INTO Users (Username, Password, Email, Department) VALUES (%s, %s, %s, %s)"
                 values = (username, password, email, Manufacturer)
                 cursor.execute(query, values)
                 conn.commit()
