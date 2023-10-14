@@ -38,6 +38,8 @@ namespace Assets.Scripts
         private PopupDialog _dialogController;
         [SerializeField]
         private SceneViewer _sceneViewer;
+        [SerializeField]
+        private MailSender _mailSender;
 
         private readonly GlbModelManager _glbModelList = new GlbModelManager();
         private readonly ShoppingCart _shoppingCart = new ShoppingCart();
@@ -195,6 +197,12 @@ namespace Assets.Scripts
         public PopupDialog GetDialogController()
         {
             return _dialogController;
+        }
+
+        // Get dialog controller
+        public MailSender GetMailSender()
+        {
+            return _mailSender;
         }
 
         // Loading furniture image asynchronous

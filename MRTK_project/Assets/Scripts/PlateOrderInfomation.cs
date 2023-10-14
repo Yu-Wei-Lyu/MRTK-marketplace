@@ -42,7 +42,8 @@ namespace Assets.Scripts
             });
             totalPriceFormat = totalPrice.ToString(PRICE_FORMAT_TYPE);
             mailInfo.SetTotalPrice(totalPriceFormat);
-            MailSender.sendGmail(mailInfo);
+            MailSender mailSender = _dataManager.GetMailSender();
+            mailSender.SendGmail(mailInfo);
             PopupDialog popupDialog = _dataManager.GetDialogController();
             popupDialog.ConfirmDialog("訂單已發送！");
         }

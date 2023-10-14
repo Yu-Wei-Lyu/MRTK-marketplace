@@ -3,58 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts
 {
-    public static class MailSender
+    public class MailSender : MonoBehaviour
     {
-        const string GMAIL_HOST = "smtp.gmail.com";
-        const int GMAIL_PORT = 587;
-        const string SENDER_GMAIL = "ntut109590004@gmail.com";
-        const string SENDER_VERITY_CODE = "rltgdebodxxtwhkm";
-        const string RECEIVER_GMAIL = "awaia732@gmail.com";
+        [SerializeField]
+        private string _appScriptUrl;
+        [SerializeField]
+        private string _hostEmail;
+
+        // Send post request
+        private IEnumerator SendPostRequest(MailInfomation infomation)
+        {
+            var sendData = new { recipientSeller = _hostEmail, recipientBuyer = infomation.UserMail, subject = infomation.Username, body = infomation.MailContent };
+
+            // 構建要發送的 JSON 數據，這可能包括你希望在 Apps Script 中處理的任何信息
+            string jsonData = JsonConvert.SerializeObject(sendData);
+            Debug.Log(jsonData);
+            UnityWebRequest request = UnityWebRequest.Post(_appScriptUrl, jsonData);
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + request.error);
+            }
+            else
+            {
+                Debug.Log("Request sent successfully");
+                // 可以處理 Apps Script 返回的任何信息
+                string responseText = request.downloadHandler.text;
+                if (responseText == "Email sent successfully")
+                {
+                    Debug.Log("訂單成功發送");
+                }
+                else if (responseText == "Email is not defined")
+                {
+                    Debug.Log("客戶 Email 有誤 : " + infomation.UserMail);
+                }
+                else
+                {
+                    Debug.Log(responseText);
+                }
+            }
+        }
 
         // Send gmail
-        public static void sendGmail(MailInfomation mailInfomation)
+        public void SendGmail(MailInfomation mailInfo)
         {
-            MailMessage mail = new MailMessage();
-
-            //前面是發信email後面是顯示的名稱
-            mail.From = new MailAddress(SENDER_GMAIL, "客戶訂單資訊");
-
-            //收信者email
-            mail.To.Add(RECEIVER_GMAIL);
-
-            //設定優先權
-            mail.Priority = MailPriority.Normal;
-
-            //標題
-            mail.Subject = mailInfomation.Username;
-
-            //內容
-            mail.Body = mailInfomation.MailContent;
-
-            //內容使用html
-            mail.IsBodyHtml = true;
-
-            //設定gmail的smtp (這是google的)
-            SmtpClient MySmtp = new SmtpClient(GMAIL_HOST, GMAIL_PORT);
-
-            //您在gmail的帳號密碼
-            MySmtp.Credentials = new NetworkCredential(SENDER_GMAIL, SENDER_VERITY_CODE);
-
-            //開啟ssl
-            MySmtp.EnableSsl = true;
-
-            //發送郵件
-            MySmtp.Send(mail);
-
-            //放掉宣告出來的MySmtp
-            MySmtp = null;
-
-            //放掉宣告出來的mail
-            mail.Dispose();
+            StartCoroutine(SendPostRequest(mailInfo));
         }
     }
 }
