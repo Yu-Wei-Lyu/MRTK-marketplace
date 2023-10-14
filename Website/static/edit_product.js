@@ -46,19 +46,19 @@ socket.onmessage = function (event) {
 function showdetails(productData) {
   console.log(productData);
   // 使用獲取到的數據填充 HTML 元素的內容
-  document.getElementById("productTitle").value = productData.Name;
-  document.getElementById("price").value = `售價：NT$ ${productData.Price}`;
+  document.getElementById("title").value = productData.Name;
+  document.getElementById("price").value = `${productData.Price}`;
   var sizeParts = productData.Size.split("x");
   var width = sizeParts[0];
   var depth = sizeParts[1];
   var height = sizeParts[2];
-  document.getElementById("width").value = `寬度：${width} cm`;
-  document.getElementById("depth").value = `深度：${depth} cm`;
-  document.getElementById("height").value = `高度：${height} cm`;
-  document.getElementById("material").value = `材質：${productData.Material}`;
+  document.getElementById("width").value = `${width}`;
+  document.getElementById("depth").value = `${depth}`;
+  document.getElementById("height").value = `${height}`;
+  document.getElementById("material").value = `${productData.Material}`;
   document.getElementById(
     "description"
-  ).value = `描述：${productData.Description}`;
+  ).value = `${productData.Description}`;
   imageURL = productData.ImageURL;
   document.getElementById("pictureName").textContent = imageURL;
   // 從後端取得的標籤資料，這是一個包含標籤的陣列
@@ -194,12 +194,13 @@ function deleteData() {
 
   // 發送資料給伺服器
   socket.send(jsonRequestData);
+  window.location.href = "/Website/templates/product_list.html";
 }
 
 function myFunction() {
   var text = "確定要登出?";
   if (confirm(text) == true) {
-    window.location.href = "/";
+    window.location.href = "/Website/templates/main.html";
   }
 }
 
@@ -342,5 +343,6 @@ function handleAddClick() {
     // 清除錯誤訊息
     const errorElement = document.getElementById("inputError");
     errorElement.style.display = "none";
+    window.location.href = "/Website/templates/product_list.html";
   }
 }

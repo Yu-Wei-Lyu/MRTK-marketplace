@@ -221,7 +221,7 @@ function setupTagToggler(tagListId, sections) {
 
 // 在網頁load的時候設定tag功能
 window.addEventListener("load", () => {
-  const sections = document.querySelectorAll("section:not(#noTagsSection)");
+  const sections = document.querySelectorAll("section:not(#noTagsSection, #searchSection)");
   setupTagToggler("tagList", sections);
 });
 
@@ -280,6 +280,6 @@ searchBox.addEventListener("input", function () {
 function myFunction() {
   var text = "確定要登出?";
   if (confirm(text) == true) {
-    window.location.href = "/";
+    window.location.href = "/Website/templates/main.html";
   }
 }
