@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
 using TMPro;
 using UnityEngine;
@@ -23,9 +24,15 @@ namespace Assets.Scripts
         private GameObject _nextPageButton;
         [SerializeField]
         private GameObject _loadingIcon;
+        [SerializeField]
+        private MRTKTMPInputField _searchText;
+        [SerializeField]
+        private GameObject _searchClearButton;
 
         private const int itemPerPage = 12;
         private int _currentPage = -1;
+        private readonly List<FurnitureData> _searchResultList = new List<FurnitureData>();
+        private bool _onFirstActivated = true;
 
         // Update furniture list and display on plate
         public override void Initialize()
@@ -33,6 +40,12 @@ namespace Assets.Scripts
             if (_currentPage == -1)
             {
                 _currentPage = 0;
+            }
+            if (_onFirstActivated)
+            {
+                SetSearchResult("");
+                _searchClearButton.SetActive(false);
+                _onFirstActivated = false;
             }
             UpdateListByPage(_currentPage);
         }
@@ -92,18 +105,18 @@ namespace Assets.Scripts
             int startIndex = page * itemPerPage;
             int endIndex = (page + 1) * itemPerPage;
             bool isFirstPage = page == 0;
-            bool isLastPage = endIndex > _dataManager.GetFurnitureCount();
+            bool isLastPage = endIndex > _searchResultList.Count;
             int currentPageLabel = page + 1;
-            int lastPageLabel = _dataManager.GetFurnitureCount() / itemPerPage + 1;
+            int lastPageLabel = _searchResultList.Count / itemPerPage + 1;
             _pageLabel.text = $"頁面 {currentPageLabel}/{lastPageLabel}";
             ConfigurePageButton(isFirstPage, isLastPage);
             if (isLastPage)
             {
-                endIndex = _dataManager.GetFurnitureCount();
+                endIndex = _searchResultList.Count;
             }
             for (int index = startIndex; index < endIndex; ++index)
             {
-                FurnitureData furnitureData = _dataManager.GetFurnitureDataByIndex(index);
+                FurnitureData furnitureData = _searchResultList[index];
                 _ = ConfigureFurnitureZone(furnitureData);
             }
             _dataManager.ResetRecentlyQueriedIndex();
@@ -121,6 +134,50 @@ namespace Assets.Scripts
         {
             _currentPage += 1;
             UpdateListByPage(_currentPage);
+        }
+
+        // On search button pressed
+        public void OnSearchButtonPressed()
+        {
+            _currentPage = 0;
+            if (_searchText.text != "")
+            {
+                _searchClearButton.SetActive(true);
+            }
+            else
+            {
+                _searchClearButton.SetActive(false);
+            }
+            SetSearchResult(_searchText.text);
+            UpdateListByPage(_currentPage);
+        }
+
+        // On search clear button pressed
+        public void OnSearchClearButtonPressed()
+        {
+            _searchText.text = "";
+            OnSearchButtonPressed();
+        }
+
+        // Set search result ID list by search input field
+        public void SetSearchResult(string searchText)
+        {
+            _searchResultList.Clear();
+            for (int queryIndex = 0; queryIndex < _dataManager.GetFurnitureCount(); ++queryIndex)
+            {
+                FurnitureData furnitureData = _dataManager.GetFurnitureDataByIndex(queryIndex);
+                if (searchText == "")
+                {
+                    _searchResultList.Add(furnitureData);
+                }
+                else
+                {
+                    if (furnitureData.IsContainString(searchText))
+                    {
+                        _searchResultList.Add(furnitureData);
+                    }
+                }
+            }
         }
     }
 }

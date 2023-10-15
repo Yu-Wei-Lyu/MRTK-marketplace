@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -84,6 +85,23 @@ namespace Assets.Scripts
         public string GetPriceFormat()
         {
             return "$ " + Price.ToString(PRICE_FORMAT_TYPE);
+        }
+
+        // Is contain substring
+        public bool IsContainString(string substring)
+        {
+            List<string> compareStrings = new List<string> { Name };
+            bool isContain = false;
+            for (int compareIndex = 0; compareIndex < compareStrings.Count; ++compareIndex)
+            {
+                var compareString = compareStrings[compareIndex];
+                if (compareString.Contains(substring))
+                {
+                    isContain = true;
+                    break;
+                }
+            }
+            return isContain;
         }
     }
 }

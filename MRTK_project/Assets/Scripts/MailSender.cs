@@ -35,9 +35,9 @@ namespace Assets.Scripts
             }
             else
             {
-                Debug.Log("Request sent successfully");
                 // 可以處理 Apps Script 返回的任何信息
                 string responseText = request.downloadHandler.text;
+                Debug.Log("Request sent successfully, response:\n" + responseText);
                 if (responseText == "Email sent successfully")
                 {
                     Debug.Log("訂單成功發送");
