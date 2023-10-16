@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     public class PlateFurnitureController : Plate
     {
-        private const string DETAILFORMAT = "價格：\t<#FF0>NT$ {0}<#FFF>\n尺寸：\t{1}cm\n材料：\n\t{2}\n供應商：\n\t{3}\n描述：\n\t{4}";
+        private const string DETAILFORMAT = "價格：\t<#FF0>NT$ {0}<#FFF>\n類別：\t{1}\n尺寸：\t{2}cm\n材料：\n\t{3}\n供應商：\n\t{4}\n描述：\n\t{5}";
         private const string ADD_REQUEST_TITLE = "是否要將下述商品加入購物清單？";
         private const string ADD_SUCCESS_TITLE = "成功加入購物清單";
         private const string NO_ACTION_CONFIRM_TITLE = "沒有任何商品被加入";
@@ -75,6 +75,7 @@ namespace Assets.Scripts
                 _furnitureName.text = cacheFurnitureData.Name;
                 _furnitureDetailManager.SetText(string.Format(DETAILFORMAT,
                     cacheFurnitureData.Price,
+                    cacheFurnitureData.Tags,
                     cacheFurnitureData.Size,
                     cacheFurnitureData.Material,
                     cacheFurnitureData.Manufacturer,

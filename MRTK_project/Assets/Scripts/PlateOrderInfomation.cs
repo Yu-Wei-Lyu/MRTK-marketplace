@@ -44,8 +44,6 @@ namespace Assets.Scripts
             mailInfo.SetTotalPrice(totalPriceFormat);
             MailSender mailSender = _dataManager.GetMailSender();
             mailSender.SendGmail(mailInfo);
-            PopupDialog popupDialog = _dataManager.GetDialogController();
-            popupDialog.ConfirmDialog("訂單已發送！");
         }
 
         // Set number to string by format "N0"
