@@ -12,6 +12,7 @@ socket.addEventListener("open", function (event) {
   // 解析字串獲得家具ID
   var params = new URLSearchParams(queryString);
   furniture_ID = params.get("variable");
+  // furniture_ID = '33';
 
   console.log("Received furniture_ID: " + furniture_ID);
   // 建立要傳送的資料物件
@@ -35,8 +36,16 @@ socket.onmessage = function (event) {
 
     if (message_type == "query_ID") {
       // 取得要顯示資料的容器
-      console.log(dataList[0]);
+      // console.log(dataList[0]);
       showdetails(dataList[0]);
+      imageURL = dataList[0].ImageURL;
+      // console.log('data0');
+      // console.log(imageURL);
+    }
+    if (message_type == "update")
+    {
+      window.location.href = "/Website/templates/product_list.html";
+      // window.location.href = "/templates/product_list.html";
     }
   } catch (error) {
     console.error("Error parsing JSON:", error);
@@ -61,6 +70,8 @@ function showdetails(productData) {
   ).value = `${productData.Description}`;
   imageURL = productData.ImageURL;
   document.getElementById("pictureName").textContent = imageURL;
+  console.log('hi');
+  console.log(imageURL);
   // 從後端取得的標籤資料，這是一個包含標籤的陣列
   var tagsFromBackend = productData.Tags.split("、");
 
@@ -102,6 +113,7 @@ async function updateData() {
   const material = document.getElementById("material").value;
   const manufacturer = getManufacturerFromLocalStorage();
   if (isFileChange) {
+    console.log("test");
     const imageInput = document.getElementById("picture");
     const selectedImage = imageInput.files[0];
     const reader = new FileReader();
@@ -149,6 +161,10 @@ async function updateData() {
     // 讀取文件為二進制數據
     reader.readAsArrayBuffer(selectedImage);
   } else {
+    console.log('else');
+    console.log(selectedCategories);
+
+
     // 資料物件
     const dataToSend = {
       type: "update",
@@ -320,6 +336,6 @@ function handleAddClick() {
     // 清除錯誤訊息
     const errorElement = document.getElementById("inputError");
     errorElement.style.display = "none";
-    window.location.href = "/Website/templates/product_list.html";
+    
   }
 }
