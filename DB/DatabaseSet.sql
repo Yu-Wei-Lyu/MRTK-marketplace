@@ -210,7 +210,7 @@ VALUES  ('109590037', '109590037', 'admin'),
 		('DavidLee', 'password5', 'member');
 
 Select * from Furniture;
-SELECT * FROM furniture where id = 35;
+SELECT * FROM furniture where id = 44;
 SELECT * FROM furniture WHERE Manufacturer = 'test';
 SELECT * FROM furniture WHERE Manufacturer = 'test';
 select * from order_items;

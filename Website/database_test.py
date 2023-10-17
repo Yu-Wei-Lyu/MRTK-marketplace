@@ -145,7 +145,6 @@ async def handle_connection(websocket, path):
                 Manufacturer = data.get('Manufacturer')
                 # 執行 SQL 查詢
                 query = "SELECT * FROM furniture WHERE Manufacturer = '"+Manufacturer +"';"
-                print(query)
                 cursor.execute(query)
 
                 # 取得查詢結果
@@ -273,24 +272,20 @@ async def handle_connection(websocket, path):
                 response = {'type': 'add', 'message': 'Data added successfully'}
             # 更新家具資料
             elif message_type == 'update':
-                
+                print(data)
                 # 取得要更新的資料的 ID
                 update_id = int(data.get('ID'))
                 name = data.get('Name')
-                number = int(data.get('Number'))
                 price = data.get('Price')
-                imagePath = data.get('ImagePath')
+                imagePath = data.get('ImageUrl')
                 size = data.get('Size')
+                Tags = data.get('Tags')
                 description = data.get('Description')
                 material = data.get('Material')
-                imageData = data.get('ImageData')
-
-                # 先解碼 Base64 編碼的圖片數據
-                imageData_base64 = data.get('ImageData')
-                imageData = base64.b64decode(imageData_base64)
-
+                Manufacturer = data.get('Manufacturer')
+                print(Tags)
                 # 請根據需求在此處執行 SQL 更新資料的指令，例如：
-                query = f"UPDATE Furniture SET Name='{name}', Number='{number}', Price={price}, ImagePath='{imagePath}', Size='{size}', Description='{description}', Material='{material}', ImageData='{imageData}' WHERE ID = {update_id};"
+                query = f"UPDATE Furniture SET Name='{name}', Price={price}, ImageURL='{imagePath}', Size='{size}', Description='{description}', Material='{material}', Manufacturer = '{Manufacturer}' WHERE ID = {update_id};"
                 cursor.execute(query)
                 conn.commit()
 
