@@ -1,60 +1,65 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts
 {
-    public static class MailSender
+    public class MailSender : MonoBehaviour
     {
-        const string GMAIL_HOST = "smtp.gmail.com";
-        const int GMAIL_PORT = 587;
-        const string SENDER_GMAIL = "ntut109590004@gmail.com";
-        const string SENDER_VERITY_CODE = "rltgdebodxxtwhkm";
-        const string RECEIVER_GMAIL = "awaia732@gmail.com";
+        [SerializeField]
+        private DataManager _dataManager;
+        [SerializeField]
+        private string _appScriptUrl;
+        [SerializeField]
+        private string _hostEmail;
+
+        // Send post request
+        private IEnumerator SendPostRequest(MailInfomation infomation)
+        {
+            var sendData = new { recipientSeller = _hostEmail, recipientBuyer = infomation.UserMail, subject = infomation.Username, body = infomation.MailContent };
+            string jsonData = JsonConvert.SerializeObject(sendData);
+            PopupDialog popupDialog = _dataManager.GetDialogController();
+            UnityWebRequest request = UnityWebRequest.Post(_appScriptUrl, jsonData);
+            request.SetRequestHeader("Content-Type", "application/json");
+            popupDialog.LoadingDialog("è¨‚å–®ç™¼é€ä¸­...");
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + request.error);
+            }
+            else
+            {
+                // å¯ä»¥è™•ç† Apps Script è¿”å›çš„ä»»ä½•ä¿¡æ¯
+                string responseText = request.downloadHandler.text;
+                Debug.Log("Request sent successfully, response:\n" + responseText);
+                if (responseText == "Email sent successfully")
+                {
+                    Debug.Log("è¨‚å–®æˆåŠŸå¯„å‡ºï¼ å·²å°‡è¨‚å–®å¯„é€çµ¦å•†å®¶å’Œæ‚¨çš„ä¿¡ç®±: " + infomation.UserMail);
+                    popupDialog.ConfirmDialog("è¨‚å–®æˆåŠŸå¯„å‡ºï¼", $"å·²å°‡è¨‚å–®å¯„é€çµ¦å•†å®¶å’Œæ‚¨çš„ä¿¡ç®±: {infomation.UserMail}");
+                }
+                else if (responseText == "Email is not defined" || responseText.Contains("ç„¡æ•ˆçš„é›»å­éƒµä»¶"))
+                {
+                    Debug.Log("è¨‚å–®æœªæˆåŠŸå¯„å‡º ç¢ºèªæ‚¨çš„ä¿¡ç®±æ˜¯å¦æœ‰èª¤: " + infomation.UserMail);
+                    popupDialog.ConfirmDialog("è¨‚å–®æœªæˆåŠŸå¯„å‡º", $"ç¢ºèªæ‚¨çš„ä¿¡ç®±æ˜¯å¦æœ‰èª¤: {infomation.UserMail}");
+                }
+                else
+                {
+                    Debug.Log(responseText);
+                    popupDialog.ConfirmDialog("æœªçŸ¥éŒ¯èª¤", $"{responseText}");
+                }
+            }
+        }
 
         // Send gmail
-        public static void sendGmail(MailInfomation mailInfomation)
+        public void SendGmail(MailInfomation mailInfo)
         {
-            MailMessage mail = new MailMessage();
-
-            //«e­±¬Oµo«Hemail«á­±¬OÅã¥Üªº¦WºÙ
-            mail.From = new MailAddress(SENDER_GMAIL, "«È¤á­q³æ¸ê°T");
-
-            //¦¬«HªÌemail
-            mail.To.Add(RECEIVER_GMAIL);
-
-            //³]©wÀu¥ıÅv
-            mail.Priority = MailPriority.Normal;
-
-            //¼ĞÃD
-            mail.Subject = mailInfomation.Username;
-
-            //¤º®e
-            mail.Body = mailInfomation.MailContent;
-
-            //¤º®e¨Ï¥Îhtml
-            mail.IsBodyHtml = true;
-
-            //³]©wgmailªºsmtp (³o¬Ogoogleªº)
-            SmtpClient MySmtp = new SmtpClient(GMAIL_HOST, GMAIL_PORT);
-
-            //±z¦bgmailªº±b¸¹±K½X
-            MySmtp.Credentials = new NetworkCredential(SENDER_GMAIL, SENDER_VERITY_CODE);
-
-            //¶}±Òssl
-            MySmtp.EnableSsl = true;
-
-            //µo°e¶l¥ó
-            MySmtp.Send(mail);
-
-            //©ñ±¼«Å§i¥X¨ÓªºMySmtp
-            MySmtp = null;
-
-            //©ñ±¼«Å§i¥X¨Óªºmail
-            mail.Dispose();
+            StartCoroutine(SendPostRequest(mailInfo));
         }
     }
 }
