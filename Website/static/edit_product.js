@@ -286,29 +286,6 @@ function handleAddClick() {
     }
   });
 
-  const pictureInput = document.getElementById("picture");
-  const modelInput = document.getElementById("model");
-
-  if (!pictureInput.files.length) {
-    hasError = true;
-    const fieldErrorText = "請選擇圖片";
-    if (invalidCharsText === "") {
-      invalidCharsText = fieldErrorText;
-    } else {
-      invalidCharsText += `<br>${fieldErrorText}`;
-    }
-  }
-
-  if (!modelInput.files.length) {
-    hasError = true;
-    const fieldErrorText = "請選擇模型";
-    if (invalidCharsText === "") {
-      invalidCharsText = fieldErrorText;
-    } else {
-      invalidCharsText += `<br>${fieldErrorText}`;
-    }
-  }
-
   const categoryCheckboxes = document.querySelectorAll(
     'input[name="category"]'
   );
