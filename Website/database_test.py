@@ -280,12 +280,14 @@ async def handle_connection(websocket, path):
                 imagePath = data.get('ImageUrl')
                 size = data.get('Size')
                 Tags = data.get('Tags')
+                Tags = '、'.join(Tags)
                 description = data.get('Description')
                 material = data.get('Material')
                 Manufacturer = data.get('Manufacturer')
                 print(Tags)
                 # 請根據需求在此處執行 SQL 更新資料的指令，例如：
-                query = f"UPDATE Furniture SET Name='{name}', Price={price}, ImageURL='{imagePath}', Size='{size}', Description='{description}', Material='{material}', Manufacturer = '{Manufacturer}' WHERE ID = {update_id};"
+                query = f"UPDATE Furniture SET Name='{name}', Price={price}, ImageURL='{imagePath}',Tags= '{Tags}', Size='{size}', Description='{description}', Material='{material}', Manufacturer = '{Manufacturer}' WHERE ID = {update_id};"
+                print(query)
                 cursor.execute(query)
                 conn.commit()
 
